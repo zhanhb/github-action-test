@@ -98,8 +98,8 @@
     <properties>
         <arguments>-Prelease-profile</arguments>
         <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
-        <flatten-maven-plugin.version>1.2.5</flatten-maven-plugin.version>
-        <gmavenplus-plugin.version>1.10.0</gmavenplus-plugin.version>
+        <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
+        <gmavenplus-plugin.version>1.12.1</gmavenplus-plugin.version>
         <groovy.version>2.5.14</groovy.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
         <java.version>1.8</java.version>
@@ -134,7 +134,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <retrolambda-maven-plugin.version>2.5.7</retrolambda-maven-plugin.version>
         <revision>2.5.3.BUILD-SNAPSHOT</revision>
-        <sortpom-maven-plugin.version>2.12.0</sortpom-maven-plugin.version>
+        <sortpom-maven-plugin.version>2.15.0</sortpom-maven-plugin.version>
         <thymeleaf.version>3.0.12.RELEASE</thymeleaf.version>
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
     </properties>
