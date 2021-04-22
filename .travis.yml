@@ -11,7 +11,7 @@ cache:
 install:
   - if [ "$TRAVIS_JDK_VERSION" = openjdk7 ]; then jdk_switcher use openjdk8; fi
   - 'download_jdk() { if [ "$TRAVIS_JDK_VERSION" = "$1" ]; then curl -LO -H "Cookie: oraclelicense=accept-securebackup-cookie" "$2" && export JAVA_HOME="$HOME/$TRAVIS_JDK_VERSION" && rm -rf "$JAVA_HOME" && mkdir -p "$JAVA_HOME" && tar -C "$JAVA_HOME" -zxf "$(basename "$2")" --strip=1 && "$JAVA_HOME/bin/java" -version && "$JAVA_HOME/bin/javac" -version; fi; }'
-  - download_jdk oraclejdk11 https://download.oracle.com/otn-pub/java/jdk/11.0.10+8/020c4a6d33b74f6a9d2bc6fbf189da81/jdk-11.0.10_linux-x64_bin.tar.gz
+  - download_jdk oraclejdk11 https://download.oracle.com/otn-pub/java/jdk/11.0.11+9/ab2da78f32ed489abb3ff52fd0a02b1c/jdk-11.0.11_linux-x64_bin.tar.gz
   - ./mvnw -V deploy -Dmaven.main.skip=true -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Dmaven.deploy.skip=true -Dmaven.install.skip=true
 script:
   - if [ "$TRAVIS_JDK_VERSION" = openjdk8 ] && git config --get remote.origin.url 2>&1 | grep -F https://github.com/zhanhb/thymeleaf-layout-dialect -q && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./mvnw -s .travis/settings.xml deploy; else ./mvnw install; fi
