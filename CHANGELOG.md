@@ -11,11 +11,11 @@ Changelog
  - Deprecated `$DECORATOR_TITLE` constant has been deleted
    ([#95](https://github.com/ultraq/thymeleaf-layout-dialect/issues/95))
  - `<head>` merging strategies now respect the `<title>` position by default
-   ([#177](https://github.com/ultraq/thymeleaf-layout-dialect/issues/177)
+   ([#177](https://github.com/ultraq/thymeleaf-layout-dialect/issues/177))
  - Deprecated `layout:collect`
  - [Java] Added module-info with name `nz.net.ultraq.thymeleaf.layoutdialect`
    instead of `Automatic-Module-Name`. Also see
-   ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171)
+   ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171))
 
 Version 3.0 of the layout dialect written in java is a full Java module.
 synchronize the module name from upstream as it is a replacement library.
