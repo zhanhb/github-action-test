@@ -15,12 +15,13 @@
  */
 package nz.net.ultraq.thymeleaf.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.thymeleaf.context.IExpressionContext;
 import org.thymeleaf.standard.expression.Assignation;
 import org.thymeleaf.standard.expression.AssignationSequence;
 import org.thymeleaf.standard.expression.AssignationUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Parser for variable declaration strings, which are the expressions that are
@@ -33,35 +34,35 @@ import org.thymeleaf.standard.expression.AssignationUtils;
  */
 public class VariableDeclarationParser {
 
-    private final IExpressionContext context;
+	private final IExpressionContext context;
 
-    /**
-     * Constructor, sets the processing context for the parser.
-     *
-     * @param context
-     */
-    public VariableDeclarationParser(IExpressionContext context) {
-        this.context = context;
-    }
+	/**
+	 * Constructor, sets the processing context for the parser.
+	 *
+	 * @param context
+	 */
+	public VariableDeclarationParser(IExpressionContext context) {
+		this.context = context;
+	}
 
-    /**
-     * Parse a variable declaration string, returning as many variable
-     * declaration objects as there are variable declarations.
-     *
-     * @param declarationString
-     * @return List of variable declaration objects.
-     */
-    public List<VariableDeclaration> parse(String declarationString) {
-        AssignationSequence assignationSequence = AssignationUtils.parseAssignationSequence(context, declarationString, false);
-        ArrayList<VariableDeclaration> list = new ArrayList<>(assignationSequence.size());
-        for (Assignation assignation : assignationSequence) {
-            list.add(new VariableDeclaration(assignation));
-        }
-        return list;
-    }
+	/**
+	 * Parse a variable declaration string, returning as many variable
+	 * declaration objects as there are variable declarations.
+	 *
+	 * @param declarationString
+	 * @return List of variable declaration objects.
+	 */
+	public List<VariableDeclaration> parse(String declarationString) {
+		AssignationSequence assignationSequence = AssignationUtils.parseAssignationSequence(context, declarationString, false);
+		ArrayList<VariableDeclaration> list = new ArrayList<>(assignationSequence.size());
+		for (Assignation assignation : assignationSequence) {
+			list.add(new VariableDeclaration(assignation));
+		}
+		return list;
+	}
 
-    public final IExpressionContext getContext() {
-        return context;
-    }
+	public final IExpressionContext getContext() {
+		return context;
+	}
 
 }

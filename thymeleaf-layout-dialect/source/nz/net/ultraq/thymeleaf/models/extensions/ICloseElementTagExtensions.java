@@ -15,9 +15,10 @@
  */
 package nz.net.ultraq.thymeleaf.models.extensions;
 
-import java.util.Objects;
 import org.thymeleaf.model.ICloseElementTag;
 import org.thymeleaf.model.IElementTag;
+
+import java.util.Objects;
 
 /**
  * Meta-programming extensions to the {@link ICloseElementTag} class.
@@ -27,17 +28,17 @@ import org.thymeleaf.model.IElementTag;
  */
 public class ICloseElementTagExtensions {
 
-    /**
-     * Compares this close tag with another.
-     *
-     * @param self
-     * @param other
-     * @return {@code true} if this tag has the same name as the other element.
-     */
-    @SuppressWarnings("EqualsOverloaded")
-    public static boolean equals(ICloseElementTag self, Object other) {
-        return other instanceof ICloseElementTag
-                && Objects.equals(self.getElementCompleteName(), ((IElementTag) other).getElementCompleteName());
-    }
+	/**
+	 * Compares this close tag with another.
+	 *
+	 * @param self
+	 * @param other
+	 * @return {@code true} if this tag has the same name as the other element.
+	 */
+	@SuppressWarnings("EqualsOverloaded")
+	public static boolean equals(ICloseElementTag self, Object other) {
+		return other instanceof ICloseElementTag
+			&& Objects.equals(self.getElementCompleteName(), ((IElementTag) other).getElementCompleteName());
+	}
 
 }

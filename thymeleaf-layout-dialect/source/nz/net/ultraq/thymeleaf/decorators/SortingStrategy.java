@@ -26,14 +26,14 @@ import org.thymeleaf.model.IModel;
  */
 public interface SortingStrategy {
 
-    /**
-     * Returns the position in a {@code <head>} element model to insert a child
-     * model.
-     *
-     * @param headModel Model of a {@code <head>} element.
-     * @param childModel A model that can be found in a {@code <head>} element.
-     * @return Position to insert the child model into.
-     */
-    int findPositionForModel(IModel headModel, IModel childModel);
+	/**
+	 * Returns the position in a {@code <head>} element model to insert a child
+	 * model.
+	 *
+	 * @param headModel  Model of a {@code <head>} element.
+	 * @param childModel A model that can be found in a {@code <head>} element.
+	 * @return Position to insert the child model into.
+	 */
+	int findPositionForModel(IModel headModel, IModel childModel);
 
 }

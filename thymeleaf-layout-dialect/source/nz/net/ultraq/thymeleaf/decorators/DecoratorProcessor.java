@@ -15,7 +15,6 @@
  */
 package nz.net.ultraq.thymeleaf.decorators;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.context.ITemplateContext;
@@ -23,6 +22,8 @@ import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IModel;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An alias of the {@link DecorateProcessor} to warn people that the
@@ -35,48 +36,48 @@ import org.thymeleaf.templatemode.TemplateMode;
 @Deprecated
 public class DecoratorProcessor extends DecorateProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(DecoratorProcessor.class);
+	private static final Logger logger = LoggerFactory.getLogger(DecoratorProcessor.class);
 
-    private static final AtomicBoolean warned = new AtomicBoolean();
+	private static final AtomicBoolean warned = new AtomicBoolean();
 
-    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    public static final String PROCESSOR_NAME = "decorator";
+	@SuppressWarnings("FieldNameHidesFieldInSuperclass")
+	public static final String PROCESSOR_NAME = "decorator";
 
-    /**
-     * Constructor, configure this processor to work on the old 'decorator'
-     * attribute and to use the given sorting strategy.
-     *
-     * @param templateMode
-     * @param dialectPrefix
-     * @param sortingStrategy
+	/**
+	 * Constructor, configure this processor to work on the old 'decorator'
+	 * attribute and to use the given sorting strategy.
+	 *
+	 * @param templateMode
+	 * @param dialectPrefix
+	 * @param sortingStrategy
 	 * @param manualHeadMerging
-     */
-    public DecoratorProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
-            boolean manualHeadMerging) {
-        super(templateMode, dialectPrefix, sortingStrategy, manualHeadMerging, PROCESSOR_NAME);
-    }
+	 */
+	public DecoratorProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
+														boolean manualHeadMerging) {
+		super(templateMode, dialectPrefix, sortingStrategy, manualHeadMerging, PROCESSOR_NAME);
+	}
 
-    /**
-     * Logs a deprecation warning before delegating to the decorate processor.
-     *
-     * @param context
-     * @param model
-     * @param attributeName
-     * @param attributeValue
-     * @param structureHandler
-     */
-    @Override
-    protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
-            String attributeValue, IElementModelStructureHandler structureHandler) {
-        if (warned.compareAndSet(false, true)) {
-            logger.warn(
-                    "The layout:decorator/data-layout-decorator processor has been deprecated and will be removed in the next major version of the layout dialect.  "
-                    + "Please use layout:decorate/data-layout-decorate instead to future-proof your code.  "
-                    + "See https://github.com/ultraq/thymeleaf-layout-dialect/issues/95 for more information."
-            );
-        }
+	/**
+	 * Logs a deprecation warning before delegating to the decorate processor.
+	 *
+	 * @param context
+	 * @param model
+	 * @param attributeName
+	 * @param attributeValue
+	 * @param structureHandler
+	 */
+	@Override
+	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
+													 String attributeValue, IElementModelStructureHandler structureHandler) {
+		if (warned.compareAndSet(false, true)) {
+			logger.warn(
+				"The layout:decorator/data-layout-decorator processor has been deprecated and will be removed in the next major version of the layout dialect.  "
+					+ "Please use layout:decorate/data-layout-decorate instead to future-proof your code.  "
+					+ "See https://github.com/ultraq/thymeleaf-layout-dialect/issues/95 for more information."
+			);
+		}
 
-        super.doProcess(context, model, attributeName, attributeValue, structureHandler);
-    }
+		super.doProcess(context, model, attributeName, attributeValue, structureHandler);
+	}
 
 }

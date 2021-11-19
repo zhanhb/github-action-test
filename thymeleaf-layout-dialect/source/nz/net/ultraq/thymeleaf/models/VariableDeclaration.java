@@ -28,37 +28,37 @@ import org.thymeleaf.standard.expression.Assignation;
  */
 public class VariableDeclaration {
 
-    private final String name;
-    private final String value;
+	private final String name;
+	private final String value;
 
-    /**
-     * Constructor, create an instance from a Thymeleaf assignation.
-     *
-     * @param assignation
-     */
-    public VariableDeclaration(Assignation assignation) {
-        String declaration = assignation.getStringRepresentation();
-        String[] split = declaration.split("=");
-        name = split[0];
-        value = split[1];
-    }
+	/**
+	 * Constructor, create an instance from a Thymeleaf assignation.
+	 *
+	 * @param assignation
+	 */
+	public VariableDeclaration(Assignation assignation) {
+		String declaration = assignation.getStringRepresentation();
+		String[] split = declaration.split("=");
+		name = split[0];
+		value = split[1];
+	}
 
-    /**
-     * Reconstructs the variable for use with {@code th:with}.
-     *
-     * @return {name}=${value}
-     */
-    @Override
-    public String toString() {
-        return name + "=" + value;
-    }
+	/**
+	 * Reconstructs the variable for use with {@code th:with}.
+	 *
+	 * @return {name}=${value}
+	 */
+	@Override
+	public String toString() {
+		return name + "=" + value;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 
 }

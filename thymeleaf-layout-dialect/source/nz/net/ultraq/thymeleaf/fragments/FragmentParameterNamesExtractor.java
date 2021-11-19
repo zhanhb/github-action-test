@@ -15,11 +15,11 @@
  */
 package nz.net.ultraq.thymeleaf.fragments;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nonnull;
 
 /**
  * Extracts just the parameter names from a fragment definition. Used for when
@@ -30,29 +30,29 @@ import javax.annotation.Nonnull;
  */
 public class FragmentParameterNamesExtractor {
 
-    /**
-     * Returns a list of parameter names for the given fragment definition.
-     *
-     * @param fragmentDefinition
-     * @return A list of the named parameters, in the order they are defined.
-     */
-    @Nonnull
-    public List<String> extract(@Nonnull String fragmentDefinition) {
-        Matcher matcher = Pattern.compile(".*?\\((.*)\\)").matcher(fragmentDefinition);
-        if (matcher.find()) {
-            String[] split = matcher.group(1).split(",");
-            List<String> result = new ArrayList<>(split.length);
-            for (String string : split) {
-                Matcher matcher1 = Pattern.compile("([^=]+)=?.*").matcher(string);
-                if (!matcher1.find()) {
-                    throw new IndexOutOfBoundsException("index is out of range 0..-1 (index = 0)");
-                }
-                result.add(matcher1.group(1).trim());
-            }
-            return result;
-        } else {
-            return new ArrayList<>(0);
-        }
-    }
+	/**
+	 * Returns a list of parameter names for the given fragment definition.
+	 *
+	 * @param fragmentDefinition
+	 * @return A list of the named parameters, in the order they are defined.
+	 */
+	@Nonnull
+	public List<String> extract(@Nonnull String fragmentDefinition) {
+		Matcher matcher = Pattern.compile(".*?\\((.*)\\)").matcher(fragmentDefinition);
+		if (matcher.find()) {
+			String[] split = matcher.group(1).split(",");
+			List<String> result = new ArrayList<>(split.length);
+			for (String string : split) {
+				Matcher matcher1 = Pattern.compile("([^=]+)=?.*").matcher(string);
+				if (!matcher1.find()) {
+					throw new IndexOutOfBoundsException("index is out of range 0..-1 (index = 0)");
+				}
+				result.add(matcher1.group(1).trim());
+			}
+			return result;
+		} else {
+			return new ArrayList<>(0);
+		}
+	}
 
 }

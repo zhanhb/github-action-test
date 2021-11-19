@@ -15,36 +15,37 @@
  */
 package nz.net.ultraq.thymeleaf.models.extensions;
 
-import java.util.Iterator;
 import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.ITemplateEvent;
+
+import java.util.Iterator;
 
 /**
  * An iterator that treats a model as a queue of events.
  */
 public class EventIterator implements Iterator<ITemplateEvent> {
 
-    private final IModel model;
-    private int currentIndex = 0;
+	private final IModel model;
+	private int currentIndex = 0;
 
-    public EventIterator(IModel model) {
-        this.model = model;
-    }
+	public EventIterator(IModel model) {
+		this.model = model;
+	}
 
-    @Override
-    public boolean hasNext() {
-        return currentIndex < model.size();
-    }
+	@Override
+	public boolean hasNext() {
+		return currentIndex < model.size();
+	}
 
-    @Override
-    public ITemplateEvent next() {
-        return model.get(currentIndex++);
-    }
+	@Override
+	public ITemplateEvent next() {
+		return model.get(currentIndex++);
+	}
 
-    // TODO: Not needed from Java 8 onwards - default method does this
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
+	// TODO: Not needed from Java 8 onwards - default method does this
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
 
 }

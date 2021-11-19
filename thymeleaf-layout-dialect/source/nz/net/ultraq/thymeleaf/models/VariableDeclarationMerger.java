@@ -15,11 +15,12 @@
  */
 package nz.net.ultraq.thymeleaf.models;
 
+import org.thymeleaf.context.IExpressionContext;
+import org.thymeleaf.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.thymeleaf.context.IExpressionContext;
-import org.thymeleaf.util.StringUtils;
 
 /**
  * Merges variable declarations in a {@code th:with} attribute processor, taking
@@ -31,72 +32,72 @@ import org.thymeleaf.util.StringUtils;
  */
 public class VariableDeclarationMerger {
 
-    private final IExpressionContext context;
+	private final IExpressionContext context;
 
-    /**
-     * Constructor, sets the processing context for the merger.
-     *
-     * @param context
-     */
-    public VariableDeclarationMerger(IExpressionContext context) {
-        this.context = context;
-    }
+	/**
+	 * Constructor, sets the processing context for the merger.
+	 *
+	 * @param context
+	 */
+	public VariableDeclarationMerger(IExpressionContext context) {
+		this.context = context;
+	}
 
-    /**
-     * Merge {@code th:with} attributes so that names from the source value
-     * overwrite the same names in the target value.
-     *
-     * @param target
-     * @param source
-     * @return
-     */
-    public String merge(String target, String source) {
-        if (StringUtils.isEmpty(target)) {
-            return source;
-        }
-        if (StringUtils.isEmpty(source)) {
-            return target;
-        }
-        VariableDeclarationParser declarationParser = new VariableDeclarationParser(context);
-        List<VariableDeclaration> targetDeclarations = declarationParser.parse(target);
-        List<VariableDeclaration> sourceDeclarations = declarationParser.parse(source);
+	/**
+	 * Merge {@code th:with} attributes so that names from the source value
+	 * overwrite the same names in the target value.
+	 *
+	 * @param target
+	 * @param source
+	 * @return
+	 */
+	public String merge(String target, String source) {
+		if (StringUtils.isEmpty(target)) {
+			return source;
+		}
+		if (StringUtils.isEmpty(source)) {
+			return target;
+		}
+		VariableDeclarationParser declarationParser = new VariableDeclarationParser(context);
+		List<VariableDeclaration> targetDeclarations = declarationParser.parse(target);
+		List<VariableDeclaration> sourceDeclarations = declarationParser.parse(source);
 
-        List<VariableDeclaration> newDeclarations = new ArrayList<>(targetDeclarations.size() + sourceDeclarations.size());
-        for (VariableDeclaration targetDeclaration : targetDeclarations) {
-            VariableDeclaration override = null;
-            String name = targetDeclaration.getName();
-            for (VariableDeclaration sourceDeclaration : sourceDeclarations) {
-                if (Objects.equals(name, sourceDeclaration.getName())) {
-                    override = sourceDeclaration;
-                    break;
-                }
-            }
-            if (override != null) {
-                sourceDeclarations.remove(override);
-                newDeclarations.add(override);
-            } else {
-                newDeclarations.add(targetDeclaration);
-            }
-        }
+		List<VariableDeclaration> newDeclarations = new ArrayList<>(targetDeclarations.size() + sourceDeclarations.size());
+		for (VariableDeclaration targetDeclaration : targetDeclarations) {
+			VariableDeclaration override = null;
+			String name = targetDeclaration.getName();
+			for (VariableDeclaration sourceDeclaration : sourceDeclarations) {
+				if (Objects.equals(name, sourceDeclaration.getName())) {
+					override = sourceDeclaration;
+					break;
+				}
+			}
+			if (override != null) {
+				sourceDeclarations.remove(override);
+				newDeclarations.add(override);
+			} else {
+				newDeclarations.add(targetDeclaration);
+			}
+		}
 
-        newDeclarations.addAll(sourceDeclarations);
+		newDeclarations.addAll(sourceDeclarations);
 
-        StringBuilder buffer = new StringBuilder(source.length() + target.length());
-        boolean first = true;
+		StringBuilder buffer = new StringBuilder(source.length() + target.length());
+		boolean first = true;
 
-        for (Object value : newDeclarations) {
-            if (first) {
-                first = false;
-            } else {
-                buffer.append(',');
-            }
-            buffer.append(value);
-        }
-        return buffer.toString();
-    }
+		for (Object value : newDeclarations) {
+			if (first) {
+				first = false;
+			} else {
+				buffer.append(',');
+			}
+			buffer.append(value);
+		}
+		return buffer.toString();
+	}
 
-    public final IExpressionContext getContext() {
-        return this.context;
-    }
+	public final IExpressionContext getContext() {
+		return this.context;
+	}
 
 }

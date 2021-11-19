@@ -19,14 +19,7 @@ import nz.net.ultraq.thymeleaf.decorators.Decorator;
 import nz.net.ultraq.thymeleaf.models.AttributeMerger;
 import nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.model.ICloseElementTag;
-import org.thymeleaf.model.IComment;
-import org.thymeleaf.model.IDocType;
-import org.thymeleaf.model.IModel;
-import org.thymeleaf.model.IModelFactory;
-import org.thymeleaf.model.IOpenElementTag;
-import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.model.ITemplateEvent;
+import org.thymeleaf.model.*;
 
 /**
  * A decorator made to work over an XML document.
@@ -36,81 +29,81 @@ import org.thymeleaf.model.ITemplateEvent;
  */
 public class XmlDocumentDecorator implements Decorator {
 
-    // Find the root element of each document to work with
-    private static IModel rootModelFinder(IModel documentModel) {
-        return IModelExtensions.findModel(documentModel, documentEvent -> documentEvent instanceof IProcessableElementTag);
-    }
+	// Find the root element of each document to work with
+	private static IModel rootModelFinder(IModel documentModel) {
+		return IModelExtensions.findModel(documentModel, documentEvent -> documentEvent instanceof IProcessableElementTag);
+	}
 
-    private static boolean documentContainsDocType(IModel document) {
-        for (int i = 0, size = document.size(); i < size; i++) {
-            ITemplateEvent event = document.get(i);
-            if (event instanceof IDocType) {
-                return true;
-            }
-            if (event instanceof IOpenElementTag) {
-                break;
-            }
-        }
-        return false;
-    }
+	private static boolean documentContainsDocType(IModel document) {
+		for (int i = 0, size = document.size(); i < size; i++) {
+			ITemplateEvent event = document.get(i);
+			if (event instanceof IDocType) {
+				return true;
+			}
+			if (event instanceof IOpenElementTag) {
+				break;
+			}
+		}
+		return false;
+	}
 
-    protected final ITemplateContext context;
+	protected final ITemplateContext context;
 
-    /**
-     * Constructor, set up the document decorator context.
-     *
-     * @param context
-     */
-    public XmlDocumentDecorator(ITemplateContext context) {
-        this.context = context;
-    }
+	/**
+	 * Constructor, set up the document decorator context.
+	 *
+	 * @param context
+	 */
+	public XmlDocumentDecorator(ITemplateContext context) {
+		this.context = context;
+	}
 
-    /**
-     * Decorates the target XML document with the source one.
-     *
-     * @param targetDocumentModel
-     * @param sourceDocumentModel
-     * @return Result of the decoration.
-     */
-    @Override
-    public IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
-        IModelFactory modelFactory = context.getModelFactory();
+	/**
+	 * Decorates the target XML document with the source one.
+	 *
+	 * @param targetDocumentModel
+	 * @param sourceDocumentModel
+	 * @return Result of the decoration.
+	 */
+	@Override
+	public IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
+		IModelFactory modelFactory = context.getModelFactory();
 
-        // Decorate the target document with the source one
-        IModel resultDocumentModel = new AttributeMerger(context).merge(
-                rootModelFinder(targetDocumentModel),
-                rootModelFinder(sourceDocumentModel)
-        );
+		// Decorate the target document with the source one
+		IModel resultDocumentModel = new AttributeMerger(context).merge(
+			rootModelFinder(targetDocumentModel),
+			rootModelFinder(sourceDocumentModel)
+		);
 
-        // Copy comments outside of the root element, keeping whitespace copied to a minimum
-        final int size = targetDocumentModel.size();
-        for (int i = 0; i < size; i++) {
-            ITemplateEvent event = targetDocumentModel.get(i);
-            // Only copy doctypes if the source document doesn't already have one
-            if (event instanceof IDocType) {
-                if (!documentContainsDocType(sourceDocumentModel)) {
-                    IModelExtensions.insertWithWhitespace(resultDocumentModel, 0, event, modelFactory);
-                }
-            } else if (event instanceof IComment) {
-                IModelExtensions.insertWithWhitespace(resultDocumentModel, 0, event, modelFactory);
-            } else if (event instanceof IOpenElementTag) {
-                break;
-            }
-        }
-        for (int i = size - 1; i >= 0; i--) {
-            ITemplateEvent event = targetDocumentModel.get(i);
-            if (event instanceof IComment) {
-                IModelExtensions.insertWithWhitespace(resultDocumentModel, resultDocumentModel.size(), event, modelFactory);
-            } else if (event instanceof ICloseElementTag) {
-                break;
-            }
-        }
+		// Copy comments outside of the root element, keeping whitespace copied to a minimum
+		final int size = targetDocumentModel.size();
+		for (int i = 0; i < size; i++) {
+			ITemplateEvent event = targetDocumentModel.get(i);
+			// Only copy doctypes if the source document doesn't already have one
+			if (event instanceof IDocType) {
+				if (!documentContainsDocType(sourceDocumentModel)) {
+					IModelExtensions.insertWithWhitespace(resultDocumentModel, 0, event, modelFactory);
+				}
+			} else if (event instanceof IComment) {
+				IModelExtensions.insertWithWhitespace(resultDocumentModel, 0, event, modelFactory);
+			} else if (event instanceof IOpenElementTag) {
+				break;
+			}
+		}
+		for (int i = size - 1; i >= 0; i--) {
+			ITemplateEvent event = targetDocumentModel.get(i);
+			if (event instanceof IComment) {
+				IModelExtensions.insertWithWhitespace(resultDocumentModel, resultDocumentModel.size(), event, modelFactory);
+			} else if (event instanceof ICloseElementTag) {
+				break;
+			}
+		}
 
-        return resultDocumentModel;
-    }
+		return resultDocumentModel;
+	}
 
-    public final ITemplateContext getContext() {
-        return this.context;
-    }
+	public final ITemplateContext getContext() {
+		return this.context;
+	}
 
 }

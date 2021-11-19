@@ -17,14 +17,7 @@ package nz.net.ultraq.thymeleaf.models;
 
 import nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.model.AttributeValueQuotes;
-import org.thymeleaf.model.IElementTag;
-import org.thymeleaf.model.IModel;
-import org.thymeleaf.model.IModelFactory;
-import org.thymeleaf.model.IOpenElementTag;
-import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.model.IStandaloneElementTag;
-import org.thymeleaf.model.ITemplateEvent;
+import org.thymeleaf.model.*;
 
 /**
  * Merges an element and all its children into an existing element.
@@ -34,56 +27,56 @@ import org.thymeleaf.model.ITemplateEvent;
  */
 public class ElementMerger implements ModelMerger {
 
-    private final ITemplateContext context;
+	private final ITemplateContext context;
 
-    /**
-     * Constructor, sets up the element merger context.
-     *
-     * @param context
-     */
-    public ElementMerger(ITemplateContext context) {
-        this.context = context;
-    }
+	/**
+	 * Constructor, sets up the element merger context.
+	 *
+	 * @param context
+	 */
+	public ElementMerger(ITemplateContext context) {
+		this.context = context;
+	}
 
-    /**
-     * Replace the content of the target element, with the content of the source
-     * element.
-     *
-     * @param targetModel
-     * @param sourceModel
-     * @return Model that is the result of the merge.
-     */
-    @Override
-    public IModel merge(IModel targetModel, IModel sourceModel) {
-        // If one of the parameters is missing return a copy of the other, or
-        // nothing if both parameters are missing.
-        if (!IModelExtensions.asBoolean(targetModel) || !IModelExtensions.asBoolean(sourceModel)) {
-            IModel result = IModelExtensions.asBoolean(targetModel) ? targetModel.cloneModel() : null;
-            return IModelExtensions.asBoolean(result) ? result : IModelExtensions.asBoolean(sourceModel) ? sourceModel.cloneModel() : null;
-        }
+	/**
+	 * Replace the content of the target element, with the content of the source
+	 * element.
+	 *
+	 * @param targetModel
+	 * @param sourceModel
+	 * @return Model that is the result of the merge.
+	 */
+	@Override
+	public IModel merge(IModel targetModel, IModel sourceModel) {
+		// If one of the parameters is missing return a copy of the other, or
+		// nothing if both parameters are missing.
+		if (!IModelExtensions.asBoolean(targetModel) || !IModelExtensions.asBoolean(sourceModel)) {
+			IModel result = IModelExtensions.asBoolean(targetModel) ? targetModel.cloneModel() : null;
+			return IModelExtensions.asBoolean(result) ? result : IModelExtensions.asBoolean(sourceModel) ? sourceModel.cloneModel() : null;
+		}
 
-        IModelFactory modelFactory = context.getModelFactory();
+		IModelFactory modelFactory = context.getModelFactory();
 
-        // The result we want is the source model, but merged into the target root element attributes
-        ITemplateEvent sourceRootEvent = IModelExtensions.first(sourceModel);
-        IModel sourceRootElement = modelFactory.createModel(sourceRootEvent);
-        IProcessableElementTag targetRootEvent = (IProcessableElementTag) IModelExtensions.first(targetModel);
-        IModel targetRootElement = modelFactory.createModel(
-                sourceRootEvent instanceof IOpenElementTag
-                        ? modelFactory.createOpenElementTag(((IElementTag) sourceRootEvent).getElementCompleteName(),
-                                targetRootEvent.getAttributeMap(), AttributeValueQuotes.DOUBLE, false)
-                        : sourceRootEvent instanceof IStandaloneElementTag
-                                ? modelFactory.createStandaloneElementTag(((IElementTag) sourceRootEvent).getElementCompleteName(),
-                                        targetRootEvent.getAttributeMap(), AttributeValueQuotes.DOUBLE, false, ((IStandaloneElementTag) sourceRootEvent).isMinimized())
-                                : null);
-        IModel mergedRootElement = new AttributeMerger(context).merge(targetRootElement, sourceRootElement);
-        IModel mergedModel = sourceModel.cloneModel();
-        mergedModel.replace(0, IModelExtensions.first(mergedRootElement));
-        return mergedModel;
-    }
+		// The result we want is the source model, but merged into the target root element attributes
+		ITemplateEvent sourceRootEvent = IModelExtensions.first(sourceModel);
+		IModel sourceRootElement = modelFactory.createModel(sourceRootEvent);
+		IProcessableElementTag targetRootEvent = (IProcessableElementTag) IModelExtensions.first(targetModel);
+		IModel targetRootElement = modelFactory.createModel(
+			sourceRootEvent instanceof IOpenElementTag
+				? modelFactory.createOpenElementTag(((IElementTag) sourceRootEvent).getElementCompleteName(),
+				targetRootEvent.getAttributeMap(), AttributeValueQuotes.DOUBLE, false)
+				: sourceRootEvent instanceof IStandaloneElementTag
+				? modelFactory.createStandaloneElementTag(((IElementTag) sourceRootEvent).getElementCompleteName(),
+				targetRootEvent.getAttributeMap(), AttributeValueQuotes.DOUBLE, false, ((IStandaloneElementTag) sourceRootEvent).isMinimized())
+				: null);
+		IModel mergedRootElement = new AttributeMerger(context).merge(targetRootElement, sourceRootElement);
+		IModel mergedModel = sourceModel.cloneModel();
+		mergedModel.replace(0, IModelExtensions.first(mergedRootElement));
+		return mergedModel;
+	}
 
-    public final ITemplateContext getContext() {
-        return context;
-    }
+	public final ITemplateContext getContext() {
+		return context;
+	}
 
 }

@@ -25,19 +25,19 @@ import org.thymeleaf.model.IAttribute;
  */
 public class IAttributeExtensions {
 
-    /**
-     * Returns whether or not an attribute is an attribute processor of the
-     * given name, checks both prefix:processor and data-prefix-processor
-     * variants.
-     *
-     * @param self
-     * @param prefix
-     * @param name
-     * @return {@code true} if this attribute is an attribute processor of the
-     * matching name.
-     */
-    public static boolean equalsName(IAttribute self, String prefix, String name) {
-        String attributeName = self.getAttributeCompleteName();
-        return (prefix + ":" + name).equals(attributeName) || ("data-" + prefix + "-" + name).equals(attributeName);
-    }
+	/**
+	 * Returns whether or not an attribute is an attribute processor of the
+	 * given name, checks both prefix:processor and data-prefix-processor
+	 * variants.
+	 *
+	 * @param self
+	 * @param prefix
+	 * @param name
+	 * @return {@code true} if this attribute is an attribute processor of the
+	 * matching name.
+	 */
+	public static boolean equalsName(IAttribute self, String prefix, String name) {
+		String attributeName = self.getAttributeCompleteName();
+		return (prefix + ":" + name).equals(attributeName) || ("data-" + prefix + "-" + name).equals(attributeName);
+	}
 }

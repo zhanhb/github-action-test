@@ -15,10 +15,11 @@
  */
 package nz.net.ultraq.thymeleaf.models.extensions;
 
-import java.util.Objects;
 import org.thymeleaf.model.IElementTag;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.model.IStandaloneElementTag;
+
+import java.util.Objects;
 
 /**
  * Meta-programming extensions to the {@link IStandaloneElementTag} class.
@@ -28,18 +29,18 @@ import org.thymeleaf.model.IStandaloneElementTag;
  */
 public class IStandaloneElementTagExtensions {
 
-    /**
-     * Compares this standalone tag with another.
-     *
-     * @param self
-     * @param other
-     * @return {@code true} if this tag has the same name and attributes as the
-     * other element.
-     */
-    public static boolean equals(IStandaloneElementTag self, Object other) {
-        return other instanceof IStandaloneElementTag
-                && Objects.equals(self.getElementCompleteName(), ((IElementTag) other).getElementCompleteName())
-                && Objects.equals(self.getAttributeMap(), ((IProcessableElementTag) other).getAttributeMap());
-    }
+	/**
+	 * Compares this standalone tag with another.
+	 *
+	 * @param self
+	 * @param other
+	 * @return {@code true} if this tag has the same name and attributes as the
+	 * other element.
+	 */
+	public static boolean equals(IStandaloneElementTag self, Object other) {
+		return other instanceof IStandaloneElementTag
+			&& Objects.equals(self.getElementCompleteName(), ((IElementTag) other).getElementCompleteName())
+			&& Objects.equals(self.getAttributeMap(), ((IProcessableElementTag) other).getAttributeMap());
+	}
 
 }

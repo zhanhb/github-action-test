@@ -34,91 +34,91 @@ import org.thymeleaf.model.IModelFactory;
  */
 public class HtmlHeadDecorator implements Decorator {
 
-    private static IModel titleRetriever(IModel headModel, ITemplateEventPredicate isTitle) {
-        return IModelExtensions.asBoolean(headModel) ? IModelExtensions.findModel(headModel, isTitle) : null;
-    }
+	private static IModel titleRetriever(IModel headModel, ITemplateEventPredicate isTitle) {
+		return IModelExtensions.asBoolean(headModel) ? IModelExtensions.findModel(headModel, isTitle) : null;
+	}
 
-    private final ITemplateContext context;
-    private final SortingStrategy sortingStrategy;
+	private final ITemplateContext context;
+	private final SortingStrategy sortingStrategy;
 
-    /**
-     * Constructor, sets up the decorator context.
-     *
-     * @param context
-     * @param sortingStrategy
-     */
-    public HtmlHeadDecorator(ITemplateContext context, SortingStrategy sortingStrategy) {
-        this.context = context;
-        this.sortingStrategy = sortingStrategy;
-    }
+	/**
+	 * Constructor, sets up the decorator context.
+	 *
+	 * @param context
+	 * @param sortingStrategy
+	 */
+	public HtmlHeadDecorator(ITemplateContext context, SortingStrategy sortingStrategy) {
+		this.context = context;
+		this.sortingStrategy = sortingStrategy;
+	}
 
-    /**
-     * Decorate the {@code <head>} part.
-     *
-     * @param targetHeadModel
-     * @param sourceHeadModel
-     * @return Result of the decoration.
-     */
-    @Override
-    @SuppressWarnings("deprecation")
-    public IModel decorate(IModel targetHeadModel, IModel sourceHeadModel) {
-        // If none of the parameters are present, return nothing
-        if (!IModelExtensions.asBoolean(targetHeadModel) && !IModelExtensions.asBoolean(sourceHeadModel)) {
-            return null;
-        }
+	/**
+	 * Decorate the {@code <head>} part.
+	 *
+	 * @param targetHeadModel
+	 * @param sourceHeadModel
+	 * @return Result of the decoration.
+	 */
+	@Override
+	@SuppressWarnings("deprecation")
+	public IModel decorate(IModel targetHeadModel, IModel sourceHeadModel) {
+		// If none of the parameters are present, return nothing
+		if (!IModelExtensions.asBoolean(targetHeadModel) && !IModelExtensions.asBoolean(sourceHeadModel)) {
+			return null;
+		}
 
-        IModelFactory modelFactory = context.getModelFactory();
-        ITemplateEventPredicate isTitle = event -> ITemplateEventExtensions.isOpeningElementOf(event, "title");
+		IModelFactory modelFactory = context.getModelFactory();
+		ITemplateEventPredicate isTitle = event -> ITemplateEventExtensions.isOpeningElementOf(event, "title");
 
-        // New head model based off the target being decorated
-        IModel resultHeadModel = new AttributeMerger(context).merge(targetHeadModel, sourceHeadModel);
+		// New head model based off the target being decorated
+		IModel resultHeadModel = new AttributeMerger(context).merge(targetHeadModel, sourceHeadModel);
 
-        // Get the source and target title elements to pass to the title decorator
-        IModel resultTitle = new HtmlTitleDecorator(context).decorate(
-                titleRetriever(targetHeadModel, isTitle),
-                titleRetriever(sourceHeadModel, isTitle)
-        );
-        if (IModelExtensions.asBoolean(resultTitle)) {
+		// Get the source and target title elements to pass to the title decorator
+		IModel resultTitle = new HtmlTitleDecorator(context).decorate(
+			titleRetriever(targetHeadModel, isTitle),
+			titleRetriever(sourceHeadModel, isTitle)
+		);
+		if (IModelExtensions.asBoolean(resultTitle)) {
 
-            // TODO: Pure hack for retaining 2.x compatibility, remove the <head> from the layout :/
-            if (sortingStrategy instanceof nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
-                    || sortingStrategy instanceof nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy) {
-                IModelExtensions.removeModel(resultHeadModel, IModelExtensions.findIndexOf(resultHeadModel, isTitle));
-            }
+			// TODO: Pure hack for retaining 2.x compatibility, remove the <head> from the layout :/
+			if (sortingStrategy instanceof nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
+				|| sortingStrategy instanceof nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy) {
+				IModelExtensions.removeModel(resultHeadModel, IModelExtensions.findIndexOf(resultHeadModel, isTitle));
+			}
 
-            int targetTitleIndex = sortingStrategy.findPositionForModel(resultHeadModel, resultTitle);
-            if (isTitle.test(resultHeadModel.get(targetTitleIndex))) {
-                IModelExtensions.replaceModel(resultHeadModel, targetTitleIndex, resultTitle);
-            } else {
-                IModelExtensions.insertModelWithWhitespace(resultHeadModel, targetTitleIndex, resultTitle, modelFactory);
-            }
-        }
+			int targetTitleIndex = sortingStrategy.findPositionForModel(resultHeadModel, resultTitle);
+			if (isTitle.test(resultHeadModel.get(targetTitleIndex))) {
+				IModelExtensions.replaceModel(resultHeadModel, targetTitleIndex, resultTitle);
+			} else {
+				IModelExtensions.insertModelWithWhitespace(resultHeadModel, targetTitleIndex, resultTitle, modelFactory);
+			}
+		}
 
-        // Merge the rest of the source <head> elements with the target <head>
-        // elements using the current merging strategy
-        if (IModelExtensions.asBoolean(sourceHeadModel) && IModelExtensions.asBoolean(targetHeadModel)) {
-            ChildModelIterator it = IModelExtensions.childModelIterator(sourceHeadModel);
-            if (it != null) {
-                while (it.hasNext()) {
-                    IModel model = it.next();
-                    if (isTitle.test(IModelExtensions.first(model))) {
-                        continue;
-                    }
-                    IModelExtensions.insertModelWithWhitespace(resultHeadModel,
-                            sortingStrategy.findPositionForModel(resultHeadModel, model),
-                            model, modelFactory);
-                }
-            }
-        }
-        return resultHeadModel;
-    }
+		// Merge the rest of the source <head> elements with the target <head>
+		// elements using the current merging strategy
+		if (IModelExtensions.asBoolean(sourceHeadModel) && IModelExtensions.asBoolean(targetHeadModel)) {
+			ChildModelIterator it = IModelExtensions.childModelIterator(sourceHeadModel);
+			if (it != null) {
+				while (it.hasNext()) {
+					IModel model = it.next();
+					if (isTitle.test(IModelExtensions.first(model))) {
+						continue;
+					}
+					IModelExtensions.insertModelWithWhitespace(resultHeadModel,
+						sortingStrategy.findPositionForModel(resultHeadModel, model),
+						model, modelFactory);
+				}
+			}
+		}
+		return resultHeadModel;
+	}
 
-    public final ITemplateContext getContext() {
-        return this.context;
-    }
+	public final ITemplateContext getContext() {
+		return this.context;
+	}
 
-    public final SortingStrategy getSortingStrategy() {
-        return this.sortingStrategy;
-    }
+	public final SortingStrategy getSortingStrategy() {
+		return this.sortingStrategy;
+	}
 
 }

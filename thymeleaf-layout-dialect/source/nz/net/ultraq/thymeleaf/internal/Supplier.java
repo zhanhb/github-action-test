@@ -16,12 +16,11 @@
 package nz.net.ultraq.thymeleaf.internal;
 
 /**
- *
  * @author zhanhb
  */
 @FunctionalInterface
 public interface Supplier<T> {
 
-    T get();
+	T get();
 
 }

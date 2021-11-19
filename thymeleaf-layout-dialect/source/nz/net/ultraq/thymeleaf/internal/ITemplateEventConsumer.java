@@ -18,12 +18,11 @@ package nz.net.ultraq.thymeleaf.internal;
 import org.thymeleaf.model.ITemplateEvent;
 
 /**
- *
  * @author zhanhb
  */
 @FunctionalInterface
 public interface ITemplateEventConsumer {
 
-    void accept(ITemplateEvent get);
+	void accept(ITemplateEvent get);
 
 }

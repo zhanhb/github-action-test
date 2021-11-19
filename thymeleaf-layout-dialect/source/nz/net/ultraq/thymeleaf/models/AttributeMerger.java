@@ -36,69 +36,69 @@ import org.thymeleaf.standard.processor.StandardWithTagProcessor;
  */
 public class AttributeMerger implements ModelMerger {
 
-    private final ITemplateContext context;
+	private final ITemplateContext context;
 
-    /**
-     * Constructor, sets up the attribute merger context.
-     *
-     * @param context
-     */
-    public AttributeMerger(ITemplateContext context) {
-        this.context = context;
-    }
+	/**
+	 * Constructor, sets up the attribute merger context.
+	 *
+	 * @param context
+	 */
+	public AttributeMerger(ITemplateContext context) {
+		this.context = context;
+	}
 
-    /**
-     * Merge the attributes of the source element with those of the target
-     * element. This is basically a copy of all attributes in the source model
-     * with those in the target model, overwriting any attributes that have the
-     * same name, except for the case of {@code th:with} where variable
-     * declarations are preserved, only overwriting same-named declarations.
-     *
-     * @param sourceModel
-     * @param targetModel
-     * @return New element with the merged attributes.
-     */
-    @Override
-    public IModel merge(IModel targetModel, IModel sourceModel) {
-        // If one of the parameters is missing return a copy of the other, or
-        // nothing if both parameters are missing.
-        if (!IModelExtensions.asBoolean(targetModel) || !IModelExtensions.asBoolean(sourceModel)) {
-            IModel result = IModelExtensions.asBoolean(targetModel) ? targetModel.cloneModel() : null;
-            return IModelExtensions.asBoolean(result) ? result : IModelExtensions.asBoolean(sourceModel) ? sourceModel.cloneModel() : null;
-        }
+	/**
+	 * Merge the attributes of the source element with those of the target
+	 * element. This is basically a copy of all attributes in the source model
+	 * with those in the target model, overwriting any attributes that have the
+	 * same name, except for the case of {@code th:with} where variable
+	 * declarations are preserved, only overwriting same-named declarations.
+	 *
+	 * @param sourceModel
+	 * @param targetModel
+	 * @return New element with the merged attributes.
+	 */
+	@Override
+	public IModel merge(IModel targetModel, IModel sourceModel) {
+		// If one of the parameters is missing return a copy of the other, or
+		// nothing if both parameters are missing.
+		if (!IModelExtensions.asBoolean(targetModel) || !IModelExtensions.asBoolean(sourceModel)) {
+			IModel result = IModelExtensions.asBoolean(targetModel) ? targetModel.cloneModel() : null;
+			return IModelExtensions.asBoolean(result) ? result : IModelExtensions.asBoolean(sourceModel) ? sourceModel.cloneModel() : null;
+		}
 
-        IModel mergedModel = targetModel.cloneModel();
-        String layoutDialectPrefix = IContextDelegate.getPrefixForDialect(context, LayoutDialect.class);
-        String standardDialectPrefix = IContextDelegate.getPrefixForDialect(context, StandardDialect.class);
+		IModel mergedModel = targetModel.cloneModel();
+		String layoutDialectPrefix = IContextDelegate.getPrefixForDialect(context, LayoutDialect.class);
+		String standardDialectPrefix = IContextDelegate.getPrefixForDialect(context, StandardDialect.class);
 
-        // Merge attributes from the source model's root event to the target model's root event
-        // TODO nullable
-        for (IAttribute sourceAttribute : ((IProcessableElementTag) sourceModel.get(0)).getAllAttributes()) {
-            // Don't include layout:fragment processors
-            if (IAttributeExtensions.equalsName(sourceAttribute, layoutDialectPrefix, FragmentProcessor.PROCESSOR_NAME)
-                    || IAttributeExtensions.equalsName(sourceAttribute, layoutDialectPrefix, CollectFragmentProcessor.PROCESSOR_DEFINE)) {
-                continue;
-            }
+		// Merge attributes from the source model's root event to the target model's root event
+		// TODO nullable
+		for (IAttribute sourceAttribute : ((IProcessableElementTag) sourceModel.get(0)).getAllAttributes()) {
+			// Don't include layout:fragment processors
+			if (IAttributeExtensions.equalsName(sourceAttribute, layoutDialectPrefix, FragmentProcessor.PROCESSOR_NAME)
+				|| IAttributeExtensions.equalsName(sourceAttribute, layoutDialectPrefix, CollectFragmentProcessor.PROCESSOR_DEFINE)) {
+				continue;
+			}
 
-            IProcessableElementTag mergedEvent = (IProcessableElementTag) IModelExtensions.first(mergedModel);
-            String mergedAttributeValue; // Merge th:with attributes
-            if (IAttributeExtensions.equalsName(sourceAttribute, standardDialectPrefix, StandardWithTagProcessor.ATTR_NAME)) {
-                mergedAttributeValue = new VariableDeclarationMerger(context).merge(sourceAttribute.getValue(),
-                        mergedEvent.getAttributeValue(standardDialectPrefix, StandardWithTagProcessor.ATTR_NAME));
-            } else { // Copy every other attribute straight
-                mergedAttributeValue = sourceAttribute.getValue();
-            }
+			IProcessableElementTag mergedEvent = (IProcessableElementTag) IModelExtensions.first(mergedModel);
+			String mergedAttributeValue; // Merge th:with attributes
+			if (IAttributeExtensions.equalsName(sourceAttribute, standardDialectPrefix, StandardWithTagProcessor.ATTR_NAME)) {
+				mergedAttributeValue = new VariableDeclarationMerger(context).merge(sourceAttribute.getValue(),
+					mergedEvent.getAttributeValue(standardDialectPrefix, StandardWithTagProcessor.ATTR_NAME));
+			} else { // Copy every other attribute straight
+				mergedAttributeValue = sourceAttribute.getValue();
+			}
 
-            mergedModel.replace(0, context.getModelFactory().replaceAttribute(mergedEvent,
-                    sourceAttribute.getAttributeDefinition().getAttributeName(), sourceAttribute.getAttributeCompleteName(),
-                    mergedAttributeValue));
-        }
+			mergedModel.replace(0, context.getModelFactory().replaceAttribute(mergedEvent,
+				sourceAttribute.getAttributeDefinition().getAttributeName(), sourceAttribute.getAttributeCompleteName(),
+				mergedAttributeValue));
+		}
 
-        return mergedModel;
-    }
+		return mergedModel;
+	}
 
-    public final ITemplateContext getContext() {
-        return context;
-    }
+	public final ITemplateContext getContext() {
+		return context;
+	}
 
 }

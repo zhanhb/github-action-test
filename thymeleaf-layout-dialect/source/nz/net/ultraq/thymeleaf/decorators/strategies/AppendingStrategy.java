@@ -42,32 +42,32 @@ import org.thymeleaf.model.IModel;
 @Deprecated
 public class AppendingStrategy implements SortingStrategy {
 
-    /**
-     * Returns the position at the end of the {@code <head>} section.
-     *
-     * @param headModel
-     * @return The end of the head model.
-     */
-    @Override
-    public int findPositionForModel(IModel headModel, IModel childModel) {
-        // Discard text/whitespace nodes
-        if (IModelExtensions.isWhitespace(childModel)) {
-            return -1;
-        }
+	/**
+	 * Returns the position at the end of the {@code <head>} section.
+	 *
+	 * @param headModel
+	 * @return The end of the head model.
+	 */
+	@Override
+	public int findPositionForModel(IModel headModel, IModel childModel) {
+		// Discard text/whitespace nodes
+		if (IModelExtensions.isWhitespace(childModel)) {
+			return -1;
+		}
 
-        int positions = headModel.size();
+		int positions = headModel.size();
 
-        // For backwards compatibility, match the location of any element at the
-        // beginning of the <head> element.
-        if (IModelExtensions.isElementOf(childModel, "title")) {
-            int firstElementIndex = IModelExtensions.findIndexOf(headModel, 1, ITemplateEventExtensions::isOpeningElement);
-            if (firstElementIndex != -1) {
-                return firstElementIndex;
-            }
-            return positions > 2 ? 2 : 1;
-        }
+		// For backwards compatibility, match the location of any element at the
+		// beginning of the <head> element.
+		if (IModelExtensions.isElementOf(childModel, "title")) {
+			int firstElementIndex = IModelExtensions.findIndexOf(headModel, 1, ITemplateEventExtensions::isOpeningElement);
+			if (firstElementIndex != -1) {
+				return firstElementIndex;
+			}
+			return positions > 2 ? 2 : 1;
+		}
 
-        return positions - (positions > 2 ? 2 : 1);
-    }
+		return positions - (positions > 2 ? 2 : 1);
+	}
 
 }

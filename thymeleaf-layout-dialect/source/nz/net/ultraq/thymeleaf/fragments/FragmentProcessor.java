@@ -15,8 +15,6 @@
  */
 package nz.net.ultraq.thymeleaf.fragments;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import nz.net.ultraq.thymeleaf.fragments.extensions.FragmentExtensions;
 import nz.net.ultraq.thymeleaf.models.ElementMerger;
 import nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions;
@@ -31,6 +29,9 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * This processor serves a dual purpose: to mark sections of the template that
  * can be replaced, and to do the replacing when they're encountered.
@@ -40,64 +41,64 @@ import org.thymeleaf.templatemode.TemplateMode;
  */
 public class FragmentProcessor extends AbstractAttributeTagProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
+	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
 
-    private static final AtomicBoolean warned = new AtomicBoolean();
+	private static final AtomicBoolean warned = new AtomicBoolean();
 
-    public static final String PROCESSOR_NAME = "fragment";
-    public static final int PROCESSOR_PRECEDENCE = 1;
+	public static final String PROCESSOR_NAME = "fragment";
+	public static final int PROCESSOR_PRECEDENCE = 1;
 
-    /**
-     * Constructor, sets this processor to work on the 'fragment' attribute.
-     *
-     * @param templateMode
-     * @param dialectPrefix
-     */
-    public FragmentProcessor(TemplateMode templateMode, String dialectPrefix) {
-        super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true);
-    }
+	/**
+	 * Constructor, sets this processor to work on the 'fragment' attribute.
+	 *
+	 * @param templateMode
+	 * @param dialectPrefix
+	 */
+	public FragmentProcessor(TemplateMode templateMode, String dialectPrefix) {
+		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true);
+	}
 
-    /**
-     * Inserts the content of fragments into the encountered fragment
-     * placeholder.
-     *
-     * @param context
-     * @param tag
-     * @param attributeName
-     * @param attributeValue
-     * @param structureHandler
-     */
-    @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-            AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
-        // Emit a warning if found in the <head> section
-        if (getTemplateMode() == TemplateMode.HTML) {
-            for (IProcessableElementTag element : context.getElementStack()) {
-                if ("head".equals(element.getElementCompleteName())) {
-                    if (warned.compareAndSet(false, true)) {
-                        logger.warn("You don't need to put the layout:fragment/data-layout-fragment attribute into the <head> section - "
-                                + "the decoration process will automatically copy the <head> section of your content templates into your layout page.");
-                    }
-                    break;
-                }
-            }
-        }
+	/**
+	 * Inserts the content of fragments into the encountered fragment
+	 * placeholder.
+	 *
+	 * @param context
+	 * @param tag
+	 * @param attributeName
+	 * @param attributeValue
+	 * @param structureHandler
+	 */
+	@Override
+	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
+													 AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
+		// Emit a warning if found in the <head> section
+		if (getTemplateMode() == TemplateMode.HTML) {
+			for (IProcessableElementTag element : context.getElementStack()) {
+				if ("head".equals(element.getElementCompleteName())) {
+					if (warned.compareAndSet(false, true)) {
+						logger.warn("You don't need to put the layout:fragment/data-layout-fragment attribute into the <head> section - "
+							+ "the decoration process will automatically copy the <head> section of your content templates into your layout page.");
+					}
+					break;
+				}
+			}
+		}
 
-        // Locate the fragment that corresponds to this decorator/include fragment
-        List<IModel> fragments = FragmentExtensions.getFragmentCollection(context).get(attributeValue);
-        // Replace the tag body with the fragment
-        if (fragments != null && !fragments.isEmpty()) {
-            IModel fragment = fragments.get(fragments.size() - 1);
-            IModelFactory modelFactory = context.getModelFactory();
-            IModel replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment);
+		// Locate the fragment that corresponds to this decorator/include fragment
+		List<IModel> fragments = FragmentExtensions.getFragmentCollection(context).get(attributeValue);
+		// Replace the tag body with the fragment
+		if (fragments != null && !fragments.isEmpty()) {
+			IModel fragment = fragments.get(fragments.size() - 1);
+			IModelFactory modelFactory = context.getModelFactory();
+			IModel replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment);
 
-            // Remove the layout:fragment attribute - Thymeleaf won't do it for us
-            // when using StructureHandler.replaceWith(...)
-            replacementModel.replace(0, modelFactory.removeAttribute((IProcessableElementTag) IModelExtensions.first(replacementModel),
-                    getDialectPrefix(), PROCESSOR_NAME));
+			// Remove the layout:fragment attribute - Thymeleaf won't do it for us
+			// when using StructureHandler.replaceWith(...)
+			replacementModel.replace(0, modelFactory.removeAttribute((IProcessableElementTag) IModelExtensions.first(replacementModel),
+				getDialectPrefix(), PROCESSOR_NAME));
 
-            structureHandler.replaceWith(replacementModel, true);
-        }
-    }
+			structureHandler.replaceWith(replacementModel, true);
+		}
+	}
 
 }

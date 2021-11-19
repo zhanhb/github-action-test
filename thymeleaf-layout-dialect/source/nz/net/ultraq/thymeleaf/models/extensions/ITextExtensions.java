@@ -15,8 +15,9 @@
  */
 package nz.net.ultraq.thymeleaf.models.extensions;
 
-import java.util.Objects;
 import org.thymeleaf.model.IText;
+
+import java.util.Objects;
 
 /**
  * Meta-programming extensions to the {@link IText} class.
@@ -26,25 +27,25 @@ import org.thymeleaf.model.IText;
  */
 public class ITextExtensions {
 
-    /**
-     * Compares this text with another.
-     *
-     * @param self
-     * @param other
-     * @return {@code true} if the text content matches.
-     */
-    public static boolean equals(IText self, Object other) {
-        return other instanceof IText && Objects.equals(self.getText(), ((IText) other).getText());
-    }
+	/**
+	 * Compares this text with another.
+	 *
+	 * @param self
+	 * @param other
+	 * @return {@code true} if the text content matches.
+	 */
+	public static boolean equals(IText self, Object other) {
+		return other instanceof IText && Objects.equals(self.getText(), ((IText) other).getText());
+	}
 
-    /**
-     * Returns whether or not this text event is collapsible whitespace.
-     *
-     * @param self
-     * @return {@code true} if, when trimmed, the text content is empty.
-     */
-    public static boolean isWhitespace(IText self) {
-        return self.getText().trim().isEmpty();
-    }
+	/**
+	 * Returns whether or not this text event is collapsible whitespace.
+	 *
+	 * @param self
+	 * @return {@code true} if, when trimmed, the text content is empty.
+	 */
+	public static boolean isWhitespace(IText self) {
+		return self.getText().trim().isEmpty();
+	}
 
 }

@@ -34,91 +34,91 @@ import org.thymeleaf.model.IModelFactory;
  */
 public class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
-    private final boolean autoHeadMerging;
-    private final SortingStrategy sortingStrategy;
+	private final boolean autoHeadMerging;
+	private final SortingStrategy sortingStrategy;
 
-    /**
-     * Constructor, apply the given sorting strategy to the decorator.
-     *
-     * @param context
-     * @param sortingStrategy
-     * @param autoHeadMerging
-     */
-    public HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy, boolean autoHeadMerging) {
-        super(context);
-        this.sortingStrategy = sortingStrategy;
-        this.autoHeadMerging = autoHeadMerging;
-    }
+	/**
+	 * Constructor, apply the given sorting strategy to the decorator.
+	 *
+	 * @param context
+	 * @param sortingStrategy
+	 * @param autoHeadMerging
+	 */
+	public HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy, boolean autoHeadMerging) {
+		super(context);
+		this.sortingStrategy = sortingStrategy;
+		this.autoHeadMerging = autoHeadMerging;
+	}
 
-    /**
-     * Decorate an entire HTML page.
-     *
-     * @param targetDocumentModel
-     * @param sourceDocumentModel
-     * @return Result of the decoration.
-     */
-    @Override
-    public IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
-        IModelFactory modelFactory = context.getModelFactory();
-        IModel resultDocumentModel = targetDocumentModel.cloneModel();
-        // Head decoration
-        ITemplateEventPredicate headModelFinder = event -> ITemplateEventExtensions.isOpeningElementOf(event, "head");
+	/**
+	 * Decorate an entire HTML page.
+	 *
+	 * @param targetDocumentModel
+	 * @param sourceDocumentModel
+	 * @return Result of the decoration.
+	 */
+	@Override
+	public IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
+		IModelFactory modelFactory = context.getModelFactory();
+		IModel resultDocumentModel = targetDocumentModel.cloneModel();
+		// Head decoration
+		ITemplateEventPredicate headModelFinder = event -> ITemplateEventExtensions.isOpeningElementOf(event, "head");
 
-        if (autoHeadMerging) {
-            IModel targetHeadModel = IModelExtensions.findModel(resultDocumentModel, headModelFinder);
-            IModel resultHeadModel = new HtmlHeadDecorator(context, sortingStrategy).decorate(targetHeadModel,
-                    IModelExtensions.findModel(sourceDocumentModel, headModelFinder)
-            );
-            if (IModelExtensions.asBoolean(resultHeadModel)) {
-                if (IModelExtensions.asBoolean(targetHeadModel)) {
-                    IModelExtensions.replaceModel(resultDocumentModel, IModelExtensions.findIndexOfModel(resultDocumentModel, targetHeadModel), resultHeadModel);
-                } else {
-                    IModelExtensions.insertModelWithWhitespace(resultDocumentModel, IModelExtensions.findIndexOf(resultDocumentModel, event -> {
-                        return ITemplateEventExtensions.isOpeningElementOf(event, "body")
-                                || ITemplateEventExtensions.isClosingElementOf(event, "html");
-                    }) - 1, resultHeadModel, modelFactory);
-                }
-            }
-        } else {
-            // TODO: If autoHeadMerging is false, this really shouldn't be needed as
-            //       the basis for `resultDocumentModel` should be the source model.
-            //       This 'hack' is OK for an experimental option, but the fact that
-            //       it exists means I should rethink how the result model is made.
-            IModelExtensions.replaceModel(resultDocumentModel,
-                    IModelExtensions.findIndexOf(resultDocumentModel, headModelFinder),
-                    IModelExtensions.findModel(sourceDocumentModel, headModelFinder)
-            );
-        }
+		if (autoHeadMerging) {
+			IModel targetHeadModel = IModelExtensions.findModel(resultDocumentModel, headModelFinder);
+			IModel resultHeadModel = new HtmlHeadDecorator(context, sortingStrategy).decorate(targetHeadModel,
+				IModelExtensions.findModel(sourceDocumentModel, headModelFinder)
+			);
+			if (IModelExtensions.asBoolean(resultHeadModel)) {
+				if (IModelExtensions.asBoolean(targetHeadModel)) {
+					IModelExtensions.replaceModel(resultDocumentModel, IModelExtensions.findIndexOfModel(resultDocumentModel, targetHeadModel), resultHeadModel);
+				} else {
+					IModelExtensions.insertModelWithWhitespace(resultDocumentModel, IModelExtensions.findIndexOf(resultDocumentModel, event -> {
+						return ITemplateEventExtensions.isOpeningElementOf(event, "body")
+							|| ITemplateEventExtensions.isClosingElementOf(event, "html");
+					}) - 1, resultHeadModel, modelFactory);
+				}
+			}
+		} else {
+			// TODO: If autoHeadMerging is false, this really shouldn't be needed as
+			//       the basis for `resultDocumentModel` should be the source model.
+			//       This 'hack' is OK for an experimental option, but the fact that
+			//       it exists means I should rethink how the result model is made.
+			IModelExtensions.replaceModel(resultDocumentModel,
+				IModelExtensions.findIndexOf(resultDocumentModel, headModelFinder),
+				IModelExtensions.findModel(sourceDocumentModel, headModelFinder)
+			);
+		}
 
-        // Body decoration
-        ITemplateEventPredicate bodyModelFinder = event -> ITemplateEventExtensions.isOpeningElementOf(event, "body");
-        IModel targetBodyModel = IModelExtensions.findModel(resultDocumentModel, bodyModelFinder);
-        IModel resultBodyModel = new HtmlBodyDecorator(context).decorate(targetBodyModel,
-                IModelExtensions.findModel(sourceDocumentModel, bodyModelFinder)
-        );
-        if (IModelExtensions.asBoolean(resultBodyModel)) {
-            if (IModelExtensions.asBoolean(targetBodyModel)) {
-                IModelExtensions.replaceModel(resultDocumentModel, IModelExtensions.findIndexOfModel(resultDocumentModel, targetBodyModel), resultBodyModel);
-            } else {
-                IModelExtensions.insertModelWithWhitespace(resultDocumentModel, IModelExtensions.findIndexOf(resultDocumentModel, event -> {
-                    return ITemplateEventExtensions.isClosingElementOf(event, "html");
-                }) - 1, resultBodyModel, modelFactory);
-            }
-        }
+		// Body decoration
+		ITemplateEventPredicate bodyModelFinder = event -> ITemplateEventExtensions.isOpeningElementOf(event, "body");
+		IModel targetBodyModel = IModelExtensions.findModel(resultDocumentModel, bodyModelFinder);
+		IModel resultBodyModel = new HtmlBodyDecorator(context).decorate(targetBodyModel,
+			IModelExtensions.findModel(sourceDocumentModel, bodyModelFinder)
+		);
+		if (IModelExtensions.asBoolean(resultBodyModel)) {
+			if (IModelExtensions.asBoolean(targetBodyModel)) {
+				IModelExtensions.replaceModel(resultDocumentModel, IModelExtensions.findIndexOfModel(resultDocumentModel, targetBodyModel), resultBodyModel);
+			} else {
+				IModelExtensions.insertModelWithWhitespace(resultDocumentModel, IModelExtensions.findIndexOf(resultDocumentModel, event -> {
+					return ITemplateEventExtensions.isClosingElementOf(event, "html");
+				}) - 1, resultBodyModel, modelFactory);
+			}
+		}
 
-        return super.decorate(resultDocumentModel, sourceDocumentModel);
-    }
+		return super.decorate(resultDocumentModel, sourceDocumentModel);
+	}
 
-    public final SortingStrategy getSortingStrategy() {
-        return sortingStrategy;
-    }
+	public final SortingStrategy getSortingStrategy() {
+		return sortingStrategy;
+	}
 
-    public final boolean getAutoHeadMerging() {
-        return autoHeadMerging;
-    }
+	public final boolean getAutoHeadMerging() {
+		return autoHeadMerging;
+	}
 
-    public final boolean isAutoHeadMerging() {
-        return autoHeadMerging;
-    }
+	public final boolean isAutoHeadMerging() {
+		return autoHeadMerging;
+	}
 
 }

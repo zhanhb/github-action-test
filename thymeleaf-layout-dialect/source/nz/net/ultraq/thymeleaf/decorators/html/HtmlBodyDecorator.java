@@ -29,37 +29,37 @@ import org.thymeleaf.model.IModel;
  */
 public class HtmlBodyDecorator implements Decorator {
 
-    private final ITemplateContext context;
+	private final ITemplateContext context;
 
-    /**
-     * Constructor, sets up the element decorator context.
-     *
-     * @param context
-     */
-    public HtmlBodyDecorator(ITemplateContext context) {
-        this.context = context;
-    }
+	/**
+	 * Constructor, sets up the element decorator context.
+	 *
+	 * @param context
+	 */
+	public HtmlBodyDecorator(ITemplateContext context) {
+		this.context = context;
+	}
 
-    /**
-     * Decorate the {@code <body>} part.
-     *
-     * @param targetBodyModel
-     * @param sourceBodyModel
-     * @return Result of the decoration.
-     */
-    @Override
-    public IModel decorate(IModel targetBodyModel, IModel sourceBodyModel) {
-        // If one of the parameters is missing return a copy of the other, or
-        // nothing if both parameters are missing.
-        if (!IModelExtensions.asBoolean(targetBodyModel) || !IModelExtensions.asBoolean(sourceBodyModel)) {
-            IModel result = IModelExtensions.asBoolean(targetBodyModel) ? targetBodyModel.cloneModel() : null;
-            return IModelExtensions.asBoolean(result) ? result : IModelExtensions.asBoolean(sourceBodyModel) ? sourceBodyModel.cloneModel() : null;
-        }
-        return new AttributeMerger(context).merge(targetBodyModel, sourceBodyModel);
-    }
+	/**
+	 * Decorate the {@code <body>} part.
+	 *
+	 * @param targetBodyModel
+	 * @param sourceBodyModel
+	 * @return Result of the decoration.
+	 */
+	@Override
+	public IModel decorate(IModel targetBodyModel, IModel sourceBodyModel) {
+		// If one of the parameters is missing return a copy of the other, or
+		// nothing if both parameters are missing.
+		if (!IModelExtensions.asBoolean(targetBodyModel) || !IModelExtensions.asBoolean(sourceBodyModel)) {
+			IModel result = IModelExtensions.asBoolean(targetBodyModel) ? targetBodyModel.cloneModel() : null;
+			return IModelExtensions.asBoolean(result) ? result : IModelExtensions.asBoolean(sourceBodyModel) ? sourceBodyModel.cloneModel() : null;
+		}
+		return new AttributeMerger(context).merge(targetBodyModel, sourceBodyModel);
+	}
 
-    public final ITemplateContext getContext() {
-        return context;
-    }
+	public final ITemplateContext getContext() {
+		return context;
+	}
 
 }

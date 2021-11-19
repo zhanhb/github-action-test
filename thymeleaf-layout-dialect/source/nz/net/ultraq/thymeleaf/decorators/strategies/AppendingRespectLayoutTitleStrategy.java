@@ -43,33 +43,33 @@ import org.thymeleaf.model.IModel;
  */
 public class AppendingRespectLayoutTitleStrategy implements SortingStrategy {
 
-    /**
-     * For {@code <title>} elements, returns the position of the matching
-     * {@code <title>} in the {@code headModel} argument, otherwise returns the
-     * position at the end of the {@code <head>} section.
-     *
-     * @param headModel
-     * @param childModel
-     * @return The end of the head model.
-     */
-    @Override
-    public int findPositionForModel(IModel headModel, IModel childModel) {
+	/**
+	 * For {@code <title>} elements, returns the position of the matching
+	 * {@code <title>} in the {@code headModel} argument, otherwise returns the
+	 * position at the end of the {@code <head>} section.
+	 *
+	 * @param headModel
+	 * @param childModel
+	 * @return The end of the head model.
+	 */
+	@Override
+	public int findPositionForModel(IModel headModel, IModel childModel) {
 
-        // Discard text/whitespace nodes
-        if (IModelExtensions.isWhitespace(childModel)) {
-            return -1;
-        }
+		// Discard text/whitespace nodes
+		if (IModelExtensions.isWhitespace(childModel)) {
+			return -1;
+		}
 
-        // Locate any matching <title> element
-        if (IModelExtensions.isElementOf(childModel, "title")) {
-            int existingTitleIndex = IModelExtensions.findIndexOf(headModel, event -> ITemplateEventExtensions.isOpeningElementOf(event, "title"));
-            if (existingTitleIndex != -1) {
-                return existingTitleIndex;
-            }
-        }
+		// Locate any matching <title> element
+		if (IModelExtensions.isElementOf(childModel, "title")) {
+			int existingTitleIndex = IModelExtensions.findIndexOf(headModel, event -> ITemplateEventExtensions.isOpeningElementOf(event, "title"));
+			if (existingTitleIndex != -1) {
+				return existingTitleIndex;
+			}
+		}
 
-        // Return the end of the <head> element
-        int positions = headModel.size();
-        return positions - (positions > 2 ? 2 : 1);
-    }
+		// Return the end of the <head> element
+		int positions = headModel.size();
+		return positions - (positions > 2 ? 2 : 1);
+	}
 }

@@ -15,8 +15,9 @@
  */
 package nz.net.ultraq.thymeleaf.models.extensions;
 
-import java.util.Iterator;
 import org.thymeleaf.model.IModel;
+
+import java.util.Iterator;
 
 /**
  * An iterator that works with a model's immediate children, returning each one
@@ -27,39 +28,39 @@ import org.thymeleaf.model.IModel;
  */
 public class ChildModelIterator implements Iterator<IModel> {
 
-    private final IModel parent;
-    private int currentIndex = 1;  // Starts after the root element
+	private final IModel parent;
+	private int currentIndex = 1;  // Starts after the root element
 
-    public ChildModelIterator(IModel parent) {
-        this.parent = parent;
-    }
+	public ChildModelIterator(IModel parent) {
+		this.parent = parent;
+	}
 
-    @Override
-    public boolean hasNext() {
-        return currentIndex < (parent.size() - 1);
-    }
+	@Override
+	public boolean hasNext() {
+		return currentIndex < (parent.size() - 1);
+	}
 
-    /**
-     * Returns the next immediate child model of this model.
-     *
-     * @return The next model in the iteration.
-     */
-    @Override
-    public IModel next() {
-        IModel subModel = IModelExtensions.getModel(parent, currentIndex);
-        currentIndex += subModel.size();
-        return subModel;
-    }
+	/**
+	 * Returns the next immediate child model of this model.
+	 *
+	 * @return The next model in the iteration.
+	 */
+	@Override
+	public IModel next() {
+		IModel subModel = IModelExtensions.getModel(parent, currentIndex);
+		currentIndex += subModel.size();
+		return subModel;
+	}
 
-    /**
-     * Not applicable for this iterator.
-     *
-     * @throws UnsupportedOperationException
-     */
+	/**
+	 * Not applicable for this iterator.
+	 *
+	 * @throws UnsupportedOperationException
+	 */
 	// TODO: Not needed from Java 8 onwards - default method does this
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
 
 }

@@ -15,8 +15,6 @@
  */
 package nz.net.ultraq.thymeleaf.fragments;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import nz.net.ultraq.thymeleaf.fragments.extensions.FragmentExtensions;
 import nz.net.ultraq.thymeleaf.models.ElementMerger;
 import nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions;
@@ -32,6 +30,9 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.util.StringUtils;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Processor produced from FragmentProcessor in order to separate include and
  * define logic to avoid ambiguity.
@@ -42,91 +43,91 @@ import org.thymeleaf.util.StringUtils;
  */
 public class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(CollectFragmentProcessor.class);
+	private static final Logger logger = LoggerFactory.getLogger(CollectFragmentProcessor.class);
 
-    private static final AtomicBoolean warned = new AtomicBoolean();
+	private static final AtomicBoolean warned = new AtomicBoolean();
 
-    public static final String PROCESSOR_DEFINE = "define";
-    public static final String PROCESSOR_COLLECT = "collect";
-    public static final int PROCESSOR_PRECEDENCE = 1;
+	public static final String PROCESSOR_DEFINE = "define";
+	public static final String PROCESSOR_COLLECT = "collect";
+	public static final int PROCESSOR_PRECEDENCE = 1;
 
-    /**
-     * Constructor, sets this processor to work on the 'collect' attribute.
-     *
-     * @param templateMode
-     * @param dialectPrefix
-     */
-    public CollectFragmentProcessor(TemplateMode templateMode, String dialectPrefix) {
+	/**
+	 * Constructor, sets this processor to work on the 'collect' attribute.
+	 *
+	 * @param templateMode
+	 * @param dialectPrefix
+	 */
+	public CollectFragmentProcessor(TemplateMode templateMode, String dialectPrefix) {
 
-        super(templateMode, dialectPrefix, null, false, PROCESSOR_COLLECT, true, PROCESSOR_PRECEDENCE, true);
-    }
+		super(templateMode, dialectPrefix, null, false, PROCESSOR_COLLECT, true, PROCESSOR_PRECEDENCE, true);
+	}
 
-    /**
-     * Inserts the content of <code>:define</code> fragments into the
-     * encountered collect placeholder.
-     *
-     * @param context
-     * @param tag
-     * @param attributeName
-     * @param attributeValue
-     * @param structureHandler
-     */
-    @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-            AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
+	/**
+	 * Inserts the content of <code>:define</code> fragments into the
+	 * encountered collect placeholder.
+	 *
+	 * @param context
+	 * @param tag
+	 * @param attributeName
+	 * @param attributeValue
+	 * @param structureHandler
+	 */
+	@Override
+	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
+													 AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 
-        // Emit a warning if found in the <head> section
-        if (getTemplateMode() == TemplateMode.HTML) {
-            for (IProcessableElementTag element : context.getElementStack()) {
-                if ("head".equals(element.getElementCompleteName())) {
-                    if (warned.compareAndSet(false, true)) {
-                        logger.warn(
-                                "You don\'t need to put the layout:fragment/data-layout-fragment attribute into the <head> section - "
-                                + "the decoration process will automatically copy the <head> section of your content templates into your layout page."
-                        );
-                    }
-                    break;
-                }
-            }
-        }
+		// Emit a warning if found in the <head> section
+		if (getTemplateMode() == TemplateMode.HTML) {
+			for (IProcessableElementTag element : context.getElementStack()) {
+				if ("head".equals(element.getElementCompleteName())) {
+					if (warned.compareAndSet(false, true)) {
+						logger.warn(
+							"You don\'t need to put the layout:fragment/data-layout-fragment attribute into the <head> section - "
+								+ "the decoration process will automatically copy the <head> section of your content templates into your layout page."
+						);
+					}
+					break;
+				}
+			}
+		}
 
-        // All :define fragments we collected, :collect fragments included to determine where to stop.
-        // Fragments after :collect are preserved for the next :collect event
-        List<IModel> fragments = FragmentExtensions.getFragmentCollection(context).get(attributeValue);
+		// All :define fragments we collected, :collect fragments included to determine where to stop.
+		// Fragments after :collect are preserved for the next :collect event
+		List<IModel> fragments = FragmentExtensions.getFragmentCollection(context).get(attributeValue);
 
-        // Replace the tag body with the fragment
-        if (fragments != null && !fragments.isEmpty()) {
-            IModelFactory modelFactory = context.getModelFactory();
-            ElementMerger merger = new ElementMerger(context);
-            IModel[] replacementModel = {modelFactory.createModel(tag)};
-            boolean first = true;
-            while (!fragments.isEmpty()) {
-                IModel fragment = fragments.remove(0);
-                if (!StringUtils.isEmpty(((IProcessableElementTag) fragment.get(0)).getAttributeValue(getDialectPrefix(), PROCESSOR_COLLECT))) {
-                    break;
-                }
-                if (first) {
-                    replacementModel[0] = merger.merge(replacementModel[0], fragment);
-                    first = false;
-                } else {
-                    AtomicBoolean firstEvent = new AtomicBoolean(true);
-                    IModelExtensions.each(fragment, event -> {
-                        if (firstEvent.compareAndSet(true, false)) {
-                            replacementModel[0].add(modelFactory.createText("\n"));
-                            replacementModel[0].add(modelFactory.removeAttribute((IProcessableElementTag) event, getDialectPrefix(), PROCESSOR_DEFINE));
-                        } else {
-                            replacementModel[0].add(event);
-                        }
-                    });
-                }
-            }
+		// Replace the tag body with the fragment
+		if (fragments != null && !fragments.isEmpty()) {
+			IModelFactory modelFactory = context.getModelFactory();
+			ElementMerger merger = new ElementMerger(context);
+			IModel[] replacementModel = {modelFactory.createModel(tag)};
+			boolean first = true;
+			while (!fragments.isEmpty()) {
+				IModel fragment = fragments.remove(0);
+				if (!StringUtils.isEmpty(((IProcessableElementTag) fragment.get(0)).getAttributeValue(getDialectPrefix(), PROCESSOR_COLLECT))) {
+					break;
+				}
+				if (first) {
+					replacementModel[0] = merger.merge(replacementModel[0], fragment);
+					first = false;
+				} else {
+					AtomicBoolean firstEvent = new AtomicBoolean(true);
+					IModelExtensions.each(fragment, event -> {
+						if (firstEvent.compareAndSet(true, false)) {
+							replacementModel[0].add(modelFactory.createText("\n"));
+							replacementModel[0].add(modelFactory.removeAttribute((IProcessableElementTag) event, getDialectPrefix(), PROCESSOR_DEFINE));
+						} else {
+							replacementModel[0].add(event);
+						}
+					});
+				}
+			}
 
-            // Remove the layout:collect attribute - Thymeleaf won't do it for us
-            // when using StructureHandler.replaceWith(...)
-            replacementModel[0].replace(0, modelFactory.removeAttribute((IProcessableElementTag) IModelExtensions.first(replacementModel[0]), getDialectPrefix(), PROCESSOR_COLLECT));
+			// Remove the layout:collect attribute - Thymeleaf won't do it for us
+			// when using StructureHandler.replaceWith(...)
+			replacementModel[0].replace(0, modelFactory.removeAttribute((IProcessableElementTag) IModelExtensions.first(replacementModel[0]), getDialectPrefix(), PROCESSOR_COLLECT));
 
-            structureHandler.replaceWith(replacementModel[0], true);
-        }
-    }
+			structureHandler.replaceWith(replacementModel[0], true);
+		}
+	}
 
 }

@@ -18,12 +18,11 @@ package nz.net.ultraq.thymeleaf.internal;
 import org.thymeleaf.model.ITemplateEvent;
 
 /**
- *
  * @author zhanhb
  */
 @FunctionalInterface
 public interface ITemplateEventIntPredicate {
 
-    boolean test(ITemplateEvent event, int index);
+	boolean test(ITemplateEvent event, int index);
 
 }

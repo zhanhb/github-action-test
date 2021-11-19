@@ -15,7 +15,6 @@
  */
 package nz.net.ultraq.thymeleaf.fragments;
 
-import java.util.List;
 import nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IModel;
@@ -24,6 +23,8 @@ import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import org.thymeleaf.standard.expression.Assignation;
 import org.thymeleaf.standard.expression.AssignationSequence;
 import org.thymeleaf.standard.expression.FragmentExpression;
+
+import java.util.List;
 
 /**
  * Updates the variables at a given element/fragment scope to include those in a
@@ -34,59 +35,59 @@ import org.thymeleaf.standard.expression.FragmentExpression;
  */
 public class FragmentParameterVariableUpdater {
 
-    private final String dialectPrefix;
-    private final ITemplateContext context;
+	private final String dialectPrefix;
+	private final ITemplateContext context;
 
-    /**
-     * Constructor, set the dialect prefix currently being used.
-     *
-     * @param dialectPrefix
-     */
-    public FragmentParameterVariableUpdater(String dialectPrefix, ITemplateContext context) {
+	/**
+	 * Constructor, set the dialect prefix currently being used.
+	 *
+	 * @param dialectPrefix
+	 */
+	public FragmentParameterVariableUpdater(String dialectPrefix, ITemplateContext context) {
 
-        this.dialectPrefix = dialectPrefix;
-        this.context = context;
-    }
+		this.dialectPrefix = dialectPrefix;
+		this.context = context;
+	}
 
-    /**
-     * Given a fragment expression, update the local variables of the element
-     * being processed.
-     *
-     * @param fragmentExpression
-     * @param fragment
-     * @param structureHandler
-     */
-    public void updateLocalVariables(FragmentExpression fragmentExpression, IModel fragment,
-            IElementModelStructureHandler structureHandler) {
+	/**
+	 * Given a fragment expression, update the local variables of the element
+	 * being processed.
+	 *
+	 * @param fragmentExpression
+	 * @param fragment
+	 * @param structureHandler
+	 */
+	public void updateLocalVariables(FragmentExpression fragmentExpression, IModel fragment,
+																	 IElementModelStructureHandler structureHandler) {
 
-        // When fragment parameters aren't named, derive the name from the fragment definition
-        if (fragmentExpression.hasSyntheticParameters()) {
-            String fragmentDefinition = ((IProcessableElementTag) IModelExtensions.first(fragment)).getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME);
-            List<String> parameterNames = new FragmentParameterNamesExtractor().extract(fragmentDefinition);
-            AssignationSequence parameters = fragmentExpression.getParameters();
-            if (parameters != null) {
-                int index = 0;
-                for (Assignation parameter : parameters) {
-                    structureHandler.setLocalVariable(parameterNames.get(index), parameter.getRight().execute(context));
-                    ++index;
-                }
-            }
-        } else { // Otherwise, apply values as is
-            AssignationSequence parameters = fragmentExpression.getParameters();
-            if (parameters != null) {
-                for (Assignation parameter : parameters) {
-                    structureHandler.setLocalVariable((String) parameter.getLeft().execute(context), parameter.getRight().execute(context));
-                }
-            }
-        }
-    }
+		// When fragment parameters aren't named, derive the name from the fragment definition
+		if (fragmentExpression.hasSyntheticParameters()) {
+			String fragmentDefinition = ((IProcessableElementTag) IModelExtensions.first(fragment)).getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME);
+			List<String> parameterNames = new FragmentParameterNamesExtractor().extract(fragmentDefinition);
+			AssignationSequence parameters = fragmentExpression.getParameters();
+			if (parameters != null) {
+				int index = 0;
+				for (Assignation parameter : parameters) {
+					structureHandler.setLocalVariable(parameterNames.get(index), parameter.getRight().execute(context));
+					++index;
+				}
+			}
+		} else { // Otherwise, apply values as is
+			AssignationSequence parameters = fragmentExpression.getParameters();
+			if (parameters != null) {
+				for (Assignation parameter : parameters) {
+					structureHandler.setLocalVariable((String) parameter.getLeft().execute(context), parameter.getRight().execute(context));
+				}
+			}
+		}
+	}
 
-    public final String getDialectPrefix() {
-        return this.dialectPrefix;
-    }
+	public final String getDialectPrefix() {
+		return this.dialectPrefix;
+	}
 
-    public final ITemplateContext getContext() {
-        return this.context;
-    }
+	public final ITemplateContext getContext() {
+		return this.context;
+	}
 
 }

@@ -15,9 +15,10 @@
  */
 package nz.net.ultraq.thymeleaf.models.extensions;
 
-import java.util.Objects;
 import org.thymeleaf.model.IElementTag;
 import org.thymeleaf.model.IProcessableElementTag;
+
+import java.util.Objects;
 
 /**
  * Meta-programming extensions to the {@link IProcessableElementTag} class.
@@ -27,18 +28,18 @@ import org.thymeleaf.model.IProcessableElementTag;
  */
 public class IProcessableElementTagExtensions {
 
-    /**
-     * Compares this open tag with another.
-     *
-     * @param self
-     * @param other
-     * @return {@code true} if this tag has the same name and attributes as the
-     * other element.
-     */
-    public static boolean equals(IProcessableElementTag self, Object other) {
-        return other instanceof IProcessableElementTag
-                && Objects.equals(self.getElementCompleteName(), ((IElementTag) other).getElementCompleteName())
-                && Objects.equals(self.getAttributeMap(), ((IProcessableElementTag) other).getAttributeMap());
-    }
+	/**
+	 * Compares this open tag with another.
+	 *
+	 * @param self
+	 * @param other
+	 * @return {@code true} if this tag has the same name and attributes as the
+	 * other element.
+	 */
+	public static boolean equals(IProcessableElementTag self, Object other) {
+		return other instanceof IProcessableElementTag
+			&& Objects.equals(self.getElementCompleteName(), ((IElementTag) other).getElementCompleteName())
+			&& Objects.equals(self.getAttributeMap(), ((IProcessableElementTag) other).getAttributeMap());
+	}
 
 }
