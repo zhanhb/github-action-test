@@ -34,7 +34,7 @@
         <objenesis.version>2.6</objenesis.version>
         <ognl3.version>3.1.26</ognl3.version>
         <osgi.export>!nz.net.ultraq.thymeleaf.internal,
-            nz.net.ultraq.thymeleaf.expressions;version=1.2.0,
+            nz.net.ultraq.thymeleaf.expressions;version=3.0.0,
             nz.net.ultraq.thymeleaf.*</osgi.export>
         <osgi.import>!nz.net.ultraq.thymeleaf.*,
             javax.annotation.*;resolution:=optional,
@@ -240,7 +240,7 @@
                                 <name>nz/net/ultraq/thymeleaf/expressions/</name>
                                 <manifestEntries>
                                     <Implementation-Title>Thymeleaf Expression Processor</Implementation-Title>
-                                    <Implementation-Version>1.2.0</Implementation-Version>
+                                    <Implementation-Version>3.0.0</Implementation-Version>
                                     <Specification-Title>Thymeleaf Expression Processor</Specification-Title>
                                     <Specification-Version>1.2</Specification-Version>
                                 </manifestEntries>
