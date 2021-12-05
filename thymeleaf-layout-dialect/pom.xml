@@ -33,15 +33,15 @@
         <module.name>com.github.zhanhb.thymeleaf</module.name>
         <objenesis.version>2.6</objenesis.version>
         <ognl3.version>3.1.26</ognl3.version>
-        <osgi.export>!nz.net.ultraq.thymeleaf.internal,
-            nz.net.ultraq.thymeleaf.expressions;version=3.0.0,
-            nz.net.ultraq.thymeleaf.*</osgi.export>
+        <osgi.export>nz.net.ultraq.thymeleaf.expressions;version=3.0.0,
+					!nz.net.ultraq.thymeleaf.layoutdialect.internal,
+					nz.net.ultraq.thymeleaf.layoutdialect.*</osgi.export>
         <osgi.import>!nz.net.ultraq.thymeleaf.*,
             javax.annotation.*;resolution:=optional,
             org.codehaus.groovy.runtime.*;resolution:=optional,
             org.thymeleaf.*;version="[3.0,4)",
             *</osgi.import>
-        <osgi.private>nz.net.ultraq.thymeleaf.internal</osgi.private>
+        <osgi.private>nz.net.ultraq.thymeleaf.layoutdialect.internal</osgi.private>
         <prerequisites.maven>3.2</prerequisites.maven>
         <reflections.version>0.9.11</reflections.version>
         <slf4j.version>1.7.30</slf4j.version>

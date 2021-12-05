@@ -157,7 +157,7 @@
 
     <build>
         <sourceDirectory>${project.basedir}/source</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/tests</testSourceDirectory>
+        <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
         <resources>
             <resource>
                 <directory>${project.build.sourceDirectory}</directory>
