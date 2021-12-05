@@ -15,7 +15,6 @@
  */
 package nz.net.ultraq.thymeleaf.layoutdialect.context.extensions;
 
-import nz.net.ultraq.thymeleaf.layoutdialect.internal.Supplier;
 import org.thymeleaf.DialectConfiguration;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.context.IEngineContext;
@@ -23,6 +22,7 @@ import org.thymeleaf.context.IExpressionContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 /**
  * Meta-programming extensions to the {@link IContext} class.

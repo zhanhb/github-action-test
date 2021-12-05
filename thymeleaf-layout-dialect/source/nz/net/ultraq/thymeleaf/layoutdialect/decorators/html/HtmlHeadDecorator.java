@@ -17,7 +17,6 @@ package nz.net.ultraq.thymeleaf.layoutdialect.decorators.html;
 
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.Decorator;
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy;
-import nz.net.ultraq.thymeleaf.layoutdialect.internal.ITemplateEventPredicate;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.AttributeMerger;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ChildModelIterator;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions;
@@ -25,6 +24,9 @@ import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ITemplateEventExt
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
+import org.thymeleaf.model.ITemplateEvent;
+
+import java.util.function.Predicate;
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
@@ -34,7 +36,7 @@ import org.thymeleaf.model.IModelFactory;
  */
 public class HtmlHeadDecorator implements Decorator {
 
-	private static IModel titleRetriever(IModel headModel, ITemplateEventPredicate isTitle) {
+	private static IModel titleRetriever(IModel headModel, Predicate<ITemplateEvent> isTitle) {
 		return IModelExtensions.asBoolean(headModel) ? IModelExtensions.findModel(headModel, isTitle) : null;
 	}
 
@@ -68,7 +70,7 @@ public class HtmlHeadDecorator implements Decorator {
 		}
 
 		IModelFactory modelFactory = context.getModelFactory();
-		ITemplateEventPredicate isTitle = event -> ITemplateEventExtensions.isOpeningElementOf(event, "title");
+		Predicate<ITemplateEvent> isTitle = event -> ITemplateEventExtensions.isOpeningElementOf(event, "title");
 
 		// New head model based off the target being decorated
 		IModel resultHeadModel = new AttributeMerger(context).merge(targetHeadModel, sourceHeadModel);
