@@ -1,12 +1,12 @@
-/*
+/* 
  * Copyright 2014, Emanuel Rabina (http://www.ultraq.net.nz/)
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,6 @@ package nz.net.ultraq.thymeleaf.layoutdialect
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
-import org.junit.runners.Parameterized.Parameters
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
@@ -46,16 +45,14 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 	 * @return List of all Thymeleaf test files for the standard head element
 	 *         sorter.
 	 */
-	@Parameters(name = '{0}')
-	static List<String> listStandardLayoutDialectTests() {
+	static List<String> getThymeleafTestFiles() {
 
 		def tests = new Reflections('', new ResourcesScanner())
 			.getResources(~/(?!Examples|GroupingStrategy|Interaction).*\.thtest/) as List
 		def exclusions = [
 			'nz/net/ultraq/thymeleaf/layoutdialect/decorators/Decorate-DisabledHead.thtest',
 			'nz/net/ultraq/thymeleaf/layoutdialect/decorators/html/TitlePattern-AllowOtherProcessors.thtest',
-			'nz/net/ultraq/thymeleaf/layoutdialect/decorators/strategies/AppendingRespectLayoutTitleStrategy.thtest',
-			'nz/net/ultraq/thymeleaf/layoutdialect/decorators/strategies/GroupingRespectLayoutTitleStrategy.thtest',
+			'nz/net/ultraq/thymeleaf/layoutdialect/decorators/strategies/GroupingStrategy.thtest',
 
 			// Disabled, see test file for details
 			'nz/net/ultraq/thymeleaf/layoutdialect/decorators/html/TitlePattern-DynamicContent.thtest'

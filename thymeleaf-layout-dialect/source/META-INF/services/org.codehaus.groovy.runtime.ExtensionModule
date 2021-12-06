@@ -1,4 +1,4 @@
-moduleName = thymeleaf-extensions
+moduleName = thymeleaf-layout-dialect-extensions
 moduleVersion = ${version}
 extensionClasses = nz.net.ultraq.thymeleaf.layoutdialect.context.extensions.IContextExtensions,\
                    nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions.FragmentExtensions,\

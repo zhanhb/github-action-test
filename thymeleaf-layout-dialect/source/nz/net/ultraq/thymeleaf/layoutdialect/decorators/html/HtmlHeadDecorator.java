@@ -18,7 +18,6 @@ package nz.net.ultraq.thymeleaf.layoutdialect.decorators.html;
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.Decorator;
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.AttributeMerger;
-import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ChildModelIterator;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ITemplateEventExtensions;
 import org.thymeleaf.context.ITemplateContext;
@@ -26,6 +25,7 @@ import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.model.ITemplateEvent;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 /**
@@ -35,10 +35,6 @@ import java.util.function.Predicate;
  * @author Emanuel Rabina
  */
 public class HtmlHeadDecorator implements Decorator {
-
-	private static IModel titleRetriever(IModel headModel, Predicate<ITemplateEvent> isTitle) {
-		return IModelExtensions.asBoolean(headModel) ? IModelExtensions.findModel(headModel, isTitle) : null;
-	}
 
 	private final ITemplateContext context;
 	private final SortingStrategy sortingStrategy;
@@ -62,7 +58,6 @@ public class HtmlHeadDecorator implements Decorator {
 	 * @return Result of the decoration.
 	 */
 	@Override
-	@SuppressWarnings("deprecation")
 	public IModel decorate(IModel targetHeadModel, IModel sourceHeadModel) {
 		// If none of the parameters are present, return nothing
 		if (!IModelExtensions.asBoolean(targetHeadModel) && !IModelExtensions.asBoolean(sourceHeadModel)) {
@@ -70,47 +65,32 @@ public class HtmlHeadDecorator implements Decorator {
 		}
 
 		IModelFactory modelFactory = context.getModelFactory();
-		Predicate<ITemplateEvent> isTitle = event -> ITemplateEventExtensions.isOpeningElementOf(event, "title");
 
 		// New head model based off the target being decorated
 		IModel resultHeadModel = new AttributeMerger(context).merge(targetHeadModel, sourceHeadModel);
-
-		// Get the source and target title elements to pass to the title decorator
-		IModel resultTitle = new HtmlTitleDecorator(context).decorate(
-			titleRetriever(targetHeadModel, isTitle),
-			titleRetriever(sourceHeadModel, isTitle)
-		);
-		if (IModelExtensions.asBoolean(resultTitle)) {
-
-			// TODO: Pure hack for retaining 2.x compatibility, remove the <head> from the layout :/
-			if (sortingStrategy instanceof nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStrategy
-				|| sortingStrategy instanceof nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.GroupingStrategy) {
-				IModelExtensions.removeModel(resultHeadModel, IModelExtensions.findIndexOf(resultHeadModel, isTitle));
-			}
-
-			int targetTitleIndex = sortingStrategy.findPositionForModel(resultHeadModel, resultTitle);
-			if (isTitle.test(resultHeadModel.get(targetTitleIndex))) {
-				IModelExtensions.replaceModel(resultHeadModel, targetTitleIndex, resultTitle);
-			} else {
-				IModelExtensions.insertModelWithWhitespace(resultHeadModel, targetTitleIndex, resultTitle, modelFactory);
-			}
-		}
-
-		// Merge the rest of the source <head> elements with the target <head>
-		// elements using the current merging strategy
 		if (IModelExtensions.asBoolean(sourceHeadModel) && IModelExtensions.asBoolean(targetHeadModel)) {
-			ChildModelIterator it = IModelExtensions.childModelIterator(sourceHeadModel);
+			Iterator<IModel> it = IModelExtensions.childModelIterator(sourceHeadModel);
 			if (it != null) {
 				while (it.hasNext()) {
 					IModel model = it.next();
-					if (isTitle.test(IModelExtensions.first(model))) {
-						continue;
-					}
 					IModelExtensions.insertModelWithWhitespace(resultHeadModel,
 						sortingStrategy.findPositionForModel(resultHeadModel, model),
 						model, modelFactory);
 				}
 			}
+		}
+
+		// Replace <title>s in the result with a proper merge of the source and target <title> elements
+		Predicate<ITemplateEvent> titleFinder = event -> ITemplateEventExtensions.isOpeningElementOf(event, "title");
+
+		int indexOfTitle = IModelExtensions.findIndexOf(resultHeadModel, titleFinder);
+		if (indexOfTitle != -1) {
+			IModelExtensions.removeAllModels(resultHeadModel, titleFinder);
+			IModel resultTitle = new HtmlTitleDecorator(context).decorate(
+				IModelExtensions.asBoolean(targetHeadModel) ? IModelExtensions.findModel(targetHeadModel, titleFinder) : null,
+				IModelExtensions.asBoolean(sourceHeadModel) ? IModelExtensions.findModel(sourceHeadModel, titleFinder) : null
+			);
+			IModelExtensions.insertModelWithWhitespace(resultHeadModel, indexOfTitle, resultTitle, modelFactory);
 		}
 		return resultHeadModel;
 	}

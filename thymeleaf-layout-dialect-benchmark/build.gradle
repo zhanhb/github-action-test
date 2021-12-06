@@ -19,11 +19,11 @@ import java.time.LocalDateTime
 
 plugins {
 	id 'groovy'
-	id 'org.springframework.boot' version '2.1.8.RELEASE'
-	id 'com.github.psxpaul.execfork' version '0.1.12'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.springframework.boot' version '2.5.3'
+	id 'com.github.psxpaul.execfork' version '0.1.13'
 }
-apply plugin: 'io.spring.dependency-management'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.3.0/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.4.0/gradle-support.gradle'
 
 description = 'A basic web application to test the performance of the Thymeleaf Layout Dialect'
 archivesBaseName = 'thymeleaf-layout-dialect-benchmark'
@@ -32,14 +32,10 @@ sourceCompatibility = 1.8
 dependencies {
 	implementation(
 		project(':thymeleaf-layout-dialect'),
-		'org.codehaus.groovy:groovy:2.5.14',
+		'org.codehaus.groovy:groovy:3.0.8',
 		'org.springframework.boot:spring-boot-starter-thymeleaf',
 		'org.springframework.boot:spring-boot-starter-web'
 	)
-}
-
-bootJar {
-	mainClassName = 'nz.net.ultraq.thymeleaf.benchmark.BenchmarkApplication'
 }
 
 task startWebApp(type: ExecFork, dependsOn: build) {
@@ -62,7 +58,7 @@ task benchmark(type: Exec, dependsOn: startWebApp) {
 	executable = 'jmeter'
 	args = [
 		'-n',
-		'-t', 'tests/simulate-load.jmx',
+		'-t', 'test/simulate-load.jmx',
 		'-l', "${resultsDir}/${dateTimeString}.csv",
 		'-e',
 		'-o', "${reportsDir}/${dateTimeString}"

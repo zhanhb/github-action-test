@@ -52,15 +52,4 @@ public class ChildModelIterator implements Iterator<IModel> {
 		return subModel;
 	}
 
-	/**
-	 * Not applicable for this iterator.
-	 *
-	 * @throws UnsupportedOperationException
-	 */
-	// TODO: Not needed from Java 8 onwards - default method does this
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
-	}
-
 }

@@ -11,7 +11,7 @@ Thymeleaf Layout Dialect rewriten in java.
 Installation
 ------------
 
-Minimum of Java 7 and Thymeleaf 3.0 required.
+Minimum of Java 8 and Thymeleaf 3.0 required.
 
 ### Standalone distribution
 Copy the JAR from [one of the release bundles](https://github.com/zhanhb/thymeleaf-layout-dialect/releases),

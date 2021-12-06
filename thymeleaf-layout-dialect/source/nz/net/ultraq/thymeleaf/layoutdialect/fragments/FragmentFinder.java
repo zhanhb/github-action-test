@@ -56,6 +56,7 @@ public class FragmentFinder {
 	 * @param model Model whose events are to be searched.
 	 * @return Map of fragment names and their elements.
 	 */
+	@SuppressWarnings("deprecation")
 	public Map<String, List<IModel>> findFragments(IModel model) {
 		Map<String, List<IModel>> fragmentsMap = new LinkedHashMap<>();
 

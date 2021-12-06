@@ -41,11 +41,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Emanuel Rabina
  * @author George Vinokhodov
  */
+@Deprecated
 public class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(CollectFragmentProcessor.class);
 
 	private static final AtomicBoolean warned = new AtomicBoolean();
+	private static final AtomicBoolean deprecationWarned = new AtomicBoolean();
 
 	public static final String PROCESSOR_DEFINE = "define";
 	public static final String PROCESSOR_COLLECT = "collect";
@@ -75,6 +77,12 @@ public class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 	@Override
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
 													 AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
+
+		if (deprecationWarned.compareAndSet(false, true)) {
+			logger.warn(
+				"The layout:collect/data-layout-collect processor is deprecated and will be removed in the next major version of the layout dialect."
+			);
+		}
 
 		// Emit a warning if found in the <head> section
 		if (getTemplateMode() == TemplateMode.HTML) {

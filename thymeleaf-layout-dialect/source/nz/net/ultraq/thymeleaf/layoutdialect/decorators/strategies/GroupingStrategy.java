@@ -16,34 +16,20 @@
 package nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies;
 
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy;
-import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ChildModelIterator;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions;
-import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ITemplateEventExtensions;
 import org.thymeleaf.model.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
  * The {@code <head>} merging strategy which groups like elements together.
- * <p>
- * The default behaviour of the layout dialect has historically been to place
- * the {@code <title>} element at the beginning of the {@code <head>} element
- * during the decoration process; an arbitrary design decision which made
- * development of this library easier. However, this runs against the
- * expectations of developers who wished to control the order of elements, most
- * notably the position of a {@code <meta charset...>} element.
- * <p>
- * This sorting strategy has been updated in 2.4.0 to retain this behaviour as
- * backwards compatibility with the 2.x versions of the layout dialect, but is
- * now deprecated and expected to be replaced by the
- * {@link GroupingRespectLayoutTitleStrategy} sorter from version 3.x onwards.
  *
  * @author zhanhb
  * @author Emanuel Rabina
- * @since 1.2.6
+ * @since 2.4.0
  */
-@Deprecated
 public class GroupingStrategy implements SortingStrategy {
 
 	/**
@@ -58,7 +44,8 @@ public class GroupingStrategy implements SortingStrategy {
 		final int SCRIPT = 3;
 		final int STYLE = 4;
 		final int STYLESHEET = 5;
-		final int OTHER = 6;
+		final int TITLE = 6;
+		final int OTHER = 7;
 
 		ITemplateEvent event = IModelExtensions.first(model);
 
@@ -79,6 +66,9 @@ public class GroupingStrategy implements SortingStrategy {
 			if (event instanceof IProcessableElementTag && "link".equals(elementCompleteName)
 				&& "stylesheet".equals(((IProcessableElementTag) event).getAttributeValue("rel"))) {
 				return STYLESHEET;
+			}
+			if (event instanceof IOpenElementTag && "title".equals(elementCompleteName)) {
+				return TITLE;
 			}
 			return OTHER;
 		}
@@ -101,20 +91,11 @@ public class GroupingStrategy implements SortingStrategy {
 			return -1;
 		}
 
-		// For backwards compatibility, match the location of any element at the
-		// beginning of the <head> element.
-		if (IModelExtensions.isElementOf(childModel, "title")) {
-			int firstElementIndex = IModelExtensions.findIndexOf(headModel, 1, ITemplateEventExtensions::isOpeningElement);
-			if (firstElementIndex != -1) {
-				return firstElementIndex;
-			}
-			return headModel.size() > 2 ? 2 : 1;
-		}
-
+		// Find the last element of the same type, and return the point after that
 		int type = findMatchingType(childModel);
 		ArrayList<IModel> list = new ArrayList<>(20);
 
-		ChildModelIterator it = IModelExtensions.childModelIterator(headModel);
+		Iterator<IModel> it = IModelExtensions.childModelIterator(headModel);
 		if (it != null) {
 			while (it.hasNext()) {
 				list.add(it.next());
@@ -132,7 +113,9 @@ public class GroupingStrategy implements SortingStrategy {
 			}
 		}
 
-		return 1;
+		// Otherwise, do what the AppendingStrategy does
+		int positions = headModel.size();
+		return positions - (positions > 2 ? 2 : 1);
 	}
 
 }

@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.layoutdialect.models
 
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect
+
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.engine.TemplateData
 import org.thymeleaf.engine.TemplateManager
@@ -98,6 +99,7 @@ class ModelBuilderTests extends Specification {
 			}
 
 		then:
-			modelFromBuilder.equalsIgnoreWhitespace(modelFromTemplate)
+			def nonWhitespaceEvents = { event -> !event.whitespace }
+			assert modelFromBuilder.findAll(nonWhitespaceEvents) == modelFromTemplate.findAll(nonWhitespaceEvents)
 	}
 }

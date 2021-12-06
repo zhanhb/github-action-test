@@ -6,7 +6,6 @@ import org.thymeleaf.dialect.IProcessorDialect;
 
 import javax.annotation.Nonnull;
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles.*;
 
 import static java.lang.invoke.MethodHandles.*;
 import static java.lang.invoke.MethodType.methodType;

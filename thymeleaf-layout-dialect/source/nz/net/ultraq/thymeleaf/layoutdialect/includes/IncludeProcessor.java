@@ -21,7 +21,6 @@ import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentParameterNamesExt
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions.FragmentExtensions;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.TemplateModelFinder;
-import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ChildModelIterator;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +36,7 @@ import org.thymeleaf.standard.expression.AssignationSequence;
 import org.thymeleaf.standard.expression.FragmentExpression;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -110,7 +110,7 @@ public class IncludeProcessor extends AbstractAttributeModelProcessor {
 		// from the model so that we can use the child event iterator.
 		IModelExtensions.trim(fragmentForInclusionUse);
 
-		ChildModelIterator it = IModelExtensions.childModelIterator(fragmentForInclusionUse);
+		Iterator<IModel> it = IModelExtensions.childModelIterator(fragmentForInclusionUse);
 		if (it != null) {
 			while (it.hasNext()) {
 				IModel fragmentChildModel = it.next();

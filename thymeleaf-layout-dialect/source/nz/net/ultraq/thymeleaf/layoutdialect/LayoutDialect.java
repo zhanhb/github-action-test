@@ -18,7 +18,7 @@ package nz.net.ultraq.thymeleaf.layoutdialect;
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.DecorateProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy;
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.TitlePatternProcessor;
-import nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor;
+import nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStrategy;
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.includes.InsertProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.includes.ReplaceProcessor;
@@ -72,9 +72,8 @@ public class LayoutDialect extends AbstractProcessorDialect {
 	/**
 	 * Constructor, configure the layout dialect.
 	 */
-	@SuppressWarnings("deprecation")
 	public LayoutDialect() {
-		this(new nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStrategy());
+		this(new AppendingStrategy());
 	}
 
 	/**
@@ -90,22 +89,21 @@ public class LayoutDialect extends AbstractProcessorDialect {
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
 			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy, autoHeadMerging),
-			new nz.net.ultraq.thymeleaf.layoutdialect.decorators.DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy, autoHeadMerging),
 			new nz.net.ultraq.thymeleaf.layoutdialect.includes.IncludeProcessor(TemplateMode.HTML, dialectPrefix),
 			new InsertProcessor(TemplateMode.HTML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
 			new FragmentProcessor(TemplateMode.HTML, dialectPrefix),
-			new CollectFragmentProcessor(TemplateMode.HTML, dialectPrefix),
+			new nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor(TemplateMode.HTML, dialectPrefix),
 			new TitlePatternProcessor(TemplateMode.HTML, dialectPrefix),
+
 			// Processors available in the XML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
 			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy, autoHeadMerging),
-			new nz.net.ultraq.thymeleaf.layoutdialect.decorators.DecoratorProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy, autoHeadMerging),
 			new nz.net.ultraq.thymeleaf.layoutdialect.includes.IncludeProcessor(TemplateMode.XML, dialectPrefix),
 			new InsertProcessor(TemplateMode.XML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
 			new FragmentProcessor(TemplateMode.XML, dialectPrefix),
-			new CollectFragmentProcessor(TemplateMode.XML, dialectPrefix)
+			new nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor(TemplateMode.XML, dialectPrefix)
 		));
 	}
 

@@ -18,6 +18,7 @@ package nz.net.ultraq.thymeleaf.layoutdialect.models.extensions
 
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect
 import nz.net.ultraq.thymeleaf.layoutdialect.models.ModelBuilder
+
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
 import spock.lang.Specification
@@ -68,9 +69,9 @@ class ChildModelIteratorTests extends Specification {
 			def childModelIterator = model.childModelIterator()
 
 		then:
-			childModelIterator.next().equalsIgnoreWhitespace(pModel1)
-			childModelIterator.next().equalsIgnoreWhitespace(hrModel)
-			childModelIterator.next().equalsIgnoreWhitespace(pModel2)
+			childModelIterator.next() == pModel1
+			childModelIterator.next() == hrModel
+			childModelIterator.next() == pModel2
 			!childModelIterator.hasNext()
 	}
 }

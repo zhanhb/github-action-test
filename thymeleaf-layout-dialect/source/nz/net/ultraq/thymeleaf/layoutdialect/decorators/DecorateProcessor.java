@@ -15,15 +15,14 @@
  */
 package nz.net.ultraq.thymeleaf.layoutdialect.decorators;
 
+import nz.net.ultraq.thymeleaf.expressionprocessor.ExpressionProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlDocumentDecorator;
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.xml.XmlDocumentDecorator;
-import nz.net.ultraq.thymeleaf.expressionprocessor.ExpressionProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentFinder;
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions.FragmentExtensions;
-import nz.net.ultraq.thymeleaf.layoutdialect.internal.IContextDelegate;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.TemplateModelFinder;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions;
-import org.thymeleaf.context.IContext;
+import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IProcessableElementTagExtensions;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.engine.TemplateData;
@@ -32,7 +31,6 @@ import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeModelProcessor;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
-import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.standard.expression.Assignation;
 import org.thymeleaf.standard.expression.AssignationSequence;
 import org.thymeleaf.standard.expression.FragmentExpression;
@@ -40,7 +38,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Specifies the name of the template to decorate using the current template.
@@ -52,42 +49,6 @@ public class DecorateProcessor extends AbstractAttributeModelProcessor {
 
 	public static final String PROCESSOR_NAME = "decorate";
 	public static final int PROCESSOR_PRECEDENCE = 0;
-
-	/**
-	 * Compare the root elements, barring some attributes, to see if they are
-	 * the same.
-	 *
-	 * @param element1
-	 * @param element2
-	 * @param context
-	 * @return {@code true} if the elements share the same name and all
-	 * attributes, with the exception of XML namespace declarations and
-	 * Thymeleaf's {@code th:with} attribute processor.
-	 */
-	private static boolean rootElementsEqual(IProcessableElementTag element1,
-																					 IProcessableElementTag element2, IContext context) {
-
-		if (element1 != null && element2 != null
-			&& Objects.equals(element1.getElementDefinition(), element2.getElementDefinition())) {
-			String maybe = IContextDelegate.getPrefixForDialect(context, StandardDialect.class) + ":with";
-			Map<String, String> attributeMap = element2.getAttributeMap();
-			for (Map.Entry<String, String> entry : element1.getAttributeMap().entrySet()) {
-				String key = entry.getKey();
-				String value = entry.getValue();
-				if (key.startsWith("xmlns:") || key.equals(maybe)) {
-					continue;
-				}
-				if (!attributeMap.containsKey(key)) {
-					return false;
-				}
-				if (!Objects.equals(value, attributeMap.get(key))) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
 
 	private final boolean autoHeadMerging;
 	private final SortingStrategy sortingStrategy;
@@ -146,7 +107,7 @@ public class DecorateProcessor extends AbstractAttributeModelProcessor {
 		// Check that the root element is the same as the one currently being processed
 		IProcessableElementTag contentRootEvent = (IProcessableElementTag) IModelExtensions.find(contentTemplate, event -> event instanceof IProcessableElementTag);
 		IProcessableElementTag rootElement = (IProcessableElementTag) IModelExtensions.first(model);
-		if (!rootElementsEqual(contentRootEvent, rootElement, context)) {
+		if (!IProcessableElementTagExtensions.equalsIgnoreXmlnsAndWith(contentRootEvent, rootElement, context)) {
 			throw new IllegalArgumentException("layout:decorate/data-layout-decorate must appear in the root element of your template");
 		}
 

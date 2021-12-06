@@ -15,9 +15,13 @@
  */
 package nz.net.ultraq.thymeleaf.layoutdialect.models.extensions;
 
+import nz.net.ultraq.thymeleaf.layoutdialect.internal.IContextDelegate;
+import org.thymeleaf.context.IContext;
 import org.thymeleaf.model.IElementTag;
 import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.standard.StandardDialect;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -29,8 +33,8 @@ import java.util.Objects;
 public class IProcessableElementTagExtensions {
 
 	/**
-	 * Compares this open tag with another.
-	 *
+	 * Compare processable elements for equality.
+	 * 
 	 * @param self
 	 * @param other
 	 * @return {@code true} if this tag has the same name and attributes as the
@@ -42,4 +46,36 @@ public class IProcessableElementTagExtensions {
 			&& Objects.equals(self.getAttributeMap(), ((IProcessableElementTag) other).getAttributeMap());
 	}
 
+	/**
+	 * Compare elements, ignoring XML namespace declarations and Thymeleaf's
+	 * {@code th:with} processor.
+	 * 
+	 * @param self
+	 * @param other
+	 * @param context
+	 * @return {@code true} if the elements share the same name and all attributes,
+	 *         with exceptions for of XML namespace declarations and Thymeleaf's
+	 *         {@code th:with} attribute processor.
+	 */
+	public static boolean equalsIgnoreXmlnsAndWith(IProcessableElementTag self, IProcessableElementTag other, IContext context) {
+
+		if (Objects.equals(self.getElementDefinition(), other.getElementDefinition())) {
+			String standardDialectPrefix = IContextDelegate.getPrefixForDialect(context, StandardDialect.class);
+			Map<String, String> attributeMap = other.getAttributeMap();
+			for (Map.Entry<String, String> entry : self.getAttributeMap().entrySet()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+				if (key.startsWith("xmlns:") || key.equals(standardDialectPrefix + ":with") || key.equals("data-" + "-with"))
+					continue;
+				if (!attributeMap.containsKey(key)) {
+					return false;
+				}
+				if (!Objects.equals(value, attributeMap.get(key))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 }

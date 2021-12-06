@@ -22,7 +22,6 @@ import nz.net.ultraq.thymeleaf.layoutdialect.decorators.TitlePatternProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.internal.IContextDelegate;
 import nz.net.ultraq.thymeleaf.layoutdialect.internal.ModelBuilder;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.ElementMerger;
-import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ChildModelIterator;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IAttribute;
@@ -34,6 +33,7 @@ import org.thymeleaf.standard.processor.StandardTextTagProcessor;
 import org.thymeleaf.standard.processor.StandardUtextTagProcessor;
 
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Decorator for the {@code <title>} part of the template to handle the special
@@ -81,7 +81,7 @@ public class HtmlTitleDecorator implements Decorator {
 
 			} else {
 				IModel titleChildrenModel = context.getModelFactory().createModel();
-				ChildModelIterator it = IModelExtensions.childModelIterator(titleModel);
+				Iterator<IModel> it = IModelExtensions.childModelIterator(titleModel);
 				if (it != null) {
 					while (it.hasNext()) {
 						IModel model = it.next();

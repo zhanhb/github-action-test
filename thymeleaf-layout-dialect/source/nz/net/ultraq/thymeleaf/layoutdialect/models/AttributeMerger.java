@@ -16,7 +16,6 @@
 package nz.net.ultraq.thymeleaf.layoutdialect.models;
 
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
-import nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor;
 import nz.net.ultraq.thymeleaf.layoutdialect.internal.IContextDelegate;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IAttributeExtensions;
@@ -59,6 +58,7 @@ public class AttributeMerger implements ModelMerger {
 	 * @return New element with the merged attributes.
 	 */
 	@Override
+	@SuppressWarnings("deprecation")
 	public IModel merge(IModel targetModel, IModel sourceModel) {
 		// If one of the parameters is missing return a copy of the other, or
 		// nothing if both parameters are missing.
@@ -76,7 +76,7 @@ public class AttributeMerger implements ModelMerger {
 		for (IAttribute sourceAttribute : ((IProcessableElementTag) sourceModel.get(0)).getAllAttributes()) {
 			// Don't include layout:fragment processors
 			if (IAttributeExtensions.equalsName(sourceAttribute, layoutDialectPrefix, FragmentProcessor.PROCESSOR_NAME)
-				|| IAttributeExtensions.equalsName(sourceAttribute, layoutDialectPrefix, CollectFragmentProcessor.PROCESSOR_DEFINE)) {
+				|| IAttributeExtensions.equalsName(sourceAttribute, layoutDialectPrefix, nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor.PROCESSOR_DEFINE)) {
 				continue;
 			}
 

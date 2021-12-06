@@ -19,7 +19,10 @@ import org.thymeleaf.model.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -50,7 +53,7 @@ public class IModelExtensions {
 	 * @return New model iterator.
 	 */
 	@Nullable
-	public static ChildModelIterator childModelIterator(@Nonnull IModel self) {
+	public static Iterator<IModel> childModelIterator(@Nonnull IModel self) {
 		return isElement(self) ? new ChildModelIterator(self) : null;
 	}
 
@@ -82,42 +85,6 @@ public class IModelExtensions {
 				return everyWithIndex(self, (event, index) -> ITemplateEventExtensions.equals(event, iModel.get(index)));
 			}
 		}
-		return false;
-	}
-
-	/**
-	 * Compare 2 models, returning {@code true} if all of the model's events
-	 * non-whitespace events are equal.
-	 *
-	 * @param self
-	 * @param other
-	 * @return {@code true} if this model is the same (barring whitespace) as
-	 * the other one.
-	 */
-	public static boolean equalsIgnoreWhitespace(@Nullable IModel self, @Nullable IModel other) {
-		Iterator<ITemplateEvent> it = maskNull(self);
-		Iterator<ITemplateEvent> iterator = maskNull(other);
-		ITemplateEvent next;
-		ITemplateEvent that;
-		do {
-			do {
-				if (!it.hasNext()) {
-					do {
-						if (!iterator.hasNext()) {
-							return true;
-						}
-					} while (ITemplateEventExtensions.isWhitespace(iterator.next()));
-					return false;
-				}
-				next = it.next();
-			} while (ITemplateEventExtensions.isWhitespace(next));
-			do {
-				if (!iterator.hasNext()) {
-					return false;
-				}
-				that = iterator.next();
-			} while (ITemplateEventExtensions.isWhitespace(that));
-		} while (ITemplateEventExtensions.equals(next, that));
 		return false;
 	}
 
@@ -200,28 +167,6 @@ public class IModelExtensions {
 	}
 
 	/**
-	 * Returns the index of the first event in the model that meets the criteria
-	 * of the given closure, starting from a specified position.
-	 *
-	 * @param self
-	 * @param closure
-	 * @return The index of the first event to match the closure criteria, or
-	 * {@code -1} if nothing matched.
-	 */
-	public static int findIndexOf(
-		@Nonnull IModel self, int startIndex,
-		@Nonnull Predicate<ITemplateEvent> closure) {
-		for (int i = startIndex, size = self.size(); i < size; i++) {
-			ITemplateEvent event = self.get(i);
-			boolean result = closure.test(event);
-			if (result) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	/**
 	 * A special variant of {@code findIndexOf} that uses models, as I seem to
 	 * be using those a lot.
 	 * <p>
@@ -288,8 +233,11 @@ public class IModelExtensions {
 	}
 
 	/**
-	 * Inserts a model, creating a whitespace event before it so that it appears
-	 * in line with all the existing events.
+	 * Inserts a model, creating whitespace events around it so that it appears in
+	 * line with all the existing events.
+	 * <p>
+	 * This is currently only targeting uses in the layout dialect so doesn't work
+	 * very well as a general-purpose whitespace generator.
 	 *
 	 * @param self
 	 * @param pos          A valid index within the current model.
@@ -303,28 +251,26 @@ public class IModelExtensions {
 
 		if (0 <= pos && pos <= self.size()) {
 
-			// Use existing whitespace found at or before the insertion point
-			IModel whitespace = getModel(self, pos);
-			if (asBoolean(whitespace) && isWhitespace(whitespace)) {
-				self.insertModel(pos, model);
-				self.insertModel(pos, whitespace);
-				return;
-			}
+			// Derive the amount of whitespace to apply by finding the first
+			// whitespace event before the insertion point.  Defaults to a single tab.
+			String whitespace = "\t";
 			if (pos > 0) {
-				whitespace = getModel(self, pos - 1);
-				if (asBoolean(whitespace) && isWhitespace(whitespace)) {
-					self.insertModel(pos, whitespace);
-					self.insertModel(pos, model);
-					return;
+				for (int i = pos - 1; i >= 0; i--) {
+					ITemplateEvent event = self.get(i);
+					if (ITemplateEventExtensions.isWhitespace(event) && !((IText) event).getText().isEmpty()) {
+						whitespace = ((IText) event).getText().replaceAll("[\r\n]", "");
+						break;
+					}
 				}
 			}
 
-			// Generate whitespace, usually inserting into a tag that is immediately
-			// closed so whitespace should be added to either side
-			whitespace = modelFactory.createModel(modelFactory.createText("\n\t"));
-			self.insertModel(pos, whitespace);
+			// Insert an extra whitespace event for when adding to an immediately-closed
+			// element, eg: <div></div>
+			if (pos > 0 && self.get(pos - 1) instanceof IOpenElementTag && self.get(pos) instanceof ICloseElementTag) {
+				self.insertModel(pos, modelFactory.createModel(modelFactory.createText(System.lineSeparator())));
+			}
 			self.insertModel(pos, model);
-			self.insertModel(pos, whitespace);
+			self.insertModel(pos, modelFactory.createModel(modelFactory.createText(System.lineSeparator() + whitespace)));
 		}
 	}
 
@@ -365,29 +311,14 @@ public class IModelExtensions {
 	}
 
 	/**
-	 * Returns whether or not this model represents an element with potential
-	 * child elements.
+	 * Returns whether or not this model represents a single HTML element.
 	 *
 	 * @param self
 	 * @return {@code true} if the first event in this model is an opening tag
 	 * and the last event is the matching closing tag.
 	 */
 	public static boolean isElement(@Nonnull IModel self) {
-		return first(self) instanceof IOpenElementTag && last(self) instanceof ICloseElementTag;
-	}
-
-	/**
-	 * Returns whether or not this model represents an element of the given
-	 * name.
-	 *
-	 * @param self
-	 * @param tagName
-	 * @return {@code true} if the first event in this model is an opening tag,
-	 * the last event is the matching closing tag, and whether the element has
-	 * the given tag name.
-	 */
-	public static boolean isElementOf(@Nonnull IModel self, String tagName) {
-		return isElement(self) && Objects.equals(((IElementTag) first(self)).getElementCompleteName(), tagName);
+		return sizeOfModelAt(self, 0) == self.size();
 	}
 
 	/**
@@ -407,7 +338,7 @@ public class IModelExtensions {
 	 * @return A new iterator over the events of this model.
 	 */
 	@Nonnull
-	public static EventIterator iterator(@Nonnull IModel self) {
+	public static Iterator<ITemplateEvent> iterator(@Nonnull IModel self) {
 		return new EventIterator(self);
 	}
 
@@ -424,6 +355,26 @@ public class IModelExtensions {
 	 */
 	public static ITemplateEvent last(@Nonnull IModel self) {
 		return self.get(self.size() - 1);
+	}
+
+	/**
+	 * Remove a model identified by an event matched by the given closure.  Note
+	 * that this closure can match any event in the model, including the top-level
+	 * model itself.
+	 *
+	 * @param self
+	 * @param closure
+	 */
+	public static void removeAllModels(
+		@Nonnull IModel self,
+		Predicate<ITemplateEvent> closure) {
+		while (true) {
+			int modelIndex = findIndexOf(self, closure);
+			if (modelIndex == -1) {
+				return;
+			}
+			removeModel(self, modelIndex);
+		}
 	}
 
 	/**
