@@ -28,7 +28,7 @@
 		<hamcrest.version>2.2</hamcrest.version>
 		<javassist.version>3.20.0-GA</javassist.version>
 		<mockito.version>3.12.4</mockito.version>
-		<module.name>com.github.zhanhb.thymeleaf</module.name>
+		<module.name>nz.net.ultraq.thymeleaf.layoutdialect</module.name>
 		<objenesis.version>3.2</objenesis.version>
 		<ognl3.version>3.1.26</ognl3.version>
 		<osgi.export>
