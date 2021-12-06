@@ -31,18 +31,28 @@
 		<module.name>com.github.zhanhb.thymeleaf</module.name>
 		<objenesis.version>3.2</objenesis.version>
 		<ognl3.version>3.1.26</ognl3.version>
-		<osgi.export>nz.net.ultraq.thymeleaf.expressions;version=3.0.0,
-					!nz.net.ultraq.thymeleaf.layoutdialect.internal,
-					nz.net.ultraq.thymeleaf.layoutdialect.*</osgi.export>
-		<osgi.import>!nz.net.ultraq.thymeleaf.*,
-            javax.annotation.*;resolution:=optional,
-            org.codehaus.groovy.runtime.*;resolution:=optional,
-            org.thymeleaf.*;version="[3.0,4)",
-            *</osgi.import>
+		<osgi.export>
+			<!-- sortpom hack -->
+			nz.net.ultraq.thymeleaf.expressionprocessor;version=${thymeleaf-expressionprocessor.version},
+			!nz.net.ultraq.thymeleaf.layoutdialect.internal,
+			nz.net.ultraq.thymeleaf.layoutdialect.*
+			<!-- sortpom hack -->
+		</osgi.export>
+		<osgi.import>
+			<!-- sortpom hack -->
+			!nz.net.ultraq.thymeleaf.*,
+			javax.annotation.*;resolution:=optional,
+			org.codehaus.groovy.runtime.*;resolution:=optional,
+			org.thymeleaf.*;version="[3.0,4)",
+			*
+			<!-- sortpom hack -->
+		</osgi.import>
 		<osgi.private>nz.net.ultraq.thymeleaf.layoutdialect.internal</osgi.private>
 		<prerequisites.maven>3.2</prerequisites.maven>
 		<reflections.version>0.9.12</reflections.version>
 		<slf4j.version>1.7.32</slf4j.version>
+		<thymeleaf-expressionprocessor.specification>3.0</thymeleaf-expressionprocessor.specification>
+		<thymeleaf-expressionprocessor.version>3.0.0</thymeleaf-expressionprocessor.version>
 		<thymeleaf-testing.version>3.0.4.RELEASE</thymeleaf-testing.version>
 		<unbescape.version>1.1.6.RELEASE</unbescape.version>
 	</properties>
@@ -225,12 +235,12 @@
 						</manifest>
 						<manifestSections>
 							<manifestSection>
-								<name>nz/net/ultraq/thymeleaf/expressions/</name>
+								<name>nz/net/ultraq/thymeleaf/expressionprocessor/</name>
 								<manifestEntries>
 									<Implementation-Title>Thymeleaf Expression Processor</Implementation-Title>
-									<Implementation-Version>3.0.0</Implementation-Version>
+									<Implementation-Version>${thymeleaf-expressionprocessor.version}</Implementation-Version>
 									<Specification-Title>Thymeleaf Expression Processor</Specification-Title>
-									<Specification-Version>1.2</Specification-Version>
+									<Specification-Version>${thymeleaf-expressionprocessor.specification}</Specification-Version>
 								</manifestEntries>
 							</manifestSection>
 						</manifestSections>
