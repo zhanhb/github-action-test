@@ -354,6 +354,36 @@
 					<groupId>org.codehaus.gmavenplus</groupId>
 					<artifactId>gmavenplus-plugin</artifactId>
 					<version>${gmavenplus-plugin.version}</version>
+					<configuration>
+						<sources>
+							<source>
+								<directory>${project.build.sourceDirectory}</directory>
+								<includes>
+									<include>**/*.groovy</include>
+								</includes>
+							</source>
+						</sources>
+						<testSources>
+							<testSource>
+								<directory>${project.build.testSourceDirectory}</directory>
+								<includes>
+									<include>**/*.groovy</include>
+								</includes>
+							</testSource>
+						</testSources>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>addSources</goal>
+								<goal>addStubSources</goal>
+								<goal>compile</goal>
+								<goal>addTestSources</goal>
+								<goal>addTestStubSources</goal>
+								<goal>compileTests</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
