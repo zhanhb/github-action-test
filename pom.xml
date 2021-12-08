@@ -78,8 +78,8 @@
 	</issueManagement>
 
 	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/zhanhb/thymeleaf-layout-dialect</url>
+		<system>Github Actions</system>
+		<url>${project-url}/actions</url>
 	</ciManagement>
 
 	<distributionManagement>
