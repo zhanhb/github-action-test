@@ -67,8 +67,9 @@ public class InsertProcessor extends AbstractAttributeModelProcessor {
 	 * @param structureHandler
 	 */
 	@Override
-	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
-													 String attributeValue, IElementModelStructureHandler structureHandler) {
+	protected void doProcess(
+		ITemplateContext context, IModel model, AttributeName attributeName,
+		String attributeValue, IElementModelStructureHandler structureHandler) {
 
 		// Locate the page and fragment to insert
 		FragmentExpression fragmentExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue);

@@ -75,8 +75,9 @@ public class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 	 * @param structureHandler
 	 */
 	@Override
-	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-													 AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
+	protected void doProcess(
+		ITemplateContext context, IProcessableElementTag tag,
+		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 
 		if (deprecationWarned.compareAndSet(false, true)) {
 			logger.warn(

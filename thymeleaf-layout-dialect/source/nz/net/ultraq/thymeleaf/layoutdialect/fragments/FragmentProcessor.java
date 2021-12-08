@@ -69,8 +69,9 @@ public class FragmentProcessor extends AbstractAttributeTagProcessor {
 	 * @param structureHandler
 	 */
 	@Override
-	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-													 AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
+	protected void doProcess(
+		ITemplateContext context, IProcessableElementTag tag,
+		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 		// Emit a warning if found in the <head> section
 		if (getTemplateMode() == TemplateMode.HTML) {
 			for (IProcessableElementTag element : context.getElementStack()) {

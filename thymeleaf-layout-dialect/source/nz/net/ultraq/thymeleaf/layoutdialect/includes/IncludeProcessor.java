@@ -81,8 +81,9 @@ public class IncludeProcessor extends AbstractAttributeModelProcessor {
 	 * @param structureHandler
 	 */
 	@Override
-	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
-													 String attributeValue, IElementModelStructureHandler structureHandler) {
+	protected void doProcess(
+		ITemplateContext context, IModel model, AttributeName attributeName,
+		String attributeValue, IElementModelStructureHandler structureHandler) {
 		if (warned.compareAndSet(false, true)) {
 			logger.warn(
 				"The layout:include/data-layout-include processor is deprecated and will be removed in the next major version of the layout dialect.  "

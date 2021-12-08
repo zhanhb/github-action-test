@@ -19,9 +19,18 @@ public class IContextDelegate {
 		Lookup lookup = lookup();
 		try {
 			try {
-				return filterReturnValue(insertArguments(lookup.findStatic(Class.forName("org.codehaus.groovy.runtime.InvokerHelper"), "invokeMethod", methodType(Object.class, Object.class, String.class, Object.class)).asCollector(Object[].class, 1),
+				return filterReturnValue(
+					insertArguments(
+						lookup.findStatic(
+							Class.forName("org.codehaus.groovy.runtime.InvokerHelper"),
+							"invokeMethod",
+							methodType(Object.class, Object.class, String.class, Object.class)
+						).asCollector(Object[].class, 1),
 						1, "getPrefixForDialect"),
-					lookup.findStatic(Class.forName("org.codehaus.groovy.runtime.typehandling.ShortTypeHandling"), "castToString", methodType(String.class, Object.class)));
+					lookup.findStatic(
+						Class.forName("org.codehaus.groovy.runtime.typehandling.ShortTypeHandling"),
+						"castToString",
+						methodType(String.class, Object.class)));
 			} catch (ReflectiveOperationException | LinkageError ignored) {
 				return lookup.findStatic(IContextExtensions.class, "getPrefixForDialect", methodType(String.class, IContext.class, Class.class));
 			}

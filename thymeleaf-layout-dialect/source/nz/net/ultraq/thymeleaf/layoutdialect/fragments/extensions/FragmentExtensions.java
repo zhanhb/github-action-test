@@ -68,8 +68,9 @@ public class FragmentExtensions {
 	 *                      used for determining if a new fragment collection should be used and the
 	 *                      order of collected fragments.
 	 */
-	public static void setLocalFragmentCollection(IElementModelStructureHandler self, ITemplateContext context,
-																								Map<String, List<IModel>> fragments, boolean fromDecorator) {
+	public static void setLocalFragmentCollection(
+		IElementModelStructureHandler self, ITemplateContext context,
+		Map<String, List<IModel>> fragments, boolean fromDecorator) {
 		Map<String, List<IModel>> old = getFragmentCollection(context, fromDecorator);
 		for (Map.Entry<String, List<IModel>> entry : old.entrySet()) {
 			String fragmentName = entry.getKey();
@@ -95,8 +96,9 @@ public class FragmentExtensions {
 		return getFragmentCollection(self, false);
 	}
 
-	public static void setLocalFragmentCollection(IElementModelStructureHandler self, ITemplateContext context,
-																								Map<String, List<IModel>> fragments) {
+	public static void setLocalFragmentCollection(
+		IElementModelStructureHandler self, ITemplateContext context,
+		Map<String, List<IModel>> fragments) {
 		setLocalFragmentCollection(self, context, fragments, false);
 	}
 

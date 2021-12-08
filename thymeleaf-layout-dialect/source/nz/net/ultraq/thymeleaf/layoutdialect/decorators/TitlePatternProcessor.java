@@ -71,8 +71,9 @@ public class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 	 * @param structureHandler
 	 */
 	@Override
-	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-													 AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
+	protected void doProcess(
+		ITemplateContext context, IProcessableElementTag tag,
+		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 		// Ensure this attribute is only on the <title> element
 		if (!"title".equals(tag.getElementCompleteName())) {
 			throw new IllegalArgumentException(attributeName + " processor should only appear in a <title> element");

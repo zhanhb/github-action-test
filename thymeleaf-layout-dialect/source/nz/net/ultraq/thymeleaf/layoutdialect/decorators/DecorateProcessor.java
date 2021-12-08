@@ -62,8 +62,9 @@ public class DecorateProcessor extends AbstractAttributeModelProcessor {
 	 * @param sortingStrategy
 	 * @param autoHeadMerging
 	 */
-	public DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
-													 boolean autoHeadMerging) {
+	public DecorateProcessor(
+		TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
+		boolean autoHeadMerging) {
 		this(templateMode, dialectPrefix, sortingStrategy, autoHeadMerging, PROCESSOR_NAME);
 	}
 
@@ -77,8 +78,9 @@ public class DecorateProcessor extends AbstractAttributeModelProcessor {
 	 * @param autoHeadMerging
 	 * @param attributeName
 	 */
-	protected DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
-															boolean autoHeadMerging, String attributeName) {
+	protected DecorateProcessor(
+		TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
+		boolean autoHeadMerging, String attributeName) {
 		super(templateMode, dialectPrefix, null, false, attributeName, true, PROCESSOR_PRECEDENCE, false);
 		this.sortingStrategy = sortingStrategy;
 		this.autoHeadMerging = autoHeadMerging;
@@ -95,8 +97,9 @@ public class DecorateProcessor extends AbstractAttributeModelProcessor {
 	 * @param structureHandler
 	 */
 	@Override
-	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
-													 String attributeValue, IElementModelStructureHandler structureHandler) {
+	protected void doProcess(
+		ITemplateContext context, IModel model, AttributeName attributeName,
+		String attributeValue, IElementModelStructureHandler structureHandler) {
 
 		TemplateModelFinder templateModelFinder = new TemplateModelFinder(context);
 

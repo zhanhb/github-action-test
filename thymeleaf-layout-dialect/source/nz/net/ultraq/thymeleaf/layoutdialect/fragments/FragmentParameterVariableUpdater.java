@@ -57,8 +57,9 @@ public class FragmentParameterVariableUpdater {
 	 * @param fragment
 	 * @param structureHandler
 	 */
-	public void updateLocalVariables(FragmentExpression fragmentExpression, IModel fragment,
-																	 IElementModelStructureHandler structureHandler) {
+	public void updateLocalVariables(
+		FragmentExpression fragmentExpression, IModel fragment,
+		IElementModelStructureHandler structureHandler) {
 
 		// When fragment parameters aren't named, derive the name from the fragment definition
 		if (fragmentExpression.hasSyntheticParameters()) {
