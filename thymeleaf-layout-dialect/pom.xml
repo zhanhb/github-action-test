@@ -167,6 +167,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>9.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
@@ -347,6 +353,25 @@
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
+				<configuration>
+					<properties>
+						<ant/>
+					</properties>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-module-info</id>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<phase>compile</phase>
+						<configuration>
+							<scripts>
+								<script>${project.basedir}/src/test/groovy/GenerateModuleInfo.groovy</script>
+							</scripts>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -394,4 +419,19 @@
 		</plugins>
 	</reporting>
 
+	<profiles>
+		<profile>
+			<id>module-info</id>
+			<activation>
+				<jdk>[9,)</jdk>
+				<file>
+					<exists>${basedir}/source/module-info.java</exists>
+				</file>
+			</activation>
+			<properties>
+				<java.version>9</java.version>
+				<maven.compiler.release>9</maven.compiler.release>
+			</properties>
+		</profile>
+	</profiles>
 </project>

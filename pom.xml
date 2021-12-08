@@ -120,11 +120,10 @@
 		<maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
 		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 		<maven-surefire-report-plugin.version>2.22.2</maven-surefire-report-plugin.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<module.name>com.github.zhanhb.thymeleaf.build</module.name>
 		<osgi.dynamicImport/>
 		<osgi.export>${project.groupId}.*;version=${project.version};-noimport:=true</osgi.export>
 		<osgi.import>*</osgi.import>
@@ -302,9 +301,6 @@
 					<configuration>
 						<archive>
 							<manifestFile>${project.build.directory}/osgi/MANIFEST.MF</manifestFile>
-							<manifestEntries>
-								<Automatic-Module-Name>${module.name}</Automatic-Module-Name>
-							</manifestEntries>
 							<manifest>
 								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 							</manifest>

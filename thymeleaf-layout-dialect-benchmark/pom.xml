@@ -11,7 +11,6 @@
 	<url>${project-url}</url>
 
 	<properties>
-		<module.name>com.github.zhanhb.thymeleaf.benchmark</module.name>
 		<spring-boot.version>2.5.6</spring-boot.version>
 		<start-class>nz.net.ultraq.thymeleaf.benchmark.BenchmarkApplication</start-class>
 	</properties>
