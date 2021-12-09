@@ -124,6 +124,7 @@
 		<maven-surefire-report-plugin.version>2.22.2</maven-surefire-report-plugin.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.deploy.skip>true</maven.deploy.skip>
 		<osgi.dynamicImport/>
 		<osgi.export>${project.groupId}.*;version=${project.version};-noimport:=true</osgi.export>
 		<osgi.import>*</osgi.import>

@@ -27,6 +27,7 @@
 		<findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<javassist.version>3.20.0-GA</javassist.version>
+		<maven.deploy.skip>false</maven.deploy.skip>
 		<mockito.version>3.12.4</mockito.version>
 		<module.name>nz.net.ultraq.thymeleaf.layoutdialect</module.name>
 		<objenesis.version>3.2</objenesis.version>
