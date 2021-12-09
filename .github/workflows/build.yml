@@ -30,8 +30,9 @@ jobs:
           cache-name: maven-dependencies
         with:
           path: ~/.m2
-          key: ${{ env.cache-name }}-${{ hashFiles('**/pom.xml') }}
+          key: ${{ env.cache-name }}-${{ github.workflow }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
+            ${{ env.cache-name }}-${{ github.workflow }}-
             ${{ env.cache-name }}-
       - name: mvnw install
         run: ./mvnw clean install
@@ -55,8 +56,9 @@ jobs:
           cache-name: maven-dependencies
         with:
           path: ~/.m2
-          key: ${{ env.cache-name }}-${{ hashFiles('**/pom.xml') }}
+          key: ${{ env.cache-name }}-${{ github.workflow }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
+            ${{ env.cache-name }}-${{ github.workflow }}-
             ${{ env.cache-name }}-
       - name: Maven Deploy
         env:

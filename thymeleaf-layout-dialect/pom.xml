@@ -9,13 +9,13 @@
 	<artifactId>thymeleaf-layout-dialect</artifactId>
 	<name>Thymeleaf Layout Dialect</name>
 	<description>Thymeleaf Layout Dialect rewritten in java.</description>
-	<url>${project-url}</url>
+	<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
 
 	<distributionManagement>
 		<site>
 			<id>gh-pages</id>
 			<name>Thymeleaf Layout Dialect GitHub Pages</name>
-			<url>git:ssh://git@github.com/zhanhb/thymeleaf-layout-dialect.git?gh-pages#</url>
+			<url>git:https://github.com/zhanhb/thymeleaf-layout-dialect.git?gh-pages#</url>
 		</site>
 	</distributionManagement>
 
@@ -28,6 +28,8 @@
 		<hamcrest.version>2.2</hamcrest.version>
 		<javassist.version>3.20.0-GA</javassist.version>
 		<maven.deploy.skip>false</maven.deploy.skip>
+		<maven.site.deploy.skip>false</maven.site.deploy.skip>
+		<maven.site.skip>false</maven.site.skip>
 		<mockito.version>3.12.4</mockito.version>
 		<module.name>nz.net.ultraq.thymeleaf.layoutdialect</module.name>
 		<objenesis.version>3.2</objenesis.version>
