@@ -11,14 +11,6 @@
 	<description>Thymeleaf Layout Dialect rewritten in java.</description>
 	<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
 
-	<distributionManagement>
-		<site>
-			<id>gh-pages</id>
-			<name>Thymeleaf Layout Dialect GitHub Pages</name>
-			<url>git:https://github.com/zhanhb/thymeleaf-layout-dialect.git?gh-pages#</url>
-		</site>
-	</distributionManagement>
-
 	<properties>
 		<argLine>-Dfile.encoding=${file.encoding} -ea</argLine>
 		<attoparser.version>2.0.5.RELEASE</attoparser.version>
@@ -276,6 +268,25 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-publish-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>scm-publish</id>
+						<goals>
+							<goal>publish-scm</goal>
+						</goals>
+						<phase>site-deploy</phase>
+						<configuration>
+							<content>${project.reporting.outputDirectory}</content>
+							<scmBranch>gh-pages</scmBranch>
+							<serverId>github</serverId>
+							<pubScmUrl>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</pubScmUrl>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
