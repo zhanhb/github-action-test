@@ -3,6 +3,9 @@ name: publish
 on:
   workflow_dispatch:
     inputs:
+      release:
+        description: 'version number to release'
+        required: true
       java-version:
         description: 'version of jdk to compile'
         default: "11"
@@ -28,19 +31,19 @@ jobs:
           restore-keys: |
             ${{ env.cache-name }}-${{ github.workflow }}
             ${{ env.cache-name }}-
-      - name: Maven Release
+      - name: mvnw scm:tag deploy site-deploy
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           GITHUB_TOKEN: ${{ github.token }}
+          REVISION: ${{ github.event.inputs.release }}
         run: |
           [ -z "$GITHUB_ACTOR" ] || {
             git config --global user.name "$GITHUB_ACTOR"
             git config --global user.email "$(gh api "users/$GITHUB_ACTOR" -q '.email//"\(.id)+\(.login)@users.noreply.github.com"')"
           }
-          ./mvnw -B -s .github/settings.xml release:prepare
-          ./mvnw -B -s .github/settings.xml release:perform
+          ./mvnw -s .github/settings.xml -Prelease-profile "-Drevision=$REVISION" scm:tag deploy site-deploy
       - name: Before Cache
         run: |
           ./mvnw build-helper:remove-project-artifact || :
