@@ -97,6 +97,7 @@
 
 	<properties>
 		<build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
+		<bundle.manifest.builtBy>${user.name}</bundle.manifest.builtBy>
 		<flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<groovy.version>3.0.9</groovy.version>
@@ -213,6 +214,11 @@
 							<supportedProjectType>war</supportedProjectType>
 							<supportedProjectType>maven-plugin</supportedProjectType>
 						</supportedProjectTypes>
+						<archive>
+							<manifestEntries>
+								<Built-By>${bundle.manifest.builtBy}</Built-By>
+							</manifestEntries>
+						</archive>
 						<instructions>
 							<_nouses>true</_nouses>
 							<Bundle-SymbolicName>${osgi.symbolicName}</Bundle-SymbolicName>

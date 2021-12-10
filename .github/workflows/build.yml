@@ -67,7 +67,7 @@ jobs:
         run: |
           version="$(./mvnw -B help:evaluate -Dexpression=project.version -q -DforceStdout)"
           case "$version" in
-          *-SNAPSHOT) ./mvnw -s .github/settings.xml deploy ;;
+          *-SNAPSHOT) ./mvnw -s .github/settings.xml "-Dbundle.manifest.builtBy=GitHub Actions" deploy ;;
           *) printf '\e[31m%s\e[m\n' "skip deploy version '$version'" ;;
           esac
       - name: Before Cache
