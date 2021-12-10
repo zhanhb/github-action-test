@@ -36,6 +36,10 @@ jobs:
             ${{ env.cache-name }}-
       - name: mvnw install
         run: ./mvnw clean install
+      - name: Codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: bash <(curl -s https://codecov.io/bash)
       - name: Before Cache
         run: |
           ./mvnw build-helper:remove-project-artifact || :

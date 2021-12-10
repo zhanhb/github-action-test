@@ -3,7 +3,7 @@ Thymeleaf Layout Dialect
 ========================
 
 [![Build Status](https://github.com/zhanhb/thymeleaf-layout-dialect/actions/workflows/build.yml/badge.svg?event=push&branch=main)](https://github.com/zhanhb/thymeleaf-layout-dialect/actions/workflows/build.yml?query=event%3Apush%20branch%3Amain)
-[![Code Coverage](https://img.shields.io/codecov/c/github/zhanhb/thymeleaf-layout-dialect.svg?maxAge=3600)](https://codecov.io/gh/zhanhb/thymeleaf-layout-dialect/branch/main)
+[![Code Coverage](https://codecov.io/gh/zhanhb/thymeleaf-layout-dialect/branch/main/graph/badge.svg)](https://codecov.io/gh/zhanhb/thymeleaf-layout-dialect/branch/main)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.zhanhb/thymeleaf-layout-dialect.svg?maxAge=3600)](https://search.maven.org/#search|ga|1|g%3A%22com.github.zhanhb%22%20AND%20a%3A%22thymeleaf-layout-dialect%22)
 
 Thymeleaf Layout Dialect rewriten in java.
