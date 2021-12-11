@@ -44,6 +44,11 @@ jobs:
             git config --global user.email "$(gh api "users/$GITHUB_ACTOR" -q '.email//"\(.id)+\(.login)@users.noreply.github.com"')"
           }
           ./mvnw -s .github/settings.xml -Prelease-profile "-Drevision=$REVISION" "-Dbundle.manifest.builtBy=GitHub Actions" scm:tag deploy site-deploy
+      - name: Github Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REVISION: ${{ github.event.inputs.release }}
+        run: find . -type f -name "*-$REVISION.zip" -print0 | xargs -0 gh release -R "$GITHUB_REPOSITORY" create "$REVISION" --prerelease --target "$GITHUB_SHA"
       - name: Before Cache
         run: |
           ./mvnw build-helper:remove-project-artifact || :

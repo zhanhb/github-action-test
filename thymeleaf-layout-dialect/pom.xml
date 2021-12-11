@@ -44,7 +44,7 @@
 			<!-- sortpom hack -->
 		</osgi.import>
 		<osgi.private>nz.net.ultraq.thymeleaf.layoutdialect.internal</osgi.private>
-		<prerequisites.maven>3.2</prerequisites.maven>
+		<prerequisites.maven>3.3</prerequisites.maven>
 		<reflections.version>0.9.12</reflections.version>
 		<slf4j.version>1.7.32</slf4j.version>
 		<thymeleaf-expressionprocessor.specification>3.0</thymeleaf-expressionprocessor.specification>
@@ -356,6 +356,18 @@
 						<configuration>
 							<scripts>
 								<script>${project.basedir}/src/test/groovy/GenerateModuleInfo.groovy</script>
+							</scripts>
+						</configuration>
+					</execution>
+					<execution>
+						<id>gh-release-artifact</id>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<phase>verify</phase>
+						<configuration>
+							<scripts>
+								<script>${project.basedir}/src/test/groovy/GithubReleaseArtifactMojo.groovy</script>
 							</scripts>
 						</configuration>
 					</execution>
