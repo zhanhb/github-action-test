@@ -52,27 +52,29 @@ public class GroupingStrategy implements SortingStrategy {
 		if (event instanceof IComment) {
 			return COMMENT;
 		}
-		if (event instanceof IElementTag) {
-			String elementCompleteName = ((IElementTag) event).getElementCompleteName();
-			if (event instanceof IProcessableElementTag && "meta".equals(elementCompleteName)) {
+		if (event instanceof IProcessableElementTag) {
+			IProcessableElementTag tag = (IProcessableElementTag) event;
+			String elementCompleteName = tag.getElementCompleteName();
+			// elementCompleteName should not be null, intentional NPE
+			if (elementCompleteName.equals("meta")) {
 				return META;
-			}
-			if (event instanceof IOpenElementTag && "script".equals(elementCompleteName)) {
-				return SCRIPT;
-			}
-			if (event instanceof IOpenElementTag && "style".equals(elementCompleteName)) {
-				return STYLE;
-			}
-			if (event instanceof IProcessableElementTag && "link".equals(elementCompleteName)
-				&& "stylesheet".equals(((IProcessableElementTag) event).getAttributeValue("rel"))) {
-				return STYLESHEET;
-			}
-			if (event instanceof IOpenElementTag && "title".equals(elementCompleteName)) {
-				return TITLE;
+			} else if (elementCompleteName.equals("link")) {
+				if ("stylesheet".equals(tag.getAttributeValue("rel"))) {
+					return STYLESHEET;
+				}
+			} else if (event instanceof IOpenElementTag) {
+				switch (elementCompleteName) {
+					case "script":
+						return SCRIPT;
+					case "style":
+						return STYLE;
+					case "title":
+						return TITLE;
+				}
 			}
 			return OTHER;
 		}
-		return 0;
+		return event instanceof IElementTag ? OTHER : 0;
 	}
 
 	/**
