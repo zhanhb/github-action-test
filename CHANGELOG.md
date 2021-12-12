@@ -42,6 +42,8 @@ to help make the assessment of what an upgrade to 3.0 would entail for you.
 
  - [Java] Added an `Automatic-Module-Name` of `nz.net.ultraq.thymeleaf`.
  - [Java] Call groovy metaprogramming on method `IContext.getPrefixForDialect` if available.
+ - [Java] Add [osgi support](https://en.wikipedia.org/wiki/OSGi) with
+   `Bundle-SymbolicName`: `com.github.zhanhb.thymeleaf-layout-dialect`.
  - Fixed the fragment cache not being cleared when dispatching/forwarding to the
    error page
    ([#189](https://github.com/ultraq/thymeleaf-layout-dialect/issues/189))
