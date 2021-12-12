@@ -135,7 +135,7 @@
 		<osgi.symbolicName>${project.groupId}.${project.artifactId}</osgi.symbolicName>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.scm.tag>HEAD</project.scm.tag>
-		<revision>3.0.0-SNAPSHOT</revision>
+		<revision>3.0.1-SNAPSHOT</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>
 		<sortpom-maven-plugin.version>3.0.0</sortpom-maven-plugin.version>
 		<thymeleaf.version>3.0.13.RELEASE</thymeleaf.version>
