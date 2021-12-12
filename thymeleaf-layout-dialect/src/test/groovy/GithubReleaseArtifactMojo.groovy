@@ -6,7 +6,7 @@ import java.util.stream.Stream
 
 static def copy(Path src, Path dest) {
 	def parent = dest.parent
-	parent && Files.createDirectories(parent)
+	parent && parent.nameCount && Files.createDirectories(parent)
 	Files.copy src, dest, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING
 }
 
@@ -28,7 +28,7 @@ static def deepCopy(Path src, Path dest) {
 
 static def copy(
 	Path dest, Closure<? extends Stream<? extends Path>> closure,
-	Closure<? super AtomicLong> callback) {
+	Closure callback) {
 	def copied = new AtomicLong()
 	closure().forEach {
 		copy it, dest.resolve(it.fileName.toString())
@@ -37,23 +37,59 @@ static def copy(
 	callback(copied)
 }
 
+static <T> T onlyElement(Iterable<T> iterable, String msg = null) {
+	def it = iterable.iterator()
+	if (!it.hasNext()) throw new NoSuchElementException(msg)
+	def element = it.next()
+	if (it.hasNext()) {
+		def sb = new StringBuilder('expected one element but was: <').append(element)
+		for (def cnt = 0; ;) {
+			sb.append(',' as char).append(it.next())
+			if (!it.hasNext()) break
+			if (++cnt >= 4) {
+				sb.append(", ...")
+				break
+			}
+		}
+		sb.append('>' as char)
+		throw new IllegalStateException("$sb")
+	}
+	element
+}
+
+static def extract(FileSystemProvider zipFsp, Path zip, Path dest) {
+	zipFsp.newFileSystem(zip, Collections.emptyMap()).withCloseable {
+		deepCopy onlyElement(it.rootDirectories), dest
+	}
+}
+
 def
 	log = log,
 	project = project,
 	session = session
 
 try {
-	String sourceDirectory = project.build.sourceDirectory
 	String directory = project.build.directory
 	String finalName = project.build.finalName
 	File root = session.request.multiModuleProjectDirectory
+	File artifactFile = project.artifact.file
+	def attachedArtifacts = project.attachedArtifacts
+
+	def notAssembled =
+		'The project artifact has not been assembled yet. ' +
+			'Please do not invoke this goal before the lifecycle phase "package".'
+
+	if (!artifactFile) throw new NoSuchElementException(notAssembled)
+
+	File sources = onlyElement attachedArtifacts.grep { it.type == 'java-source' }.collect { it.file }, notAssembled
+	File javadoc = onlyElement attachedArtifacts.grep { it.type == 'javadoc' }.collect { it.file }, notAssembled
+
+	def zipFsp = onlyElement FileSystemProvider.installedProviders().grep { it.scheme == 'jar' }, "Jar FileSystem not available"
 
 	def copyContent = { Path base ->
-		def distName = "$finalName.$project.packaging"
-
-		copy Paths.get(directory, distName), base.resolve(distName)
-		deepCopy Paths.get(sourceDirectory), base.resolve('source')
-		deepCopy Paths.get(directory, 'site/apidocs'), base.resolve('javadoc')
+		copy artifactFile.toPath(), base.resolve(artifactFile.name)
+		extract zipFsp, sources.toPath(), base.resolve('source')
+		extract zipFsp, javadoc.toPath(), base.resolve('javadoc')
 
 		copy(base.resolve('libraries')) {
 			project.resolvedArtifacts.stream().filter {
@@ -70,11 +106,11 @@ try {
 		}
 	}
 
-	FileSystemProvider.installedProviders().grep { it.scheme == 'jar' }[0].newFileSystem(
+	zipFsp.newFileSystem(
 		Paths.get(directory, "${finalName}.zip"),
 		Collections.singletonMap('create', 'true')
 	).withCloseable {
-		copyContent it.rootDirectories[0].resolve(finalName)
+		copyContent onlyElement(it.rootDirectories).resolve(finalName)
 	}
 } catch (Throwable t) {
 	log.error t
