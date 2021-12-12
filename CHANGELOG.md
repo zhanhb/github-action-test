@@ -17,12 +17,12 @@ Changelog
    instead of `Automatic-Module-Name`. Also see
    ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171))
 
-Version 3.0 of the layout dialect written in java is a full Java module.
-synchronize the module name from upstream as it is a replacement library.
+Version 3.0 of the layout dialect written in java is a complete Java module.
+The module name is synchronized from upstream because it is used as a replacement library.
 
-Check the migration guide out on the 
-[original documentation site](https://ultraq.github.io/thymeleaf-layout-dialect/migrating-to-3.0/) 
-to help make the assessment of what an upgrade to 3.0 would entail for you.
+Package renamed from `nz.net.ultraq.thymeleaf` to `nz.net.ultraq.thymeleaf.layoutdialect`.
+
+Check the [migration guide](https://ultraq.github.io/thymeleaf-layout-dialect/migrating-to-3.0/) out on the original documentation site to help make the assessment of what an upgrade to 3.0 would entail for you.
 
 
 ### 2.5.3
@@ -228,10 +228,6 @@ Differences:
 
  - Kill the rise in memory usage found by
    ([#134](https://github.com/ultraq/thymeleaf-layout-dialect/issues/134))
-
-
-### 2.0.2
-
  - Convert `FragmentProcessor` from a model processor to a tag processor to get
    around model level problems when inserting fragments that may alter the model
    level
@@ -241,6 +237,9 @@ Differences:
  - Respect the runtime-configured prefix
    ([#103](https://github.com/ultraq/thymeleaf-layout-dialect/issues/103))
 
+
+### 2.0.2
+ - [Java] It was not released due to an upstream bug.
 
 ### 2.0.1
 
