@@ -13,8 +13,8 @@ Changelog
  - `<head>` merging strategies now respect the `<title>` position by default
    ([#177](https://github.com/ultraq/thymeleaf-layout-dialect/issues/177)
  - Deprecated `layout:collect`
- - Added module-info with name `nz.net.ultraq.thymeleaf.layoutdialect` instead
-   of `Automatic-Module-Name`. Also see
+ - [Java] Added module-info with name `nz.net.ultraq.thymeleaf.layoutdialect`
+   instead of `Automatic-Module-Name`. Also see
    ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171)
 
 Version 3.0 of the layout dialect written in java is a full Java module.
@@ -26,12 +26,12 @@ to help make the assessment of what an upgrade to 3.0 would entail for you.
 
 
 ### 2.5.3
- - A version bump without change anything, for upstream fixes a groovy security issue.
+ - [Java] A version bump without change anything, for upstream fixes a groovy security issue.
 
 
 ### 2.5.2
 
- - Fix MethodHandles.publicLookup() issue on Java 8
+ - [Java] Fix MethodHandles.publicLookup() issue on Java 8
  - Fix from [@silkentrance](https://github.com/silkentrance) for re-declared
    layout fragments in deep hierarchies, where the layout dialect would return
    the wrong fragment from the template hierarchy
@@ -40,8 +40,8 @@ to help make the assessment of what an upgrade to 3.0 would entail for you.
 
 ### 2.5.1
 
- - Added an `Automatic-Module-Name` of `nz.net.ultraq.thymeleaf`.
- - Call groovy metaprogramming on method `IContext.getPrefixForDialect` if available.
+ - [Java] Added an `Automatic-Module-Name` of `nz.net.ultraq.thymeleaf`.
+ - [Java] Call groovy metaprogramming on method `IContext.getPrefixForDialect` if available.
  - Fixed the fragment cache not being cleared when dispatching/forwarding to the
    error page
    ([#189](https://github.com/ultraq/thymeleaf-layout-dialect/issues/189))
@@ -55,7 +55,7 @@ to help make the assessment of what an upgrade to 3.0 would entail for you.
 
 
 ### 2.5.0
- - It was not released due to an upstream bug.
+ - [Java] It was not released due to an upstream bug.
 
 
 ### 2.4.1
@@ -78,7 +78,7 @@ to help make the assessment of what an upgrade to 3.0 would entail for you.
 
 
 ### 2.4.0
-- It was not released due to an upstream bug.
+- [Java] It was not released due to an upstream bug.
 
 
 ### 2.3.0
@@ -259,7 +259,7 @@ Differences:
 
 ### 2.0.0
 
- - Minimum supported version of Java is now Java 1.7
+ - [Java] Minimum supported version of Java is now Java 1.7
  - Layout dialect rewritten to support Thymeleaf 3
    ([#68](https://github.com/ultraq/thymeleaf-layout-dialect/issues/68),
    [Layout Dialect 2.0 milestone](https://github.com/ultraq/thymeleaf-layout-dialect/milestone/6?closed=1))
@@ -286,4 +286,4 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.4.0
- - Initial release, support JDK8+ only.
+ - [Java] Initial release, support JDK8+ only.
