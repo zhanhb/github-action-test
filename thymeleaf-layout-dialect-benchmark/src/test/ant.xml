@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<tstamp>
+		<format pattern="yyyy-MM-dd_HHmmss" property="dateTimeString"/>
+	</tstamp>
+	<property name="resultsDir" value="${project.build.directory}/results/${project.version}"/>
+	<property name="reportsDir" value="${project.build.directory}/reports/${project.version}"/>
+	<mkdir dir="${resultsDir}"/>
+	<mkdir dir="${reportsDir}"/>
+	<exec executable="jmeter" failonerror="true">
+		<arg value="-n"/>
+		<arg value="-t"/>
+		<arg value="${basedir}/test/simulate-load.jmx"/>
+		<arg value="-l"/>
+		<arg value="${resultsDir}/${dateTimeString}.csv"/>
+		<arg value="-e"/>
+		<arg value="-o"/>
+		<arg value="${reportsDir}/${dateTimeString}"/>
+	</exec>
+</project>

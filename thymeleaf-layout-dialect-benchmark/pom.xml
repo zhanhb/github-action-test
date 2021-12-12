@@ -11,7 +11,8 @@
 	<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
 
 	<properties>
-		<spring-boot.version>2.5.6</spring-boot.version>
+		<benchmark.skip>true</benchmark.skip>
+		<spring-boot.version>2.6.1</spring-boot.version>
 		<start-class>nz.net.ultraq.thymeleaf.benchmark.BenchmarkApplication</start-class>
 	</properties>
 
@@ -50,6 +51,24 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<phase>integration-test</phase>
+						<configuration>
+							<skip>${benchmark.skip}</skip>
+							<target>
+								<ant antfile="${project.basedir}/src/test/ant.xml"/>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
 			</plugin>
@@ -70,12 +89,44 @@
 						<goals>
 							<goal>repackage</goal>
 						</goals>
+					</execution>
+					<execution>
+						<id>pre-integration-test</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
 						<configuration>
-							<mainClass>${start-class}</mainClass>
+							<fork>false</fork>
+							<skip>${benchmark.skip}</skip>
+						</configuration>
+					</execution>
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+						<configuration>
+							<fork>false</fork>
+							<skip>${benchmark.skip}</skip>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>benchmark</id>
+			<activation>
+				<property>
+					<name>benchmark</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<benchmark.skip>false</benchmark.skip>
+			</properties>
+		</profile>
+	</profiles>
 </project>
