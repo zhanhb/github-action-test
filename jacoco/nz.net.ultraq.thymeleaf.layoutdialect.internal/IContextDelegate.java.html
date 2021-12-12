@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IContextDelegate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Thymeleaf Layout Dialect</a> &gt; <a href="index.source.html" class="el_package">nz.net.ultraq.thymeleaf.layoutdialect.internal</a> &gt; <span class="el_source">IContextDelegate.java</span></div><h1>IContextDelegate.java</h1><pre class="source lang-java linenums">package nz.net.ultraq.thymeleaf.layoutdialect.internal;
+
+import nz.net.ultraq.thymeleaf.layoutdialect.context.extensions.IContextExtensions;
+import org.thymeleaf.context.IContext;
+import org.thymeleaf.dialect.IProcessorDialect;
+
+import javax.annotation.Nonnull;
+import java.lang.invoke.MethodHandle;
+
+import static java.lang.invoke.MethodHandles.*;
+import static java.lang.invoke.MethodType.methodType;
+
+<span class="nc" id="L13">public class IContextDelegate {</span>
+
+<span class="fc" id="L15">	private static final MethodHandle GET_PREFIX_FOR_DIALECT = init();</span>
+
+	@SuppressWarnings({&quot;UseSpecificCatch&quot;, &quot;BroadCatchBlock&quot;, &quot;TooBroadCatch&quot;})
+	private static MethodHandle init() {
+<span class="fc" id="L19">		Lookup lookup = lookup();</span>
+		try {
+			try {
+<span class="fc" id="L22">				return filterReturnValue(</span>
+<span class="fc" id="L23">					insertArguments(</span>
+<span class="fc" id="L24">						lookup.findStatic(</span>
+<span class="fc" id="L25">							Class.forName(&quot;org.codehaus.groovy.runtime.InvokerHelper&quot;),</span>
+							&quot;invokeMethod&quot;,
+<span class="fc" id="L27">							methodType(Object.class, Object.class, String.class, Object.class)</span>
+<span class="fc" id="L28">						).asCollector(Object[].class, 1),</span>
+						1, &quot;getPrefixForDialect&quot;),
+<span class="fc" id="L30">					lookup.findStatic(</span>
+<span class="fc" id="L31">						Class.forName(&quot;org.codehaus.groovy.runtime.typehandling.ShortTypeHandling&quot;),</span>
+						&quot;castToString&quot;,
+<span class="fc" id="L33">						methodType(String.class, Object.class)));</span>
+<span class="nc" id="L34">			} catch (ReflectiveOperationException | LinkageError ignored) {</span>
+<span class="nc" id="L35">				return lookup.findStatic(IContextExtensions.class, &quot;getPrefixForDialect&quot;, methodType(String.class, IContext.class, Class.class));</span>
+			}
+<span class="nc" id="L37">		} catch (Throwable ex) {</span>
+<span class="nc" id="L38">			return dropArguments(throwException(String.class, Throwable.class).bindTo(ex), 0, Object.class, Class.class);</span>
+		}
+	}
+
+	public static String getPrefixForDialect(@Nonnull IContext self, Class&lt;? extends IProcessorDialect&gt; dialectClass) {
+		try {
+<span class="fc" id="L44">			return (String) GET_PREFIX_FOR_DIALECT.invoke(self, dialectClass);</span>
+<span class="nc" id="L45">		} catch (RuntimeException | Error ex) {</span>
+<span class="nc" id="L46">			throw ex;</span>
+<span class="nc" id="L47">		} catch (Throwable ex) {</span>
+<span class="nc" id="L48">			throw new java.lang.reflect.UndeclaredThrowableException(ex);</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

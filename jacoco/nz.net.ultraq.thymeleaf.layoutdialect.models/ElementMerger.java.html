@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ElementMerger.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Thymeleaf Layout Dialect</a> &gt; <a href="index.source.html" class="el_package">nz.net.ultraq.thymeleaf.layoutdialect.models</a> &gt; <span class="el_source">ElementMerger.java</span></div><h1>ElementMerger.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015, Emanuel Rabina (http://www.ultraq.net.nz/)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package nz.net.ultraq.thymeleaf.layoutdialect.models;
+
+import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.model.*;
+
+/**
+ * Merges an element and all its children into an existing element.
+ *
+ * @author zhanhb
+ * @author Emanuel Rabina
+ */
+public class ElementMerger implements ModelMerger {
+
+	private final ITemplateContext context;
+
+	/**
+	 * Constructor, sets up the element merger context.
+	 *
+	 * @param context
+	 */
+<span class="fc" id="L37">	public ElementMerger(ITemplateContext context) {</span>
+<span class="fc" id="L38">		this.context = context;</span>
+<span class="fc" id="L39">	}</span>
+
+	/**
+	 * Replace the content of the target element, with the content of the source
+	 * element.
+	 *
+	 * @param targetModel
+	 * @param sourceModel
+	 * @return Model that is the result of the merge.
+	 */
+	@Override
+	public IModel merge(IModel targetModel, IModel sourceModel) {
+		// If one of the parameters is missing return a copy of the other, or
+		// nothing if both parameters are missing.
+<span class="fc bfc" id="L53" title="All 4 branches covered.">		if (!IModelExtensions.asBoolean(targetModel) || !IModelExtensions.asBoolean(sourceModel)) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">			IModel result = IModelExtensions.asBoolean(targetModel) ? targetModel.cloneModel() : null;</span>
+<span class="pc bpc" id="L55" title="1 of 4 branches missed.">			return IModelExtensions.asBoolean(result) ? result : IModelExtensions.asBoolean(sourceModel) ? sourceModel.cloneModel() : null;</span>
+		}
+
+<span class="fc" id="L58">		IModelFactory modelFactory = context.getModelFactory();</span>
+
+		// The result we want is the source model, but merged into the target root element attributes
+<span class="fc" id="L61">		ITemplateEvent sourceRootEvent = IModelExtensions.first(sourceModel);</span>
+<span class="fc" id="L62">		IModel sourceRootElement = modelFactory.createModel(sourceRootEvent);</span>
+<span class="fc" id="L63">		IProcessableElementTag targetRootEvent = (IProcessableElementTag) IModelExtensions.first(targetModel);</span>
+<span class="fc" id="L64">		IModel targetRootElement = modelFactory.createModel(</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">			sourceRootEvent instanceof IOpenElementTag</span>
+<span class="fc" id="L66">				? modelFactory.createOpenElementTag(((IElementTag) sourceRootEvent).getElementCompleteName(),</span>
+<span class="fc" id="L67">				targetRootEvent.getAttributeMap(), AttributeValueQuotes.DOUBLE, false)</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">				: sourceRootEvent instanceof IStandaloneElementTag</span>
+<span class="nc" id="L69">				? modelFactory.createStandaloneElementTag(((IElementTag) sourceRootEvent).getElementCompleteName(),</span>
+<span class="nc" id="L70">				targetRootEvent.getAttributeMap(), AttributeValueQuotes.DOUBLE, false, ((IStandaloneElementTag) sourceRootEvent).isMinimized())</span>
+<span class="nc" id="L71">				: null);</span>
+<span class="fc" id="L72">		IModel mergedRootElement = new AttributeMerger(context).merge(targetRootElement, sourceRootElement);</span>
+<span class="fc" id="L73">		IModel mergedModel = sourceModel.cloneModel();</span>
+<span class="fc" id="L74">		mergedModel.replace(0, IModelExtensions.first(mergedRootElement));</span>
+<span class="fc" id="L75">		return mergedModel;</span>
+	}
+
+	public final ITemplateContext getContext() {
+<span class="nc" id="L79">		return context;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

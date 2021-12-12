@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Thymeleaf Layout Dialect</a> &gt; <a href="index.source.html" class="el_package">nz.net.ultraq.thymeleaf.layoutdialect.models</a> &gt; <span class="el_source">ModelBuilder.java</span></div><h1>ModelBuilder.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2016, Emanuel Rabina (http://www.ultraq.net.nz/)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package nz.net.ultraq.thymeleaf.layoutdialect.models;
+
+import groovy.lang.Closure;
+import groovy.util.BuilderSupport;
+import java.util.Map;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.engine.ElementDefinitions;
+import org.thymeleaf.model.IModel;
+import org.thymeleaf.model.IModelFactory;
+import org.thymeleaf.templatemode.TemplateMode;
+
+/**
+ * Create Thymeleaf 3.0 models using a simplified syntax.
+ *
+ * @author zhanhb
+ * @author Emanuel Rabina
+ */
+@SuppressWarnings(&quot;unchecked&quot;)
+public class ModelBuilder extends BuilderSupport {
+
+    private final nz.net.ultraq.thymeleaf.layoutdialect.internal.ModelBuilder builder;
+
+    /**
+     * Constructor, create a new model builder.
+     *
+     * @param context
+     */
+<span class="nc" id="L43">    public ModelBuilder(ITemplateContext context) {</span>
+<span class="nc" id="L44">        builder = new nz.net.ultraq.thymeleaf.layoutdialect.internal.ModelBuilder(context);</span>
+<span class="nc" id="L45">    }</span>
+
+    /**
+     * Constructor, create a new model builder.
+     *
+     * @param modelFactory
+     * @param elementDefinitions
+     * @param templateMode
+     */
+<span class="fc" id="L54">    public ModelBuilder(IModelFactory modelFactory, ElementDefinitions elementDefinitions, TemplateMode templateMode) {</span>
+<span class="fc" id="L55">        builder = new nz.net.ultraq.thymeleaf.layoutdialect.internal.ModelBuilder(modelFactory, elementDefinitions, templateMode);</span>
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Appends an existing model to the model being built.
+     *
+     * @param model
+     */
+    public void add(IModel model) {
+<span class="fc" id="L64">        IModel current = (IModel) getCurrent();</span>
+<span class="fc" id="L65">        current.insertModel(current.size() - 1, model);</span>
+<span class="fc" id="L66">    }</span>
+
+    /**
+     * Captures the top `build` call so that it doesn't end up as a node in the
+     * final model.
+     *
+     * @param definition
+     * @return The model built using the closure definition.
+     */
+    public IModel build(Closure&lt;? extends IModel&gt; definition) {
+<span class="fc" id="L76">        setClosureDelegate(definition, null);</span>
+<span class="fc" id="L77">        return definition.call();</span>
+    }
+
+    /**
+     * Create a model for the given HTML element.
+     *
+     * @param name HTML element name.
+     * @return New model with the given name.
+     */
+    @Override
+    protected Object createNode(Object name) {
+<span class="fc" id="L88">        return builder.createNode(String.valueOf(name));</span>
+    }
+
+    /**
+     * Create a model for the given HTML element and inner text content.
+     *
+     * @param name HTML element name.
+     * @param value Text content.
+     * @return New model with the given name and content.
+     */
+    @Override
+    protected Object createNode(Object name, Object value) {
+<span class="fc" id="L100">        return builder.createNode(String.valueOf(name), (String) value);</span>
+    }
+
+    /**
+     * Create a model for the given HTML element and attributes.
+     *
+     * @param name HTML element name.
+     * @param attributes Element attributes.
+     * @return New model with the given name and attributes.
+     */
+    @Override
+    protected Object createNode(Object name, Map attributes) {
+<span class="fc" id="L112">        return builder.createNode(String.valueOf(name), attributes);</span>
+    }
+
+    /**
+     * Create a model for the given HTML element, attributes, and inner text
+     * content.
+     *
+     * @param name HTML element name.
+     * @param attributes Element attributes.
+     * @param value Text content.
+     * @return New model with the given name, attributes, and content.
+     */
+    @Override
+    protected IModel createNode(Object name, Map attributes, Object value) {
+<span class="fc" id="L126">        return builder.createNode(String.valueOf(name), attributes, (String) value);</span>
+    }
+
+    /**
+     * Link a parent and child node. A child node is appended to a parent by
+     * being the last sub-model before the parent close tag.
+     *
+     * @param parent
+     * @param child
+     */
+    @Override
+    protected void nodeCompleted(Object parent, Object child) {
+<span class="fc" id="L138">        builder.nodeCompleted((IModel) parent, (IModel) child);</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Does nothing. Because models only copy events when added to one another,
+     * we can't just add child events at this point - we need to wait until that
+     * child has had it's children added, and so on. So the parent/child link is
+     * made in the {@link ModelBuilder#nodeCompleted} method instead.
+     *
+     * @param parent
+     * @param child
+     */
+    @Override
+    protected void setParent(Object parent, Object child) {
+<span class="fc" id="L152">        builder.setParent((IModel) parent, (IModel) child);</span>
+<span class="fc" id="L153">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
