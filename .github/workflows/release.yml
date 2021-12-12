@@ -7,9 +7,14 @@ on:
         description: 'version number to release'
         required: true
       java-version:
+        type: choice
         description: 'version of jdk to compile'
-        default: "11"
-        required: false
+        default: '11'
+        required: true
+        options:
+          - '8'
+          - '11'
+          - '17'
 
 jobs:
   release:
