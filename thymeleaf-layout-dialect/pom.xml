@@ -44,7 +44,6 @@
 			<!-- sortpom hack -->
 		</osgi.import>
 		<osgi.private>nz.net.ultraq.thymeleaf.layoutdialect.internal</osgi.private>
-		<prerequisites.maven>3.3</prerequisites.maven>
 		<reflections.version>0.9.12</reflections.version>
 		<slf4j.version>1.7.32</slf4j.version>
 		<thymeleaf-expressionprocessor.specification>3.0</thymeleaf-expressionprocessor.specification>
@@ -206,26 +205,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>enforce-versions</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<requireMavenVersion>
-									<message>You are running an older version of Maven. ${project.name} requires at least Maven ${prerequisites.maven}</message>
-									<version>[${prerequisites.maven},)</version>
-								</requireMavenVersion>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

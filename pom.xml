@@ -133,6 +133,7 @@
 		<osgi.import>*</osgi.import>
 		<osgi.private/>
 		<osgi.symbolicName>${project.groupId}.${project.artifactId}</osgi.symbolicName>
+		<prerequisites.maven>3.5</prerequisites.maven>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.scm.tag>HEAD</project.scm.tag>
 		<revision>3.0.1-SNAPSHOT</revision>
@@ -485,6 +486,26 @@
 				<groupId>com.github.ekryd.sortpom</groupId>
 				<artifactId>sortpom-maven-plugin</artifactId>
 				<inherited>false</inherited>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<message>You are running an older version of Maven. ${project.name} requires at least Maven ${prerequisites.maven}</message>
+									<version>[${prerequisites.maven},)</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
