@@ -64,9 +64,9 @@ public class FragmentExtensions {
 	 * @param self
 	 * @param context
 	 * @param fragments     The new fragments to add to the cache.
-	 * @param fromDecorator Whether the call was from {@code DecorateProcessor},
-	 *                      used for determining if a new fragment collection should be used and the
-	 *                      order of collected fragments.
+	 * @param fromDecorator Whether the call was from {@code DecorateProcessor}, used for determining
+	 *                      if a new fragment collection should be used and the order of collected
+	 *                      fragments.
 	 */
 	public static void setLocalFragmentCollection(
 		IElementModelStructureHandler self, ITemplateContext context,

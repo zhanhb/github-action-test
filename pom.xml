@@ -139,7 +139,7 @@
 		<revision>3.0.1-SNAPSHOT</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>
 		<sortpom-maven-plugin.version>3.0.0</sortpom-maven-plugin.version>
-		<thymeleaf.version>3.0.13.RELEASE</thymeleaf.version>
+		<thymeleaf.version>3.0.14.RELEASE</thymeleaf.version>
 		<versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
 	</properties>
 
