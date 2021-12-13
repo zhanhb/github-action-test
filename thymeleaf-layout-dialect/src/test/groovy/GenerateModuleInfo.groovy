@@ -9,7 +9,7 @@ try {
 	def project = project
 
 	String moduleName = project.properties['module.name']
-	String version = project.version
+	String version = project.properties['moduleVersion'] ?: project.version
 	String sourceDirectory = project.build.sourceDirectory
 	String outputDirectory = project.build.outputDirectory
 

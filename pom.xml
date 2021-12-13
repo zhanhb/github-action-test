@@ -128,6 +128,7 @@
 		<maven.deploy.skip>true</maven.deploy.skip>
 		<maven.site.deploy.skip>true</maven.site.deploy.skip>
 		<maven.site.skip>true</maven.site.skip>
+		<moduleVersion>${project.version}</moduleVersion>
 		<osgi.dynamicImport/>
 		<osgi.export>${project.groupId}.*;version=${project.version};-noimport:=true</osgi.export>
 		<osgi.import>*</osgi.import>
@@ -163,8 +164,17 @@
 	<build>
 		<resources>
 			<resource>
+				<filtering>true</filtering>
+				<directory>${project.build.sourceDirectory}</directory>
+				<includes>
+					<include>META-INF/services/org.codehaus.groovy.runtime.ExtensionModule</include>
+				</includes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
 				<directory>${project.build.sourceDirectory}</directory>
 				<excludes>
+					<exclude>META-INF/services/org.codehaus.groovy.runtime.ExtensionModule</exclude>
 					<exclude>**/*.java</exclude>
 					<exclude>**/*.groovy</exclude>
 				</excludes>
