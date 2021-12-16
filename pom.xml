@@ -239,7 +239,7 @@
 							<Private-Package>${osgi.private}</Private-Package>
 							<Import-Package>${osgi.import}</Import-Package>
 							<DynamicImport-Package>${osgi.dynamicImport}</DynamicImport-Package>
-							<Bundle-DocURL>https://github.com/zhanhb/thymeleaf-layout-dialect</Bundle-DocURL>
+							<Bundle-DocURL>${project.url}</Bundle-DocURL>
 						</instructions>
 					</configuration>
 					<executions>
