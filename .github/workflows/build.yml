@@ -35,14 +35,14 @@ jobs:
             ${{ env.cache-name }}-${{ github.workflow }}-
             ${{ env.cache-name }}-
       - name: mvnw install
-        run: ./mvnw clean install
+        run: ./mvnw -B --color=always clean install
       - name: Codecov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
       - name: Before Cache
         run: |
-          ./mvnw build-helper:remove-project-artifact || :
+          ./mvnw -B --color=always build-helper:remove-project-artifact || :
           find ~/.m2/ -type d -name '*-SNAPSHOT' \( -exec rm -rf '{}' \; -prune \)
   deploy:
     name: deploy
@@ -69,12 +69,12 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         run: |
-          version="$(./mvnw -B help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          version="$(./mvnw -B -N help:evaluate -Dexpression=project.version -q -DforceStdout)"
           case "$version" in
-          *-SNAPSHOT) ./mvnw -s .github/settings.xml "-Dbundle.manifest.builtBy=GitHub Actions" deploy ;;
+          *-SNAPSHOT) ./mvnw -B --color=always -s .github/settings.xml "-Dbundle.manifest.builtBy=GitHub Actions" deploy ;;
           *) printf '\e[31m%s\e[m\n' "skip deploy version '$version'" ;;
           esac
       - name: Before Cache
         run: |
-          ./mvnw build-helper:remove-project-artifact || :
+          ./mvnw -B --color=always build-helper:remove-project-artifact || :
           find ~/.m2/ -type d -name '*-SNAPSHOT' \( -exec rm -rf '{}' \; -prune \)
