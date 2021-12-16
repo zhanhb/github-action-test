@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../assets/dir-index.xsl"?>
+<list>
+  <dir name="test1" />
+  <file name="test2.index" />
+</list>
