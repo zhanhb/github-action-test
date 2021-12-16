@@ -161,12 +161,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>9.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
@@ -318,7 +312,7 @@
 						<goals>
 							<goal>execute</goal>
 						</goals>
-						<phase>compile</phase>
+						<phase>process-classes</phase>
 						<configuration>
 							<scripts>
 								<script>${project.basedir}/src/test/groovy/GenerateModuleInfo.groovy</script>
