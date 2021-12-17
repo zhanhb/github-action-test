@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nz.net.ultraq.thymeleaf.layoutdialect.internal;
 
 /**
  * Internal use only, may be removed in the future.
  */
+package nz.net.ultraq.thymeleaf.layoutdialect.internal;
