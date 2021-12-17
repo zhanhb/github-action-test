@@ -218,7 +218,6 @@
 							<goals>
 								<goal>sort</goal>
 							</goals>
-							<phase>verify</phase>
 						</execution>
 					</executions>
 				</plugin>
@@ -501,7 +500,6 @@
 			<plugin>
 				<groupId>com.github.ekryd.sortpom</groupId>
 				<artifactId>sortpom-maven-plugin</artifactId>
-				<inherited>false</inherited>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
