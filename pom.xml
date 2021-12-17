@@ -130,6 +130,7 @@
 		<maven.site.deploy.skip>true</maven.site.deploy.skip>
 		<maven.site.skip>true</maven.site.skip>
 		<moduleVersion>${project.version}</moduleVersion>
+		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 		<osgi.dynamicImport/>
 		<osgi.export>${project.groupId}.*;version=${project.version};-noimport:=true</osgi.export>
 		<osgi.import>*</osgi.import>
@@ -492,6 +493,16 @@
 							<phase>prepare-package</phase>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>${nexus-staging-maven-plugin.version}</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org</nexusUrl>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
