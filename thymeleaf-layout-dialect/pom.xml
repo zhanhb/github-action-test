@@ -316,14 +316,14 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>gh-release-artifact</id>
+						<id>distribution</id>
 						<goals>
 							<goal>execute</goal>
 						</goals>
 						<phase>verify</phase>
 						<configuration>
 							<scripts>
-								<script>${project.basedir}/src/test/groovy/GithubReleaseArtifactMojo.groovy</script>
+								<script>${project.basedir}/src/test/groovy/DistributionTask.groovy</script>
 							</scripts>
 						</configuration>
 					</execution>
