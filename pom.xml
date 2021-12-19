@@ -97,7 +97,6 @@
 
 	<properties>
 		<build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
-		<bundle.manifest.builtBy>${user.name}</bundle.manifest.builtBy>
 		<flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<groovy.version>3.0.9</groovy.version>
@@ -106,7 +105,7 @@
 		<junit-jupiter.version>5.8.2</junit-jupiter.version>
 		<maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
 		<maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-		<maven-bundle-plugin.version>5.1.2</maven-bundle-plugin.version>
+		<maven-bundle-plugin.version>5.1.3</maven-bundle-plugin.version>
 		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
@@ -235,11 +234,6 @@
 							<supportedProjectType>war</supportedProjectType>
 							<supportedProjectType>maven-plugin</supportedProjectType>
 						</supportedProjectTypes>
-						<archive>
-							<manifestEntries>
-								<Built-By>${bundle.manifest.builtBy}</Built-By>
-							</manifestEntries>
-						</archive>
 						<instructions>
 							<_nouses>true</_nouses>
 							<Bundle-SymbolicName>${osgi.symbolicName}</Bundle-SymbolicName>

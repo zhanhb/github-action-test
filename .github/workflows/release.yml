@@ -48,7 +48,7 @@ jobs:
             git config --global user.name "$GITHUB_ACTOR"
             git config --global user.email "$(gh api "users/$GITHUB_ACTOR" -q '.email//"\(.id)+\(.login)@users.noreply.github.com"')"
           }
-          ./mvnw -B --color=always -s .github/settings.xml -Prelease-profile "-Drevision=$REVISION" "-Dbundle.manifest.builtBy=GitHub Actions" scm:tag deploy site-deploy
+          ./mvnw -B --color=always -s .github/settings.xml -Prelease-profile "-Drevision=$REVISION" scm:tag deploy site-deploy
       - name: Github Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
