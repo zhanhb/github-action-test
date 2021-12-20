@@ -32,7 +32,7 @@ jobs:
           cache-name: maven-dependencies
         with:
           path: ~/.m2
-          key: ${{ env.cache-name }}-${{ github.workflow }}-${{ hashFiles('**/pom.xml') }}
+          key: ${{ env.cache-name }}-${{ github.workflow }}-${{ hashFiles('.github/**', '**/pom.xml') }}
           restore-keys: |
             ${{ env.cache-name }}-${{ github.workflow }}
             ${{ env.cache-name }}-
