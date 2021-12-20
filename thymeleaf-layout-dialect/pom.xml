@@ -184,6 +184,25 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestSections>
+							<manifestSection>
+								<name>nz/net/ultraq/thymeleaf/expressionprocessor/</name>
+								<manifestEntries>
+									<Implementation-Title>Thymeleaf Expression Processor</Implementation-Title>
+									<Implementation-Version>${thymeleaf-expressionprocessor.version}</Implementation-Version>
+									<Specification-Title>Thymeleaf Expression Processor</Specification-Title>
+									<Specification-Version>${thymeleaf-expressionprocessor.specification}</Specification-Version>
+								</manifestEntries>
+							</manifestSection>
+						</manifestSections>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
@@ -214,29 +233,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-						</manifest>
-						<manifestSections>
-							<manifestSection>
-								<name>nz/net/ultraq/thymeleaf/expressionprocessor/</name>
-								<manifestEntries>
-									<Implementation-Title>Thymeleaf Expression Processor</Implementation-Title>
-									<Implementation-Version>${thymeleaf-expressionprocessor.version}</Implementation-Version>
-									<Specification-Title>Thymeleaf Expression Processor</Specification-Title>
-									<Specification-Version>${thymeleaf-expressionprocessor.specification}</Specification-Version>
-								</manifestEntries>
-							</manifestSection>
-						</manifestSections>
-					</archive>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

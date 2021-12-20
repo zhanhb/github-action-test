@@ -248,6 +248,12 @@
 							<DynamicImport-Package>${osgi.dynamicImport}</DynamicImport-Package>
 							<Bundle-DocURL>${project.url}</Bundle-DocURL>
 						</instructions>
+						<archive>
+							<manifest>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							</manifest>
+						</archive>
 					</configuration>
 					<executions>
 						<execution>
@@ -329,9 +335,6 @@
 					<configuration>
 						<archive>
 							<manifestFile>${project.build.directory}/osgi/MANIFEST.MF</manifestFile>
-							<manifest>
-								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							</manifest>
 						</archive>
 					</configuration>
 				</plugin>
