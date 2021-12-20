@@ -2,11 +2,7 @@ name: build
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       java-version:
@@ -58,7 +54,7 @@ jobs:
     name: deploy
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'push' && github.repository == 'zhanhb/thymeleaf-layout-dialect' ||
+      github.event_name == 'push' && github.repository == 'zhanhb/thymeleaf-layout-dialect' && github.ref_name == 'main' ||
       github.event_name == 'workflow_dispatch' && github.event.inputs.java-version > 0
     needs: build
     steps:
