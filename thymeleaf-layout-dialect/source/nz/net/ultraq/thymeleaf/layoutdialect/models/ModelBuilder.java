@@ -17,6 +17,8 @@ package nz.net.ultraq.thymeleaf.layoutdialect.models;
 
 import groovy.lang.Closure;
 import groovy.util.BuilderSupport;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.ElementDefinitions;
 import org.thymeleaf.model.IModel;
@@ -35,6 +37,14 @@ import java.util.Map;
 public class ModelBuilder extends BuilderSupport {
 
 	private final nz.net.ultraq.thymeleaf.layoutdialect.internal.ModelBuilder builder;
+
+	private static IModel castToModel(Object object) {
+		return (IModel) DefaultTypeTransformation.castToType(object, IModel.class);
+	}
+
+	private static String nullableToString(Object object) {
+		return object != null ? DefaultGroovyMethods.toString(object) : null;
+	}
 
 	/**
 	 * Constructor, create a new model builder.
@@ -62,7 +72,7 @@ public class ModelBuilder extends BuilderSupport {
 	 * @param model
 	 */
 	public void add(IModel model) {
-		IModel current = (IModel) getCurrent();
+		IModel current = castToModel(getCurrent());
 		current.insertModel(current.size() - 1, model);
 	}
 
@@ -75,7 +85,7 @@ public class ModelBuilder extends BuilderSupport {
 	 */
 	public IModel build(Closure<? extends IModel> definition) {
 		setClosureDelegate(definition, null);
-		return definition.call();
+		return castToModel(definition.call());
 	}
 
 	/**
@@ -86,7 +96,7 @@ public class ModelBuilder extends BuilderSupport {
 	 */
 	@Override
 	protected Object createNode(Object name) {
-		return builder.createNode(String.valueOf(name));
+		return builder.createNode(DefaultGroovyMethods.toString(name));
 	}
 
 	/**
@@ -98,7 +108,7 @@ public class ModelBuilder extends BuilderSupport {
 	 */
 	@Override
 	protected Object createNode(Object name, Object value) {
-		return builder.createNode(String.valueOf(name), (String) value);
+		return builder.createNode(DefaultGroovyMethods.toString(name), nullableToString(value));
 	}
 
 	/**
@@ -110,7 +120,7 @@ public class ModelBuilder extends BuilderSupport {
 	 */
 	@Override
 	protected Object createNode(Object name, Map attributes) {
-		return builder.createNode(String.valueOf(name), attributes);
+		return builder.createNode(DefaultGroovyMethods.toString(name), attributes);
 	}
 
 	/**
@@ -124,7 +134,7 @@ public class ModelBuilder extends BuilderSupport {
 	 */
 	@Override
 	protected IModel createNode(Object name, Map attributes, Object value) {
-		return builder.createNode(String.valueOf(name), attributes, (String) value);
+		return builder.createNode(DefaultGroovyMethods.toString(name), attributes, nullableToString(value));
 	}
 
 	/**
@@ -136,7 +146,7 @@ public class ModelBuilder extends BuilderSupport {
 	 */
 	@Override
 	protected void nodeCompleted(Object parent, Object child) {
-		builder.nodeCompleted((IModel) parent, (IModel) child);
+		builder.nodeCompleted(castToModel(parent), castToModel(child));
 	}
 
 	/**
@@ -150,7 +160,7 @@ public class ModelBuilder extends BuilderSupport {
 	 */
 	@Override
 	protected void setParent(Object parent, Object child) {
-		builder.setParent((IModel) parent, (IModel) child);
+		builder.setParent(castToModel(parent), castToModel(child));
 	}
 
 }
