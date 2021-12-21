@@ -2,35 +2,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.github.zhanhb</groupId>
-		<artifactId>thymeleaf-layout-dialect-build</artifactId>
+		<groupId>com.github.zhanhb.thymeleaf.layoutdialect.it</groupId>
+		<artifactId>parent</artifactId>
 		<version>${revision}</version>
+		<relativePath>../thymeleaf-layout-dialect-tests</relativePath>
 	</parent>
-	<artifactId>thymeleaf-layout-dialect-benchmark</artifactId>
+	<artifactId>benchmark</artifactId>
+	<name>Integration Test Benchmark</name>
 	<description>A basic web application to test the performance of the Thymeleaf Layout Dialect</description>
 	<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
 
 	<properties>
 		<benchmark.skip>true</benchmark.skip>
-		<spring-boot.version>2.6.1</spring-boot.version>
 		<start-class>nz.net.ultraq.thymeleaf.benchmark.BenchmarkApplication</start-class>
 	</properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>${spring-boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<dependencies>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>com.github.zhanhb</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -84,12 +73,6 @@
 					<mainClass>${start-class}</mainClass>
 				</configuration>
 				<executions>
-					<execution>
-						<id>repackage</id>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
 					<execution>
 						<id>pre-integration-test</id>
 						<goals>

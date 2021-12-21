@@ -5,6 +5,7 @@
 	<artifactId>thymeleaf-layout-dialect-build</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
+	<name>Thymeleaf Layout Dialect Build Parent</name>
 	<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
 	<inceptionYear>2016</inceptionYear>
 
@@ -62,7 +63,7 @@
 
 	<modules>
 		<module>thymeleaf-layout-dialect</module>
-		<module>thymeleaf-layout-dialect-benchmark</module>
+		<module>thymeleaf-layout-dialect-tests</module>
 	</modules>
 
 	<scm>
@@ -141,6 +142,7 @@
 		<revision>3.0.1-SNAPSHOT</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>
 		<sortpom-maven-plugin.version>3.0.0</sortpom-maven-plugin.version>
+		<spring-boot.version>2.6.2</spring-boot.version>
 		<thymeleaf.version>3.0.14.RELEASE</thymeleaf.version>
 		<versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
 	</properties>
