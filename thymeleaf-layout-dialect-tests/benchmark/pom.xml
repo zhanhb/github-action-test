@@ -5,7 +5,6 @@
 		<groupId>com.github.zhanhb.thymeleaf.layoutdialect.it</groupId>
 		<artifactId>parent</artifactId>
 		<version>${revision}</version>
-		<relativePath>../thymeleaf-layout-dialect-tests</relativePath>
 	</parent>
 	<artifactId>benchmark</artifactId>
 	<name>Integration Test Benchmark</name>

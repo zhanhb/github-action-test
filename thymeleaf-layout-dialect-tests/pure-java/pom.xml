@@ -43,7 +43,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>${project.basedir}/../../thymeleaf-layout-dialect-benchmark/source</directory>
+				<directory>${project.basedir}/../benchmark/source</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 					<exclude>**/*.groovy</exclude>

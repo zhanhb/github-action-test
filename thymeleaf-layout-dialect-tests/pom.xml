@@ -12,7 +12,7 @@
 	<name>Integration Tests Parent</name>
 
 	<modules>
-		<module>../thymeleaf-layout-dialect-benchmark</module>
+		<module>benchmark</module>
 		<module>pure-java</module>
 	</modules>
 
