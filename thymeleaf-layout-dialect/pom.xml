@@ -43,6 +43,7 @@
 			*
 			<!-- sortpom hack -->
 		</osgi.import>
+		<osgi.module-info-options>java.annotation;substitute=jsr305</osgi.module-info-options>
 		<reflections.version>0.9.12</reflections.version>
 		<slf4j.version>1.7.32</slf4j.version>
 		<thymeleaf-expressionprocessor.specification>3.0</thymeleaf-expressionprocessor.specification>
@@ -199,7 +200,21 @@
 							</manifestSection>
 						</manifestSections>
 					</archive>
+					<instructions>
+						<_jpms-module-info>${module.name};access=open;version=${moduleVersion}</_jpms-module-info>
+					</instructions>
 				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -232,6 +247,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-jar</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -301,25 +326,6 @@
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
-				<configuration>
-					<properties>
-						<ant/>
-					</properties>
-				</configuration>
-				<executions>
-					<execution>
-						<id>generate-module-info</id>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<phase>process-classes</phase>
-						<configuration>
-							<scripts>
-								<script>${project.basedir}/src/test/groovy/GenerateModuleInfo.groovy</script>
-							</scripts>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -369,20 +375,6 @@
 				<java.version>9</java.version>
 				<maven.compiler.release>9</maven.compiler.release>
 			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.gmavenplus</groupId>
-						<artifactId>gmavenplus-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>generate-module-info</id>
-								<phase>none</phase>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 	</profiles>
 </project>

@@ -97,6 +97,7 @@
 	</distributionManagement>
 
 	<properties>
+		<bnd.version>6.1.0</bnd.version>
 		<build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
 		<flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
@@ -134,6 +135,7 @@
 		<osgi.dynamicImport/>
 		<osgi.export>*;-noimport:=true</osgi.export>
 		<osgi.import>*</osgi.import>
+		<osgi.module-info-options/>
 		<prerequisites.maven>3.5</prerequisites.maven>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.scm.tag>HEAD</project.scm.tag>
@@ -240,6 +242,7 @@
 						</supportedProjectTypes>
 						<instructions>
 							<_exportcontents>${osgi.export}</_exportcontents>
+							<_jpms-module-info-options>java.base;ignore=true,${osgi.module-info-options}</_jpms-module-info-options>
 							<_nouses>true</_nouses>
 							<Import-Package>${osgi.import}</Import-Package>
 							<DynamicImport-Package>${osgi.dynamicImport}</DynamicImport-Package>
@@ -252,6 +255,13 @@
 							</manifest>
 						</archive>
 					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>biz.aQute.bnd</groupId>
+							<artifactId>biz.aQute.bndlib</artifactId>
+							<version>${bnd.version}</version>
+						</dependency>
+					</dependencies>
 					<executions>
 						<execution>
 							<id>bundle-manifest</id>
