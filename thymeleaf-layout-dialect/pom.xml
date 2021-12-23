@@ -28,22 +28,21 @@
 		<ognl3.version>3.1.26</ognl3.version>
 		<osgi.export>
 			<!-- sortpom hack -->
-			nz.net.ultraq.thymeleaf.expressionprocessor;version=${thymeleaf-expressionprocessor.version},
-			!nz.net.ultraq.thymeleaf.layoutdialect.internal,
-			nz.net.ultraq.thymeleaf.layoutdialect.*
+			!*.internal.*,
+			nz.net.ultraq.thymeleaf.expressionprocessor;-noimport:=true;version=${thymeleaf-expressionprocessor.version},
+			*;-noimport:=true,
 			<!-- sortpom hack -->
 		</osgi.export>
 		<osgi.import>
 			<!-- sortpom hack -->
-			!nz.net.ultraq.thymeleaf.*,
-			groovy.*;resolution:=optional,
-			javax.annotation.*;resolution:=optional,
-			org.codehaus.groovy.runtime.*;resolution:=optional,
+			groovy.*;resolution:=optional;version=!,
+			javax.annotation.*;resolution:=optional;version=!,
+			org.codehaus.groovy.*;resolution:=optional;version=!,
+			org.slf4j.*;version=!,
 			org.thymeleaf.*;version="[3.0,4)",
 			*
 			<!-- sortpom hack -->
 		</osgi.import>
-		<osgi.private>nz.net.ultraq.thymeleaf.layoutdialect.internal</osgi.private>
 		<reflections.version>0.9.12</reflections.version>
 		<slf4j.version>1.7.32</slf4j.version>
 		<thymeleaf-expressionprocessor.specification>3.0</thymeleaf-expressionprocessor.specification>
