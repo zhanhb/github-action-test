@@ -69,7 +69,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</connection>
 		<developerConnection>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</developerConnection>
-		<tag>${project.scm.tag}</tag>
+		<tag>HEAD</tag>
 		<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
 	</scm>
 
@@ -119,7 +119,6 @@
 		<maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
 		<maven-project-info-reports-plugin.version>3.1.2</maven-project-info-reports-plugin.version>
 		<maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
-		<maven-scm-plugin.version>1.12.0</maven-scm-plugin.version>
 		<maven-scm-publish-plugin.version>3.1.0</maven-scm-publish-plugin.version>
 		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -138,7 +137,6 @@
 		<osgi.module-info-options/>
 		<prerequisites.maven>3.5</prerequisites.maven>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.scm.tag>HEAD</project.scm.tag>
 		<revision>3.0.1-SNAPSHOT</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>
 		<sortpom-maven-plugin.version>3.0.0</sortpom-maven-plugin.version>
@@ -374,14 +372,6 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-scm-plugin</artifactId>
-					<version>${maven-scm-plugin.version}</version>
-					<configuration>
-						<tag>${project.scm.tag}</tag>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-scm-publish-plugin</artifactId>
 					<version>${maven-scm-publish-plugin.version}</version>
 				</plugin>
@@ -577,9 +567,6 @@
 	<profiles>
 		<profile>
 			<id>release-profile</id>
-			<properties>
-				<project.scm.tag>${revision}</project.scm.tag>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
