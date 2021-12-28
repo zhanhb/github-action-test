@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" child.project.url.inherit.append.path="false" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.zhanhb</groupId>
 	<artifactId>thymeleaf-layout-dialect-build</artifactId>
@@ -12,7 +12,7 @@
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -66,7 +66,7 @@
 		<module>thymeleaf-layout-dialect-tests</module>
 	</modules>
 
-	<scm>
+	<scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
 		<connection>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</connection>
 		<developerConnection>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</developerConnection>
 		<tag>HEAD</tag>
@@ -135,7 +135,7 @@
 		<osgi.export>*;-noimport:=true</osgi.export>
 		<osgi.import>*</osgi.import>
 		<osgi.module-info-options/>
-		<prerequisites.maven>3.5</prerequisites.maven>
+		<prerequisites.maven>3.6.1</prerequisites.maven>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<revision>3.0.1-SNAPSHOT</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>

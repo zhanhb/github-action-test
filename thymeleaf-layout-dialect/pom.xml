@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.github.zhanhb</groupId>
@@ -9,7 +9,6 @@
 	<artifactId>thymeleaf-layout-dialect</artifactId>
 	<name>Thymeleaf Layout Dialect</name>
 	<description>Thymeleaf Layout Dialect rewritten in java.</description>
-	<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
 
 	<properties>
 		<argLine>-Dfile.encoding=${file.encoding} -ea</argLine>
@@ -287,7 +286,7 @@
 							<content>${project.reporting.outputDirectory}</content>
 							<scmBranch>gh-pages</scmBranch>
 							<serverId>github</serverId>
-							<pubScmUrl>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</pubScmUrl>
+							<pubScmUrl>${project.scm.connection}</pubScmUrl>
 						</configuration>
 					</execution>
 				</executions>
