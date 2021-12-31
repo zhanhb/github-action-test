@@ -136,6 +136,7 @@
 		<osgi.import>*</osgi.import>
 		<osgi.module-info-options/>
 		<prerequisites.maven>3.6.1</prerequisites.maven>
+		<project.build.outputTimestamp>!</project.build.outputTimestamp>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<revision>3.0.1-SNAPSHOT</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>

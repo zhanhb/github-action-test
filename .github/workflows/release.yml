@@ -21,6 +21,12 @@ on:
       next-version:
         description: next develop version
         required: false
+      build-timestamp:
+        description: |
+          project.build.outputTimestamp in UTC
+          format: yyyy-MM-dd'T'HH:mm:ssZ
+          sample: 2001-09-17T04:45:52Z
+        required: false
       skip-perform:
         type: boolean
         required: false
@@ -58,6 +64,7 @@ jobs:
           INPUT_RELEASE: ${{ github.event.inputs.release }}
           INPUT_TAG: ${{ github.event.inputs.tag }}
           INPUT_NEXT_VERSION: ${{ github.event.inputs.next-version }}
+          INPUT_BUILD_TIMESTAMP: ${{ github.event.inputs.build-timestamp }}
         run: .github/functions.sh release_prepare
       - name: Release Perform
         if: github.event.inputs.skip-perform != 'true'
