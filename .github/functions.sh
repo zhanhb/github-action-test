@@ -21,6 +21,34 @@ git_config() {
 	[ -z "$email" ] || git config --global user.email "$email"
 }
 
+date_u() {
+	local format=+%FT%TZ
+	if [ -z "$1" ]; then
+		date -u "$format"
+	elif date --help 2>&1 | grep -qF '[-r seconds]'; then
+		date -u -r "$1" "$format"
+	else
+		date -u -d "@$1" "$format"
+	fi
+}
+
+parse_timestamp() {
+	local patten_8601="^\([0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}T[0-9]\{2\}:[0-9]\{2\}:[0-9]\{2\}Z\)"
+	local output
+
+	if [ -z "$1" ]; then
+		date_u
+	elif output="$(expr "$1" : "$patten_8601")"; then
+		printf "%s\n" "$output"
+	elif output="$(expr "$1" : "^\([1-9][0-9]\{12\}\)$")"; then
+		date_u "$((output / 1000))"
+	elif output="$(expr "$1" : "^\([1-9][0-9]\{9\}\)$")"; then
+		date_u "$output"
+	else
+		false
+	fi
+}
+
 check_version() {
 	local VERSION_PATTERN='^\([0-9]\{1,\}\(\.[0-9]\{1,\}\)*\)\(-SNAPSHOT\)\{0,1\}$'
 	expr "$1" : "$VERSION_PATTERN" >/dev/null || error "invalid $2 version <$1>"
@@ -83,10 +111,12 @@ release_prepare() {
 		NEXT_SNAPSHOT="$INPUT_NEXT_VERSION-SNAPSHOT"
 		;;
 	esac
+	BUILD_TIMESTAMP="$(parse_timestamp "$INPUT_BUILD_TIMESTAMP")" || error "invalid build timestamp: '$INPUT_BUILD_TIMESTAMP'"
 	BRANCH="$(git branch --show-current)"
 	[ -n "$BRANCH" ] || error "not a branch on commit $COMMIT_ID"
-	info "Prepare release '$REVISION', tag='$TAG', next snapshot='$NEXT_SNAPSHOT'"
+	info "Prepare release '$REVISION', tag='$TAG', next snapshot='$NEXT_SNAPSHOT', outputTimestamp='$BUILD_TIMESTAMP'"
 	set_property revision "$REVISION"
+	set_property project.build.outputTimestamp "$BUILD_TIMESTAMP"
 	./mvnw -B --color=always -N versions:set-scm-tag "-DnewTag=$TAG"
 	git add pom.xml
 	git commit -m "Release $REVISION"
