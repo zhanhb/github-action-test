@@ -48,6 +48,11 @@ jobs:
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+      - name: extra commands
+        env:
+          EXTRA_COMMANDS: ${{ vars.EXTRA_COMMANDS }}
+        run: |
+          [ -z "$EXTRA_COMMANDS" ] || bash <<< "$EXTRA_COMMANDS"
       - name: Before Cache
         run: .github/functions.sh purge_artifacts
   deploy:

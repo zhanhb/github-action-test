@@ -6,7 +6,7 @@
 	<version>${revision}</version>
 	<packaging>pom</packaging>
 	<name>Thymeleaf Layout Dialect Build Parent</name>
-	<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
+	<url>https://github.com/zhanhb/github-action-test</url>
 	<inceptionYear>2016</inceptionYear>
 
 	<licenses>
@@ -67,20 +67,20 @@
 	</modules>
 
 	<scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
-		<connection>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</connection>
-		<developerConnection>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</developerConnection>
+		<connection>scm:git:https://github.com/zhanhb/github-action-test.git</connection>
+		<developerConnection>scm:git:https://github.com/zhanhb/github-action-test.git</developerConnection>
 		<tag>HEAD</tag>
-		<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
+		<url>https://github.com/zhanhb/github-action-test</url>
 	</scm>
 
 	<issueManagement>
 		<system>Github</system>
-		<url>https://github.com/zhanhb/thymeleaf-layout-dialect/issues</url>
+		<url>https://github.com/zhanhb/github-action-test/issues</url>
 	</issueManagement>
 
 	<ciManagement>
 		<system>Github Actions</system>
-		<url>https://github.com/zhanhb/thymeleaf-layout-dialect/actions</url>
+		<url>https://github.com/zhanhb/github-action-test/actions</url>
 	</ciManagement>
 
 	<distributionManagement>
@@ -145,7 +145,7 @@
 		<project.build.outputTimestamp>!</project.build.outputTimestamp>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reflections.version>0.10.2</reflections.version>
-		<revision>3.2.1-SNAPSHOT</revision>
+		<revision>0.0.1-SNAPSHOT</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>
 		<slf4j.version>1.7.36</slf4j.version>
 		<sortpom-maven-plugin.version>3.2.1</sortpom-maven-plugin.version>
@@ -717,7 +717,7 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-project-info-reports-plugin</artifactId>
 						<configuration>
-							<webAccessUrl>https://github.com/zhanhb/thymeleaf-layout-dialect/tree/${project.scm.tag}</webAccessUrl>
+							<webAccessUrl>https://github.com/zhanhb/github-action-test/tree/${project.scm.tag}</webAccessUrl>
 						</configuration>
 					</plugin>
 				</plugins>
