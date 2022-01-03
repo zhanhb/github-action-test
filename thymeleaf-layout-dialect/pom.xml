@@ -264,6 +264,7 @@
 					<additionalJOption>-J-Dfile.encoding=${file.encoding}</additionalJOption>
 					<excludePackageNames>*.internal</excludePackageNames>
 					<links>
+						<link>https://docs.groovy-lang.org/${groovy.version}/html/api</link>
 						<link>https://www.thymeleaf.org/apidocs/thymeleaf/${thymeleaf.version}</link>
 					</links>
 				</configuration>
