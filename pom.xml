@@ -103,7 +103,6 @@
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<groovy.version>3.0.9</groovy.version>
 		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-		<java.version>1.8</java.version>
 		<junit-jupiter.version>5.8.2</junit-jupiter.version>
 		<maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
 		<maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
@@ -124,8 +123,6 @@
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 		<maven-surefire-report-plugin.version>2.22.2</maven-surefire-report-plugin.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.deploy.skip>true</maven.deploy.skip>
 		<maven.site.deploy.skip>true</maven.site.deploy.skip>
 		<maven.site.skip>true</maven.site.skip>
@@ -566,6 +563,27 @@
 	</reporting>
 
 	<profiles>
+		<profile>
+			<id>jdk8</id>
+			<activation>
+				<jdk>(,9)</jdk>
+			</activation>
+			<properties>
+				<java.version>1.8</java.version>
+				<maven.compiler.source>${java.version}</maven.compiler.source>
+				<maven.compiler.target>${java.version}</maven.compiler.target>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk9</id>
+			<activation>
+				<jdk>[9,)</jdk>
+			</activation>
+			<properties>
+				<java.version>8</java.version>
+				<maven.compiler.release>${java.version}</maven.compiler.release>
+			</properties>
+		</profile>
 		<profile>
 			<id>release-profile</id>
 			<build>
