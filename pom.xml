@@ -178,14 +178,14 @@
 				<filtering>true</filtering>
 				<directory>${project.build.sourceDirectory}</directory>
 				<includes>
-					<include>META-INF/services/org.codehaus.groovy.runtime.ExtensionModule</include>
+					<include>META-INF/services/**</include>
 				</includes>
 			</resource>
 			<resource>
 				<filtering>false</filtering>
 				<directory>${project.build.sourceDirectory}</directory>
 				<excludes>
-					<exclude>META-INF/services/org.codehaus.groovy.runtime.ExtensionModule</exclude>
+					<exclude>META-INF/services/**</exclude>
 					<exclude>**/*.java</exclude>
 					<exclude>**/*.groovy</exclude>
 				</excludes>
