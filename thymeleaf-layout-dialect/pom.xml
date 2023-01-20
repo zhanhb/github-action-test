@@ -42,11 +42,17 @@
 			*
 			<!-- sortpom hack -->
 		</osgi.import>
-		<osgi.module-info-options>java.annotation;substitute=jsr305</osgi.module-info-options>
+		<osgi.module-info>access=open;modules=org.codehaus.groovy;</osgi.module-info>
+		<osgi.module-info-options>
+			<!-- sortpom hack -->
+			java.annotation;substitute=jsr305,
+			org.codehaus.groovy;static
+			<!-- sortpom hack -->
+		</osgi.module-info-options>
 		<reflections.version>0.9.12</reflections.version>
 		<slf4j.version>1.7.36</slf4j.version>
-		<thymeleaf-expressionprocessor.specification>3.0</thymeleaf-expressionprocessor.specification>
-		<thymeleaf-expressionprocessor.version>3.0.0</thymeleaf-expressionprocessor.version>
+		<thymeleaf-expressionprocessor.specification>3.1</thymeleaf-expressionprocessor.specification>
+		<thymeleaf-expressionprocessor.version>3.1.0</thymeleaf-expressionprocessor.version>
 		<thymeleaf-testing.version>3.0.4.RELEASE</thymeleaf-testing.version>
 		<unbescape.version>1.1.6.RELEASE</unbescape.version>
 	</properties>
@@ -161,7 +167,7 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
+			<groupId>org.apache.groovy</groupId>
 			<artifactId>groovy</artifactId>
 			<optional>true</optional>
 		</dependency>
@@ -177,7 +183,7 @@
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-core</artifactId>
-			<version>2.3-groovy-3.0</version>
+			<version>2.3-groovy-4.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -206,7 +212,7 @@
 						</manifestSections>
 					</archive>
 					<instructions>
-						<_jpms-module-info>${module.name};access=open;version=${moduleVersion}</_jpms-module-info>
+						<_jpms-module-info>${module.name};${osgi.module-info}version=${moduleVersion}</_jpms-module-info>
 					</instructions>
 				</configuration>
 				<executions>

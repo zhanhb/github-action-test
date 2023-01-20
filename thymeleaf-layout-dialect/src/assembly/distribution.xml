@@ -20,7 +20,7 @@
 		<dependencySet>
 			<excludes>
 				<exclude>com.google.code.findbugs:jsr305</exclude>
-				<exclude>org.codehaus.groovy:*</exclude>
+				<exclude>org.apache.groovy:*</exclude>
 			</excludes>
 			<outputDirectory>libraries</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
