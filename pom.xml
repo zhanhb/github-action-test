@@ -69,7 +69,7 @@
 	<scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
 		<connection>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</connection>
 		<developerConnection>scm:git:https://github.com/zhanhb/thymeleaf-layout-dialect.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>3.1.0</tag>
 		<url>https://github.com/zhanhb/thymeleaf-layout-dialect</url>
 	</scm>
 
@@ -133,9 +133,9 @@
 		<osgi.import>*</osgi.import>
 		<osgi.module-info-options/>
 		<prerequisites.maven>3.6.1</prerequisites.maven>
-		<project.build.outputTimestamp>!</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2023-01-23T10:27:25Z</project.build.outputTimestamp>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<revision>3.1.0-SNAPSHOT</revision>
+		<revision>3.1.0</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>
 		<sortpom-maven-plugin.version>3.0.1</sortpom-maven-plugin.version>
 		<spring-boot.version>2.7.8</spring-boot.version>
