@@ -41,10 +41,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class FragmentProcessor extends AbstractAttributeTagProcessor {
 
-	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
-
-	private static final AtomicBoolean warned = new AtomicBoolean();
-
 	public static final String PROCESSOR_NAME = "fragment";
 	public static final int PROCESSOR_PRECEDENCE = 1;
 
@@ -72,18 +68,6 @@ public class FragmentProcessor extends AbstractAttributeTagProcessor {
 	protected void doProcess(
 		ITemplateContext context, IProcessableElementTag tag,
 		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
-		// Emit a warning if found in the <head> section
-		if (getTemplateMode() == TemplateMode.HTML) {
-			for (IProcessableElementTag element : context.getElementStack()) {
-				if ("head".equals(element.getElementCompleteName())) {
-					if (warned.compareAndSet(false, true)) {
-						logger.warn("You don't need to put the layout:fragment/data-layout-fragment attribute into the <head> section - "
-							+ "the decoration process will automatically copy the <head> section of your content templates into your layout page.");
-					}
-					break;
-				}
-			}
-		}
 
 		// Locate the fragment that corresponds to this decorator/include fragment
 		List<IModel> fragments = FragmentExtensions.getFragmentCollection(context).get(attributeValue);

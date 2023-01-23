@@ -2,8 +2,16 @@
 Changelog
 =========
 
+### 3.2.0
+
+ - Remove old log warning about `layout:fragment` in the `<head>` section
+   ([#225](https://github.com/ultraq/thymeleaf-layout-dialect/issues/225))
+
+
 ### 3.1.0
+
  - [Java] Add static require `org.apache.groovy` to `module-info`.
+
 
 ### 3.0.0
 
@@ -29,6 +37,7 @@ Check the [migration guide](https://ultraq.github.io/thymeleaf-layout-dialect/mi
 
 
 ### 2.5.3
+
  - [Java] A version bump without change anything, for upstream fixes a groovy security issue.
 
 
