@@ -49,7 +49,7 @@
 			org.codehaus.groovy;static
 			<!-- sortpom hack -->
 		</osgi.module-info-options>
-		<reflections.version>0.9.12</reflections.version>
+		<reflections.version>0.10.2</reflections.version>
 		<slf4j.version>1.7.36</slf4j.version>
 		<thymeleaf-expressionprocessor.specification>3.1</thymeleaf-expressionprocessor.specification>
 		<thymeleaf-expressionprocessor.version>3.1.0</thymeleaf-expressionprocessor.version>
