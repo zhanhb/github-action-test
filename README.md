@@ -32,5 +32,5 @@ over on https://github.com/zhanhb/thymeleaf-layout-dialect/tree/1.4.x
 
 Usage, Examples and Other documents
 -----
-The package names keep the same as orignal.
+The package names keep the same as original.
 Please visit https://github.com/ultraq/thymeleaf-layout-dialect for details.
