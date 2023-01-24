@@ -49,9 +49,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Before Cache
-        run: |
-          ./mvnw -B --color=always build-helper:remove-project-artifact || :
-          find ~/.m2/ -type d -name '*-SNAPSHOT' \( -exec rm -rf '{}' \; -prune \)
+        run: .github/functions.sh purge_artifacts
   deploy:
     name: deploy
     runs-on: ubuntu-latest
@@ -85,6 +83,4 @@ jobs:
           *) printf '\e[31m%s\e[m\n' "skip deploy version '$version'" ;;
           esac
       - name: Before Cache
-        run: |
-          ./mvnw -B --color=always build-helper:remove-project-artifact || :
-          find ~/.m2/ -type d -name '*-SNAPSHOT' \( -exec rm -rf '{}' \; -prune \)
+        run: .github/functions.sh purge_artifacts

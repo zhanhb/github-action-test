@@ -139,6 +139,11 @@ release_perform() {
 	find . -type f -name "*-$REVISION.zip" -print0 | xargs -0 gh release -R "$GITHUB_REPOSITORY" create "$TAG" --prerelease --target "$COMMIT_ID"
 }
 
+purge_artifacts() {
+	./mvnw -B --color=always build-helper:remove-project-artifact || :
+	find ~/.m2/ -type d -name '*-SNAPSHOT' \( -exec rm -rf '{}' \; -prune \)
+}
+
 [ $# -eq 0 ] || {
 	set -e
 	set -o pipefail
