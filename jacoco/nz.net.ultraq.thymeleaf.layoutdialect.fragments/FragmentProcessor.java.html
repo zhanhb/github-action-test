@@ -41,10 +41,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class FragmentProcessor extends AbstractAttributeTagProcessor {
 
-<span class="fc" id="L44">	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);</span>
-
-<span class="fc" id="L46">	private static final AtomicBoolean warned = new AtomicBoolean();</span>
-
 	public static final String PROCESSOR_NAME = &quot;fragment&quot;;
 	public static final int PROCESSOR_PRECEDENCE = 1;
 
@@ -55,8 +51,8 @@ public class FragmentProcessor extends AbstractAttributeTagProcessor {
 	 * @param dialectPrefix
 	 */
 	public FragmentProcessor(TemplateMode templateMode, String dialectPrefix) {
-<span class="fc" id="L58">		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true);</span>
-<span class="fc" id="L59">	}</span>
+<span class="fc" id="L54">		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true);</span>
+<span class="fc" id="L55">	}</span>
 
 	/**
 	 * Inserts the content of fragments into the encountered fragment
@@ -72,35 +68,23 @@ public class FragmentProcessor extends AbstractAttributeTagProcessor {
 	protected void doProcess(
 		ITemplateContext context, IProcessableElementTag tag,
 		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
-		// Emit a warning if found in the &lt;head&gt; section
-<span class="fc bfc" id="L76" title="All 2 branches covered.">		if (getTemplateMode() == TemplateMode.HTML) {</span>
-<span class="fc bfc" id="L77" title="All 2 branches covered.">			for (IProcessableElementTag element : context.getElementStack()) {</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">				if (&quot;head&quot;.equals(element.getElementCompleteName())) {</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">					if (warned.compareAndSet(false, true)) {</span>
-<span class="nc" id="L80">						logger.warn(&quot;You don't need to put the layout:fragment/data-layout-fragment attribute into the &lt;head&gt; section - &quot;</span>
-							+ &quot;the decoration process will automatically copy the &lt;head&gt; section of your content templates into your layout page.&quot;);
-					}
-					break;
-				}
-<span class="fc" id="L85">			}</span>
-		}
 
 		// Locate the fragment that corresponds to this decorator/include fragment
-<span class="fc" id="L89">		List&lt;IModel&gt; fragments = FragmentExtensions.getFragmentCollection(context).get(attributeValue);</span>
+<span class="fc" id="L73">		List&lt;IModel&gt; fragments = FragmentExtensions.getFragmentCollection(context).get(attributeValue);</span>
 		// Replace the tag body with the fragment
-<span class="pc bpc" id="L91" title="1 of 4 branches missed.">		if (fragments != null &amp;&amp; !fragments.isEmpty()) {</span>
-<span class="fc" id="L92">			IModel fragment = fragments.get(fragments.size() - 1);</span>
-<span class="fc" id="L93">			IModelFactory modelFactory = context.getModelFactory();</span>
-<span class="fc" id="L94">			IModel replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment);</span>
+<span class="pc bpc" id="L75" title="1 of 4 branches missed.">		if (fragments != null &amp;&amp; !fragments.isEmpty()) {</span>
+<span class="fc" id="L76">			IModel fragment = fragments.get(fragments.size() - 1);</span>
+<span class="fc" id="L77">			IModelFactory modelFactory = context.getModelFactory();</span>
+<span class="fc" id="L78">			IModel replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment);</span>
 
 			// Remove the layout:fragment attribute - Thymeleaf won't do it for us
 			// when using StructureHandler.replaceWith(...)
-<span class="fc" id="L98">			replacementModel.replace(0, modelFactory.removeAttribute((IProcessableElementTag) IModelExtensions.first(replacementModel),</span>
-<span class="fc" id="L99">				getDialectPrefix(), PROCESSOR_NAME));</span>
+<span class="fc" id="L82">			replacementModel.replace(0, modelFactory.removeAttribute((IProcessableElementTag) IModelExtensions.first(replacementModel),</span>
+<span class="fc" id="L83">				getDialectPrefix(), PROCESSOR_NAME));</span>
 
-<span class="fc" id="L101">			structureHandler.replaceWith(replacementModel, true);</span>
+<span class="fc" id="L85">			structureHandler.replaceWith(replacementModel, true);</span>
 		}
-<span class="fc" id="L103">	}</span>
+<span class="fc" id="L87">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
