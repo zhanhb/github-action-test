@@ -18,8 +18,6 @@ package nz.net.ultraq.thymeleaf.layoutdialect.fragments;
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions.FragmentExtensions;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.ElementMerger;
 import nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IModel;
@@ -30,7 +28,6 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This processor serves a dual purpose: to mark sections of the template that
