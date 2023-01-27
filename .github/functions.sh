@@ -25,10 +25,10 @@ date_u() {
 	local format=+%FT%TZ
 	if [ -z "$1" ]; then
 		date -u "$format"
-	elif date --help 2>&1 | grep -qF '[-r seconds]'; then
-		date -u -r "$1" "$format"
+	elif date --help 2>&1 | grep -qF -- '--date='; then
+		date -u "--date=@$1" "$format"
 	else
-		date -u -d "@$1" "$format"
+		date -u -r "$1" "$format"
 	fi
 }
 
