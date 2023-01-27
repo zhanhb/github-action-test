@@ -68,8 +68,9 @@ jobs:
           cache-name: maven-dependencies
         with:
           path: ~/.m2
-          key: ${{ env.cache-name }}-${{ github.workflow }}-${{ hashFiles('.github/**', '**/pom.xml') }}
+          key: ${{ env.cache-name }}-${{ github.workflow }}-${{ hashFiles('.github/**', '**/pom.xml') }}-deploy
           restore-keys: |
+            ${{ env.cache-name }}-${{ github.workflow }}-${{ hashFiles('.github/**', '**/pom.xml') }}
             ${{ env.cache-name }}-${{ github.workflow }}-
             ${{ env.cache-name }}-
       - name: Maven Deploy
