@@ -325,6 +325,7 @@
 					</includes>
 					<excludes>
 						<exclude>**/Abstract*.class</exclude>
+						<exclude>**/*$*.class</exclude>
 					</excludes>
 					<systemPropertyVariables>
 						<slf4j.detectLoggerNameMismatch>true</slf4j.detectLoggerNameMismatch>
