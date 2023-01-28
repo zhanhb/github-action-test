@@ -4,6 +4,7 @@
 .gradle
 .idea/
 build
+jmeter.log
 nbproject/
 pom.xml.bak
 pom.xml.releaseBackup
