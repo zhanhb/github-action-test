@@ -129,7 +129,7 @@
 		<moduleVersion>${project.version}</moduleVersion>
 		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 		<osgi.dynamicImport/>
-		<osgi.export>*;-noimport:=true</osgi.export>
+		<osgi.export>*</osgi.export>
 		<osgi.import>*</osgi.import>
 		<osgi.module-info-options/>
 		<prerequisites.maven>3.6.1</prerequisites.maven>
