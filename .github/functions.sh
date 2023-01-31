@@ -135,7 +135,7 @@ release_perform() {
 	TAG="$(git describe --exact-match --tags 2>/dev/null)" || error "There's no tag on commit $COMMIT_ID"
 	REVISION="$(./mvnw -B -N help:evaluate -Dexpression=project.version -q -DforceStdout)"
 	[ -n "$REVISION" ] || error "fail to get project.version"
-	./mvnw -B --color=always -s .github/settings.xml -Prelease-profile deploy site-deploy
+	./mvnw -B --color=always -Prelease-profile deploy site-deploy
 	find . -type f -name "*-$REVISION.zip" -print0 | xargs -0 gh release -R "$GITHUB_REPOSITORY" create "$TAG" --prerelease --target "$COMMIT_ID"
 }
 

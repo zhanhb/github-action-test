@@ -30,10 +30,6 @@ jobs:
           - 17
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: ${{ matrix.java-distribution }}
-          java-version: ${{ matrix.java-version }}
       - uses: actions/cache@v3
         env:
           cache-name: maven-dependencies
@@ -43,6 +39,10 @@ jobs:
           restore-keys: |
             ${{ env.cache-name }}-${{ github.workflow }}-
             ${{ env.cache-name }}-
+      - uses: actions/setup-java@v3
+        with:
+          distribution: ${{ matrix.java-distribution }}
+          java-version: ${{ matrix.java-version }}
       - name: mvnw install
         run: ./mvnw -B --color=always clean install
       - uses: codecov/codecov-action@v3
@@ -59,10 +59,6 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: ${{ github.event.inputs.java-version || 11 }}
       - uses: actions/cache@v3
         env:
           cache-name: maven-dependencies
@@ -73,6 +69,13 @@ jobs:
             ${{ env.cache-name }}-${{ github.workflow }}-${{ hashFiles('.github/**', '**/pom.xml') }}
             ${{ env.cache-name }}-${{ github.workflow }}-
             ${{ env.cache-name }}-
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: ${{ github.event.inputs.java-version || 11 }}
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
       - name: Maven Deploy
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -80,7 +83,7 @@ jobs:
         run: |
           version="$(./mvnw -B -N help:evaluate -Dexpression=project.version -q -DforceStdout)"
           case "$version" in
-          *-SNAPSHOT) ./mvnw -B --color=always -s .github/settings.xml deploy ;;
+          *-SNAPSHOT) ./mvnw -B --color=always deploy ;;
           *) printf '\e[31m%s\e[m\n' "skip deploy version '$version'" ;;
           esac
       - name: Before Cache
