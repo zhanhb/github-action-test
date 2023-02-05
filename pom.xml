@@ -148,7 +148,7 @@
 		<revision>3.2.1-SNAPSHOT</revision>
 		<scmpublish.skipDeploy>${maven.site.deploy.skip}</scmpublish.skipDeploy>
 		<slf4j.version>1.7.36</slf4j.version>
-		<sortpom-maven-plugin.version>3.0.1</sortpom-maven-plugin.version>
+		<sortpom-maven-plugin.version>3.2.1</sortpom-maven-plugin.version>
 		<spock-framework.version>2.3-groovy-4.0</spock-framework.version>
 		<spring-boot.version>2.7.8</spring-boot.version>
 		<thymeleaf-testing-junit.version>5.1.0</thymeleaf-testing-junit.version>
@@ -688,6 +688,7 @@
 				<java.version>1.8</java.version>
 				<maven.compiler.source>${java.version}</maven.compiler.source>
 				<maven.compiler.target>${java.version}</maven.compiler.target>
+				<sortpom-maven-plugin.version>3.0.1</sortpom-maven-plugin.version>
 			</properties>
 		</profile>
 		<profile>
