@@ -13,7 +13,7 @@
 	<properties>
 		<argLine>-Dfile.encoding=${file.encoding} -ea</argLine>
 		<attoparser.version>2.0.5.RELEASE</attoparser.version>
-		<byte-buddy.version>1.12.22</byte-buddy.version>
+		<byte-buddy.version>1.12.23</byte-buddy.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
 		<hamcrest.version>2.2</hamcrest.version>
