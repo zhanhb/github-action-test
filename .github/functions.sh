@@ -61,7 +61,7 @@ set_property() {
 release_prepare() {
 	COMMIT_ID="$(git log -1 --pretty=%H)"
 	if TAG="$(git describe --exact-match --tags 2>/dev/null)"; then
-		info "Tag $TAG found on commit $(git log -1 --pretty=%H), skip creating tag."
+		info "Tag $TAG found on commit $COMMIT_ID, skip creating tag."
 		return
 	fi
 	[ "${1-}" != "--dry-run" ] || DRY_RUN=1
@@ -80,10 +80,9 @@ release_prepare() {
 		check_version "$REVISION" release
 	fi
 
-	local TAG_PATTERN='^\(v\{0,1\}[0-9]\{1,\}\(\.[0-9]\{1,\}\)*\)$'
 	if [ -n "$INPUT_TAG" ]; then
-		expr "$INPUT_TAG" : "$TAG_PATTERN" >/dev/null || error "invalid git tag <$INPUT_TAG>"
-		TAG="$INPUT_TAG"
+		TAG="$(git check-ref-format --normalize --allow-onelevel "/$INPUT_TAG")" || error "fatal: '$INPUT_TAG' is not a valid tag name."
+		case "$TAG" in -*) error "fatal: '$INPUT_TAG' is not a valid tag name." ;; esac
 	else
 		TAG="$REVISION"
 	fi
@@ -120,13 +119,13 @@ release_prepare() {
 	./mvnw -B --color=always -N versions:set-scm-tag "-DnewTag=$TAG"
 	git add pom.xml
 	git commit -m "Release $REVISION"
-	git tag "$TAG"
+	git tag -- "$TAG"
 	./mvnw -B --color=always -N versions:revert
 	set_property revision "$NEXT_SNAPSHOT"
 	git add pom.xml
 	git commit -m "prepare for next development iteration"
-	[ -n "$DRY_RUN" ] || git push --atomic origin "$TAG" "$BRANCH"
-	git checkout "tags/$TAG"
+	[ -n "$DRY_RUN" ] || git push --atomic origin "refs/tags/$TAG" "refs/heads/$BRANCH"
+	git -c advice.detachedHead=false checkout "refs/tags/$TAG"
 }
 
 release_perform() {
