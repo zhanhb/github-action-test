@@ -23,7 +23,7 @@
 		<maven.site.skip>false</maven.site.skip>
 		<mockito.version>3.12.4</mockito.version>
 		<module.name>nz.net.ultraq.thymeleaf.layoutdialect</module.name>
-		<objenesis.version>3.2</objenesis.version>
+		<objenesis.version>3.3</objenesis.version>
 		<ognl3.version>3.1.26</ognl3.version>
 		<osgi.export>
 			<!-- sortpom hack -->
